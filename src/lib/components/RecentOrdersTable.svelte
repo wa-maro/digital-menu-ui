@@ -11,21 +11,21 @@
 
   const orders: OrderItem[] = [
     {
-      id: "ORD-00123",
+      id: "23",
       customer: "John Doe",
       status: "pending",
       total: 24.99,
       time: "2 mins ago",
     },
     {
-      id: "ORD-00122",
+      id: "22",
       customer: "Sarah Lee",
       status: "preparing",
       total: 42.1,
       time: "5 mins ago",
     },
     {
-      id: "ORD-00121",
+      id: "21",
       customer: "Mike Chen",
       status: "ready",
       total: 18.5,
