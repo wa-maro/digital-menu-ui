@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { PlusCircle, FolderCog, ClipboardList, Monitor } from "lucide-svelte";
+  import { PlusCircle, FolderCog, ClipboardList, Tag } from "lucide-svelte";
 
   const actions = [
     {
-      label: "Add New Item",
+      label: "Add New Menu Item",
       tooltip: "Create a new menu item",
       icon: PlusCircle,
       href: "/admin/menu/new",
@@ -19,32 +19,32 @@
       hover: "hover:bg-gray-200",
     },
     {
-      label: "View All Orders",
+      label: "View Pending Orders",
       tooltip: "See all customer orders",
       icon: ClipboardList,
       href: "/admin/orders",
-      bg: "bg-gray-100 text-gray-800",
+      bg: "bg-sky-100 text-sky-800",
       hover: "hover:bg-gray-200",
     },
     {
-      label: "Open KDS",
-      tooltip: "Launch Kitchen Display System",
-      icon: Monitor,
-      href: "/admin/kds",
-      bg: "bg-gray-100 text-gray-800",
-      hover: "hover:bg-gray-200",
+      label: "Create Promo Code",
+      tooltip: "Launch discounts or seasonal offers",
+      icon: Tag,
+      href: "/admin/promotions",
+      bg: "bg-pink-100 text-pink-800",
+      hover: "hover:bg-pink-200",
     },
   ];
 </script>
 
 <div class="mt-6">
   <h2 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
-  <div class="grid grid-cols-4 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div class="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-4">
     {#each actions as action}
       <div class="relative group flex justify-center sm:justify-start">
         <a
           href={action.href}
-          class={`flex flex-col sm:flex-row items-center justify-center sm:justify-start p-3 sm:p-4 rounded-2xl shadow-sm transition text-center sm:text-left ${action.bg} ${action.hover}`}
+          class={`flex flex-col sm:flex-row items-center justify-center sm:justify-start p-3 rounded-2xl shadow-sm transition text-center sm:text-left ${action.bg} ${action.hover}`}
         >
           <svelte:component
             this={action.icon}

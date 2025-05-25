@@ -2,7 +2,6 @@
   import {
     Menu,
     LayoutDashboard,
-    ArrowRight,
     ShoppingCart,
     ShoppingBasket,
     Utensils,
@@ -16,7 +15,9 @@
     CheckCircle,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
-  let isSidebarExpanded = true;
+  import SidebarSection from "./SidebarSection.svelte";
+  import SidebarItem from "./SidebarItem.svelte";
+  let isSidebarExpanded = false;
 
   let openMenus: Record<string, boolean> = {
     menu: false,
@@ -30,7 +31,13 @@
     }
   };
 
-  const toggleSidebar = () => (isSidebarExpanded = !isSidebarExpanded);
+  const toggleSidebar = () => {
+    for (const key in openMenus) {
+      openMenus[key] = false;
+    }
+
+    isSidebarExpanded = !isSidebarExpanded;
+  };
 </script>
 
 <aside
@@ -49,183 +56,133 @@
   <nav class="mt-4">
     <ul class="space-y-2">
       <!-- Dashboard -->
-      <li class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer">
-        <LayoutDashboard class="w-5 h-5" />
-        {#if isSidebarExpanded}
-          <a href="/admin/dashboard" class="ml-3">Dashboard</a>
+      <li class="relative group">
+        <a
+          href="/admin/dashboard"
+          class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
+        >
+          <LayoutDashboard class="w-5 h-5" />
+          {#if isSidebarExpanded}
+            <span class="ml-3">Dashboard</span>
+          {/if}
+        </a>
+
+        {#if !isSidebarExpanded}
+          <div
+            class="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 text-xs text-white bg-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap"
+          >
+            Dashboard
+          </div>
         {/if}
       </li>
 
       <!-- Menu Management (Collapsible) -->
-      <li class="flex flex-col">
-        <button
-          class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
-          on:click={() => toggleMenu("menu")}
-        >
-          <Utensils class="w-5 h-5 " />
-          {#if isSidebarExpanded}
-            <span class="ml-3 font-medium">Menu Management</span>
-          {/if}
-        </button>
-        {#if openMenus.menu}
-          <ul
-            in:slide={{ duration: 250 }}
-            out:slide={{ duration: 200 }}
-            class="ml-8 space-y-2 text-sm"
-          >
-            <li>
-              <a
+      <SidebarSection title="Menu" {isSidebarExpanded}>
+        <li class="flex flex-col relative">
+          <div>
+            <SidebarItem
+              icon={Utensils}
+              label="Menu Management"
+              onClick={() => isSidebarExpanded && toggleMenu("menu")}
+              {isSidebarExpanded}
+            />
+          </div>
+          {#if openMenus.menu}
+            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
+              <SidebarItem
+                icon={MenuSquare}
+                label="Categories"
                 href="/admin/menu/categories"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <MenuSquare
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Categories</span>
-              </a>
-            </li>
-            <li>
-              <a
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={UtensilsCrossed}
+                label="Menu Items"
                 href="/admin/menu/items"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <UtensilsCrossed
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Menu Items</span></a
-              >
-            </li>
-          </ul>
-        {/if}
-      </li>
+                {isSidebarExpanded}
+              />
+            </ul>
+          {/if}
+        </li>
+      </SidebarSection>
 
       <!-- Cart Management -->
-      <li class="flex flex-col">
-        <button
-          class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
-          on:click={() => toggleMenu("cart")}
-        >
-          <ShoppingCart class="w-5 h-5 " />
-          {#if isSidebarExpanded}
-            <span class="ml-3 font-medium">Cart Management</span>
+      <SidebarSection title="Cart" {isSidebarExpanded}>
+        <li class="flex flex-col relative">
+          <div>
+            <SidebarItem
+              icon={ShoppingCart}
+              label="Cart Management"
+              onClick={() => isSidebarExpanded && toggleMenu("cart")}
+              {isSidebarExpanded}
+            />
+          </div>
+          {#if openMenus.cart}
+            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
+              <SidebarItem
+                icon={ShoppingCart}
+                label="All Carts"
+                href="/admin/cart"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={Activity}
+                label="Active Carts"
+                href="/admin/cart"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={UserRound}
+                label="Guest Carts"
+                href="/admin/cart"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={Ghost}
+                label="Abandoned Carts"
+                href="/admin/cart"
+                {isSidebarExpanded}
+              />
+            </ul>
           {/if}
-        </button>
-        {#if openMenus.cart}
-          <ul
-            in:slide={{ duration: 250 }}
-            out:slide={{ duration: 200 }}
-            class="ml-8 space-y-2 text-sm"
-          >
-            <li>
-              <a
-                href="/admin/cart"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <ShoppingCart
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">All Carts</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin/cart"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <Activity
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Active Carts</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin/cart"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <UserRound
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Guest Carts</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin/cart"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <Ghost
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Abandoned Carts</span>
-              </a>
-            </li>
-          </ul>
-        {/if}
-      </li>
+        </li>
+      </SidebarSection>
 
       <!-- Orders Management -->
-      <li class="flex flex-col">
-        <button
-          class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
-          on:click={() => toggleMenu("orders")}
-        >
-          <ShoppingBasket class="w-5 h-5 " />
-          {#if isSidebarExpanded}
-            <span class="ml-3 font-medium">Orders Management</span>
+      <SidebarSection title="Orders" {isSidebarExpanded}>
+        <li class="flex flex-col">
+          <div>
+            <SidebarItem
+              icon={ShoppingBasket}
+              label="Orders Management"
+              onClick={() => toggleMenu("orders")}
+              {isSidebarExpanded}
+            />
+          </div>
+          {#if openMenus.orders}
+            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
+              <SidebarItem
+                icon={ClipboardList}
+                label="All Orders"
+                href="/admin/orders"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={Clock}
+                label="Pending Orders"
+                href="/admin/orders"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={CheckCircle}
+                label="Completed Orders"
+                href="/admin/orders"
+                {isSidebarExpanded}
+              />
+            </ul>
           {/if}
-        </button>
-        {#if openMenus.orders}
-          <ul
-            in:slide={{ duration: 250 }}
-            out:slide={{ duration: 200 }}
-            class="ml-8 space-y-2 text-sm"
-          >
-            <li>
-              <a
-                href="/admin/orders"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <ClipboardList
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">All Orders</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin/orders"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <Clock
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Pending Orders</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="/admin/orders"
-                class="flex items-center gap-x-2 px-4 py-2 rounded-md text-white/90 hover:text-white hover:bg-[#044974]/80 transition-all duration-200"
-              >
-                <CheckCircle
-                  size={16}
-                  class="text-white/70 group-hover:text-white transition"
-                />
-                <span class="text-sm font-medium">Completed Orders</span></a
-              >
-            </li>
-          </ul>
-        {/if}
-      </li>
+        </li>
+      </SidebarSection>
     </ul>
   </nav>
 </aside>
