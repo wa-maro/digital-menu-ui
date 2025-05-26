@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Pencil, Trash } from "lucide-svelte";
-  import type { LoadResult } from "./+page.server";
   import CategoryModal from "$lib/components/CategoryModal.svelte";
 
-  export let data: LoadResult;
+  export let data: LoadResult<Category>;
   let categories: Category[] = data.data;
 
   let showModal = false;
@@ -54,7 +53,7 @@
             on:click={() =>
               editCategory(category._id, category.name, category.description)}
             type="button"
-            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
+            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
             aria-label="Edit"
           >
             <Pencil size={12} />
@@ -64,7 +63,7 @@
             <input type="hidden" name="_id" bind:value={category._id} />
             <button
               type="submit"
-              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
               aria-label="Delete"
             >
               <Trash size={12} />

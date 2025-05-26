@@ -1,14 +1,6 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export interface LoadResult {
-  user: {
-    token: string;
-    role: string;
-  };
-  data: Category[];
-}
-
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const res = await fetch("http://localhost:3000/menu/categories", {
     headers: {
@@ -21,7 +13,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     return fail(400, { error: error || "Request Failed" });
   }
 
-  const data: LoadResult = await res.json();
+  const data: LoadResult<Category> = await res.json();
 
   return { data };
 };
@@ -52,6 +44,8 @@ export const actions: Actions = {
     const name = formData.get("name")?.toString() || "";
     const description = formData.get("description")?.toString() || "";
 
+    console.log(name, description);
+
     const token = cookies.get("token");
 
     const res = await fetch(`http://127.0.0.1:3000/menu/categories`, {
@@ -73,8 +67,8 @@ export const actions: Actions = {
 
   update: async ({ fetch, cookies, request }) => {
     const formData = await request.formData();
-    const name = formData.get("name")?.toString();
-    const description = formData.get("description")?.toString();
+    const name = formData.get("name")?.toString() || "";
+    const description = formData.get("description")?.toString() || "";
     const _id = formData.get("_id")?.toString() || "";
 
     const token = cookies.get("token");

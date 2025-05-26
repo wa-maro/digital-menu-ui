@@ -14,12 +14,28 @@ declare global {
     // interface Platform {}
   }
 
+  interface LoadResult<T> {
+    user: {
+      token: string;
+      role: string;
+    };
+    data: T[];
+  }
+
   export interface Category {
     _id: string;
     name: string;
     description: string;
     createdAt: string;
     updatedAt: string;
+  }
+  export interface MenuItem {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    available: boolean;
+    category: string;
   }
 }
 
