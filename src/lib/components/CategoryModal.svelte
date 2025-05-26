@@ -1,5 +1,6 @@
 <script lang="ts">
   export let show = false;
+  export let _id = "";
   export let name = "";
   export let description = "";
 
@@ -27,10 +28,24 @@
       </button>
 
       <h2 class="text-xl font-semibold mb-4">
-        {name ? "Edit" : "Add"} Category
+        {name && _id ? "Edit" : "Add"} Category
       </h2>
 
-      <form action="?/create" method="post" class="space-y-4">
+      <form
+        action={`${name && _id ? "?/update" : "?/create"}`}
+        method="post"
+        class="space-y-4"
+      >
+        <div>
+          <label for="_id" class="block mb-1 font-medium"></label>
+          <input
+            name="_id"
+            bind:value={_id}
+            hidden
+            required
+            class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
+          />
+        </div>
         <div>
           <label for="name" class="block mb-1 font-medium">Name</label>
           <input

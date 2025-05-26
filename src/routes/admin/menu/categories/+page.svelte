@@ -9,7 +9,18 @@
   let showModal = false;
 
   const openModal = () => {
-    showModal = !showModal;
+    showModal = true;
+  };
+
+  $: _id = "";
+  $: name = "";
+  $: description = "";
+  $: editCategory = (id: string, iname: string, idescription: string) => {
+    openModal();
+
+    _id = id;
+    name = iname;
+    description = idescription;
   };
 </script>
 
@@ -35,7 +46,9 @@
         </div>
         <div class="flex gap-2">
           <button
-            type="submit"
+            on:click={() =>
+              editCategory(category._id, category.name, category.description)}
+            type="button"
             class="p-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 cursor-pointer"
           >
             <Pencil size={16} />
@@ -56,5 +69,5 @@
     {/each}
   </div>
 
-  <CategoryModal bind:show={showModal} />
+  <CategoryModal bind:show={showModal} bind:_id bind:name bind:description />
 </div>
