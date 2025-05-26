@@ -55,4 +55,24 @@ export const actions: Actions = {
 
     throw redirect(303, "/admin/menu/items");
   },
+
+  delete: async ({ fetch, cookies, request }) => {
+    const formData = await request.formData();
+    const _id = formData.get("_id")?.toString() || "";
+    const token = cookies.get("token");
+
+    const res = await fetch(`http://localhost:3000/menu/items/${_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const error = await res.text();
+      return fail(400, { error: error || "Request Failed" });
+    }
+
+    throw redirect(303, "/admin/menu/items");
+  },
 };

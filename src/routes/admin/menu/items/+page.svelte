@@ -108,12 +108,17 @@
           >
             <Pencil size={16} />
           </button>
-          <button
-            class="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 focus:outline-none focus:ring-2 focus:ring-red-200"
-            aria-label="Delete item"
-          >
-            <Trash size={16} />
-          </button>
+
+          <form action="?/delete" method="post">
+            <input type="hidden" name="_id" bind:value={item._id} />
+            <button
+              type="submit"
+              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+              aria-label="Delete"
+            >
+              <Trash size={12} />
+            </button>
+          </form>
         </div>
       </div>
     {/each}
