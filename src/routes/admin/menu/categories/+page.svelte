@@ -35,33 +35,39 @@
     </button>
   </div>
 
-  <div class="grid gap-3">
+  <div class="grid gap-4">
     {#each categories as category}
       <div
-        class="bg-white shadow rounded p-4 flex justify-between items-center"
+        class="bg-white shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl px-4 py-3 flex items-center justify-between group transform hover:scale-[1.01] transition-transform"
       >
         <div>
-          <h2 class="font-semibold">{category.name}</h2>
+          <h2
+            class="text-base font-medium text-gray-800 group-hover:text-blue-700 transition-colors"
+          >
+            {category.name}
+          </h2>
           <p class="text-sm text-gray-500">{category.description}</p>
         </div>
-        <div class="flex gap-2">
+
+        <div class="flex gap-2 items-center">
           <button
             on:click={() =>
               editCategory(category._id, category.name, category.description)}
             type="button"
-            class="p-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700 cursor-pointer"
+            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
+            aria-label="Edit"
           >
-            <Pencil size={16} />
+            <Pencil size={12} />
           </button>
 
           <form action="?/delete" method="post">
-            <label for="_id"></label>
-            <input type="text" name="_id" hidden bind:value={category._id} />
+            <input type="hidden" name="_id" bind:value={category._id} />
             <button
               type="submit"
-              class="p-2 rounded bg-red-100 hover:bg-red-200 text-red-700 cursor-pointer"
+              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+              aria-label="Delete"
             >
-              <Trash size={16} />
+              <Trash size={12} />
             </button>
           </form>
         </div>
