@@ -1,21 +1,72 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
   import { Pencil, Plus, Trash } from "lucide-svelte";
+  import MenuItemModalForm from "$lib/components/MenuItemModalForm.svelte";
+  import { fail } from "@sveltejs/kit";
+  import { onMount } from "svelte";
+
   export let data: LoadResult<MenuItem>;
-
-  function deleteItem(_id: string) {}
-
   let items: MenuItem[] = data.data;
+
+  let showModal = false;
+
+  const openModal = () => {
+    showModal = true;
+  };
+
+  $: item = {
+    _id: "",
+    name: "",
+    description: "",
+    imageUrl: "",
+    available: true,
+    category: {
+      _id: "",
+      name: "",
+      description: "",
+    },
+    price: 0.0,
+  };
+  $: categories = [{ _id: "", name: "" }];
+
+  const getCategories = async () => {
+    const token = data.user.token;
+    try {
+      const res = await fetch("http://localhost:3000/menu/categories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const error = res.text();
+        return fail(400, { error: error || "Request Failed" });
+      }
+
+      const data: Category[] = await res.json();
+
+      categories = data.map((c: Category) => {
+        return {
+          _id: c._id,
+          name: c.name,
+        };
+      });
+    } catch (error) {}
+  };
+
+  onMount(async () => {
+    await getCategories();
+  });
 </script>
 
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
     <button
-      on:click={() => goto("/menu/items/form/new")}
-      class="flex items-center gap-2 bg-[#044974] text-white px-4 py-2 rounded hover:opacity-90"
+      on:click={openModal}
+      class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer flex items-center gap-2"
     >
-      <Plus size={16} /> Add Item
+      <Plus size={16} />
+      Add Item
     </button>
   </div>
 
@@ -52,14 +103,12 @@
 
         <div class="flex gap-2 items-center ml-2">
           <button
-            on:click={() => goto(`/menu/items/${item._id}`)}
             class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200"
             aria-label="Edit item"
           >
             <Pencil size={16} />
           </button>
           <button
-            on:click={() => deleteItem(item._id)}
             class="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 focus:outline-none focus:ring-2 focus:ring-red-200"
             aria-label="Delete item"
           >
@@ -69,4 +118,6 @@
       </div>
     {/each}
   </div>
+
+  <MenuItemModalForm bind:show={showModal} bind:item bind:categories />
 </div>

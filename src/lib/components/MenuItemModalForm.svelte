@@ -43,7 +43,7 @@
         {item.name && item._id ? "Edit" : "Add"} Item
       </h2>
 
-      <form method="POST" class="space-y-4">
+      <form action="?/create" method="POST" class="space-y-4">
         {#if item._id}
           <div>
             <label for="_id" class="block mb-1 font-medium"></label>

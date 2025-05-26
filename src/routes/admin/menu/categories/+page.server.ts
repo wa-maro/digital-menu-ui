@@ -44,8 +44,6 @@ export const actions: Actions = {
     const name = formData.get("name")?.toString() || "";
     const description = formData.get("description")?.toString() || "";
 
-    console.log(name, description);
-
     const token = cookies.get("token");
 
     const res = await fetch(`http://127.0.0.1:3000/menu/categories`, {
