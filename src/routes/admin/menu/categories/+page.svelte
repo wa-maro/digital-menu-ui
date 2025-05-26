@@ -5,8 +5,6 @@
 
   export let data: LoadResult;
   let categories: Category[] = data.data;
-
-  function deleteCategory(_id: string): any {}
 </script>
 
 <div class="p-4">
@@ -20,28 +18,38 @@
     </button>
   </div>
 
-  <div class="grid gap-4">
+  <div class="grid gap-3">
     {#each categories as category}
       <div
         class="bg-white shadow rounded p-4 flex justify-between items-center"
       >
         <div>
-          <h2 class="text-lg font-semibold">{category.name}</h2>
+          <h2 class="font-semibold">{category.name}</h2>
           <p class="text-sm text-gray-500">{category.description}</p>
         </div>
         <div class="flex gap-2">
           <button
-            on:click={() => goto(`/menu/categories/form/${category._id}`)}
+            type="submit"
             class="p-2 rounded bg-blue-100 hover:bg-blue-200 text-blue-700"
           >
             <Pencil size={16} />
           </button>
-          <button
-            on:click={() => deleteCategory(category._id)}
-            class="p-2 rounded bg-red-100 hover:bg-red-200 text-red-700"
-          >
-            <Trash size={16} />
-          </button>
+
+          <form action="?/delete" method="post">
+            <input
+              type="text"
+              name="_id"
+              hidden
+              class="hidden"
+              bind:value={category._id}
+            />
+            <button
+              type="submit"
+              class="p-2 rounded bg-red-100 hover:bg-red-200 text-red-700"
+            >
+              <Trash size={16} />
+            </button>
+          </form>
         </div>
       </div>
     {/each}
