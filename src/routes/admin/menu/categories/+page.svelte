@@ -34,7 +34,7 @@
     </button>
   </div>
 
-  <div class="grid gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     {#each categories as category}
       <div
         class="bg-white shadow-sm hover:shadow-md transition-shadow duration-200 rounded-xl px-4 py-3 flex items-center justify-between group transform hover:scale-[1.01] transition-transform"
