@@ -6,6 +6,9 @@
 
   let onClose = () => {
     show = !show;
+    _id = "";
+    name = "";
+    description = "";
   };
 </script>
 
@@ -36,16 +39,18 @@
         method="post"
         class="space-y-4"
       >
-        <div>
-          <label for="_id" class="block mb-1 font-medium"></label>
-          <input
-            name="_id"
-            bind:value={_id}
-            hidden
-            required
-            class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
-          />
-        </div>
+        {#if _id}
+          <div>
+            <label for="_id" class="block mb-1 font-medium"></label>
+            <input
+              name="_id"
+              bind:value={_id}
+              hidden
+              required
+              class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
+            />
+          </div>
+        {/if}
         <div>
           <label for="name" class="block mb-1 font-medium">Name</label>
           <input
@@ -70,7 +75,7 @@
         <div class="flex justify-end">
           <button
             type="submit"
-            class="bg-[#044974] text-white px-4 py-2 rounded hover:opacity-90"
+            class="bg-[#044974] text-white px-4 py-2 rounded hover:opacity-90 cursor-pointer"
           >
             Save
           </button>
