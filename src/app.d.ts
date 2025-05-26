@@ -26,8 +26,8 @@ declare global {
     _id: string;
     name: string;
     description: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
   }
 
   export interface MenuItem {
@@ -38,6 +38,8 @@ declare global {
     available: boolean;
     category: Category;
     imageUrl: string;
+    createdAt?: string;
+    updatedAt?: string;
   }
 }
 
