@@ -46,4 +46,28 @@ export const actions: Actions = {
 
     throw redirect(303, "/admin/menu/categories");
   },
+
+  create: async ({ fetch, cookies, request }) => {
+    const formData = await request.formData();
+    const name = formData.get("name")?.toString() || "";
+    const description = formData.get("description")?.toString() || "";
+
+    const token = cookies.get("token");
+
+    const res = await fetch(`http://127.0.0.1:3000/menu/categories`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ name, description }),
+    });
+
+    if (!res.ok) {
+      const error = await res.text();
+      return fail(400, { error: error || "Request Failed" });
+    }
+
+    throw redirect(303, "/admin/menu/categories");
+  },
 };
