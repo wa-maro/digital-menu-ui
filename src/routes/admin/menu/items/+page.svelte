@@ -53,6 +53,12 @@
     } catch (error) {}
   };
 
+  $: editMenuItem = (data: MenuItem) => {
+    openModal();
+
+    item = data;
+  };
+
   onMount(async () => {
     await getCategories();
   });
@@ -103,10 +109,12 @@
 
         <div class="flex gap-2 items-center ml-2">
           <button
-            class="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            aria-label="Edit item"
+            on:click={() => editMenuItem({ ...item, category: item.category })}
+            type="button"
+            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
+            aria-label="Edit"
           >
-            <Pencil size={16} />
+            <Pencil size={12} />
           </button>
 
           <form action="?/delete" method="post">

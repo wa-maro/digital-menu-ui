@@ -43,7 +43,11 @@
         {item.name && item._id ? "Edit" : "Add"} Item
       </h2>
 
-      <form action="?/create" method="POST" class="space-y-4">
+      <form
+        action={`${item.name && item._id ? "?/update" : "?/create"}`}
+        method="POST"
+        class="space-y-4"
+      >
         {#if item._id}
           <div>
             <label for="_id" class="block mb-1 font-medium"></label>
@@ -107,7 +111,7 @@
             >
             <select
               name="category"
-              bind:value={item.category}
+              bind:value={item.category._id}
               required
               class="w-full border px-3 py-2 rounded"
             >
