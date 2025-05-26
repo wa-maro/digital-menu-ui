@@ -29,13 +29,15 @@ declare global {
     createdAt: string;
     updatedAt: string;
   }
+
   export interface MenuItem {
     _id: string;
     name: string;
     description: string;
     price: number;
     available: boolean;
-    category: string;
+    category: Category;
+    imageUrl: string;
   }
 }
 
