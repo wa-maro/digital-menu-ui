@@ -1,7 +1,7 @@
 <script>
-  import QuickActionsPanel from "$lib/components/QuickActionsPanel.svelte";
-  import RecentOrdersTable from "$lib/components/RecentOrdersTable.svelte";
-  import SummaryCards from "$lib/components/SummaryCards.svelte";
+  import QuickActionsPanel from "$lib/components/dashboard/QuickActionsPanel.svelte";
+  import RecentOrdersTable from "$lib/components/dashboard/RecentOrdersTable.svelte";
+  import SummaryCards from "$lib/components/dashboard/SummaryCards.svelte";
 </script>
 
 <div class="p-4 space-y-6">

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Pencil, Trash } from "lucide-svelte";
-  import CategoryModal from "$lib/components/CategoryModal.svelte";
+  import CategoryModal from "$lib/components/menu/CategoryModal.svelte";
 
   export let data: LoadResult<Category>;
   let categories: Category[] = data.data;
