@@ -17,7 +17,7 @@
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
   import SidebarItem from "./SidebarItem.svelte";
-  let isSidebarExpanded = false;
+  let isSidebarExpanded = true;
 
   let openMenus: Record<string, boolean> = {
     menu: false,
