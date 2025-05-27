@@ -10,7 +10,7 @@
     },
     {
       title: "Revenue",
-      value: "$5,450",
+      value: "TZS 5,450",
       icon: DollarSign,
       color: "bg-green-100 text-green-800",
     },

@@ -1,8 +1,9 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import { VITE_API_URL } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
-  const res = await fetch("http://localhost:3000/menu/categories", {
+  const res = await fetch(`${VITE_API_URL}/menu/categories`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
@@ -15,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 
   const data: LoadResult<Category> = await res.json();
 
-  return { data };
+  return { data: data || {} };
 };
 
 export const actions: Actions = {
@@ -24,7 +25,7 @@ export const actions: Actions = {
     const _id = formData.get("_id")?.toString() || "";
     const token = cookies.get("token");
 
-    const res = await fetch(`http://localhost:3000/menu/categories/${_id}`, {
+    const res = await fetch(`${VITE_API_URL}/menu/categories/${_id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -46,7 +47,7 @@ export const actions: Actions = {
 
     const token = cookies.get("token");
 
-    const res = await fetch(`http://127.0.0.1:3000/menu/categories`, {
+    const res = await fetch(`${VITE_API_URL}/menu/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +72,7 @@ export const actions: Actions = {
 
     const token = cookies.get("token");
 
-    const res = await fetch(`http://localhost:3000/menu/categories/${_id}`, {
+    const res = await fetch(`${VITE_API_URL}/menu/categories/${_id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,

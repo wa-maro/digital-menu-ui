@@ -1,9 +1,10 @@
 import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
+import { VITE_API_URL } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
-  const res = await fetch("http://localhost:3000/menu/items", {
+  const res = await fetch(`${VITE_API_URL}/menu/items`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
@@ -14,9 +15,9 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     return fail(400, { error: error || "Request Failed" });
   }
 
-  const data: LoadResult<any> = await res.json();
+  const data: LoadResult<MenuItem> = await res.json();
 
-  return { data };
+  return { data: data || {} };
 };
 
 export const actions: Actions = {
@@ -32,7 +33,7 @@ export const actions: Actions = {
 
     const token = cookies.get("token");
 
-    const res = await fetch(`http://127.0.0.1:3000/menu/items`, {
+    const res = await fetch(`${VITE_API_URL}/menu/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +62,7 @@ export const actions: Actions = {
     const _id = formData.get("_id")?.toString() || "";
     const token = cookies.get("token");
 
-    const res = await fetch(`http://localhost:3000/menu/items/${_id}`, {
+    const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,7 +90,7 @@ export const actions: Actions = {
 
     const token = cookies.get("token");
 
-    const res = await fetch(`http://localhost:3000/menu/items/${_id}`, {
+    const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -19,7 +19,7 @@ declare global {
       token: string;
       role: string;
     };
-    data: T[];
+    data: T[] = [];
   }
 
   export interface Category {

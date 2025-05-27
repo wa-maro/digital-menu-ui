@@ -1,4 +1,5 @@
 import { fail, redirect, type Actions } from "@sveltejs/kit";
+import { VITE_API_URL } from "$env/static/private";
 
 export const actions: Actions = {
   default: async ({ request, cookies, fetch }) => {
@@ -6,7 +7,7 @@ export const actions: Actions = {
     const email = formData.get("email")?.toString() || "";
     const password = formData.get("password")?.toString() || "";
 
-    const res = await fetch("http://localhost:3000/auth/login", {
+    const res = await fetch(`${VITE_API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

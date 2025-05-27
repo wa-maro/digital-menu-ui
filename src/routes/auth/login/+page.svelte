@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-
   export let form: any;
 </script>
 
 <div class="max-w-md mx-auto mt-20 bg-white p-8 rounded shadow">
   <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
-  <form method="POST" use:enhance class="space-y-4">
+  <form method="POST" class="space-y-4">
     <div>
       <label for="email" class="block text-sm font-medium mb-1">Email</label>
       <input

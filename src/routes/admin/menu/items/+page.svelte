@@ -31,7 +31,7 @@
   const getCategories = async () => {
     const token = data.user.token;
     try {
-      const res = await fetch("http://localhost:3000/menu/categories", {
+      const res = await fetch(`https://q5jnkw-3000.csb.app/menu/categories`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,7 +101,7 @@
               {item.name}
             </h2>
             <span class="text-sm text-gray-600 whitespace-nowrap"
-              >${item.price}</span
+              >TZS {item.price}</span
             >
           </div>
           <p class="text-sm text-gray-500">{item.category.name}</p>
