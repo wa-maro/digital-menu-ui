@@ -4,20 +4,34 @@ import { redirect } from "@sveltejs/kit";
 import { VITE_API_URL } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
-  const res = await fetch(`${VITE_API_URL}/menu/items`, {
+  // fetch menu items
+  const itemsRes = await fetch(`${VITE_API_URL}/menu/items`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
   });
-
-  if (!res.ok) {
-    const error = res.text();
+  if (!itemsRes.ok) {
+    const error = await itemsRes.text();
     return fail(400, { error: error || "Request Failed" });
   }
+  const itemsData = await itemsRes.json();
 
-  const data: LoadResult<MenuItem> = await res.json();
+  // Fetch categories
+  const catRes = await fetch(`${VITE_API_URL}/menu/categories`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("token")}`,
+    },
+  });
+  if (!catRes.ok) {
+    const error = await catRes.text();
+    return fail(400, { error: error || "Request Failed" });
+  }
+  const categoriesData = await catRes.json();
 
-  return { data: data || {} };
+  return {
+    items: itemsData || [],
+    categories: categoriesData || [],
+  };
 };
 
 export const actions: Actions = {

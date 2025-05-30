@@ -1,7 +1,7 @@
 <script lang="ts">
   export let show = false;
   export let item: MenuItem;
-  export let categories: { _id: string; name: string }[];
+  export let categories: Category[] = [];
 
   let onClose = () => {
     show = !show;

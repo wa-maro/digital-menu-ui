@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Pencil, Plus, Trash } from "lucide-svelte";
   import MenuItemModalForm from "$lib/components/menu/MenuItemModalForm.svelte";
-  import { fail } from "@sveltejs/kit";
-  import { onMount } from "svelte";
 
-  export let data: LoadResult<MenuItem>;
-  let items: MenuItem[] = data.data;
+  export let data;
+
+  let items: MenuItem[] = data.items || [];
+  let categories: Category[] = data.categories || [];
 
   let showModal = false;
 
@@ -26,42 +26,12 @@
     },
     price: 0.0,
   };
-  $: categories = [{ _id: "", name: "" }];
-
-  const getCategories = async () => {
-    const token = data.user.token;
-    try {
-      const res = await fetch(`https://q5jnkw-3000.csb.app/menu/categories`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) {
-        const error = res.text();
-        return fail(400, { error: error || "Request Failed" });
-      }
-
-      const data: Category[] = await res.json();
-
-      categories = data.map((c: Category) => {
-        return {
-          _id: c._id,
-          name: c.name,
-        };
-      });
-    } catch (error) {}
-  };
 
   $: editMenuItem = (data: MenuItem) => {
     openModal();
 
     item = data;
   };
-
-  onMount(async () => {
-    await getCategories();
-  });
 </script>
 
 <div class="p-4">
