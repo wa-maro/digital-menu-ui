@@ -39,7 +39,7 @@
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
     <button
       on:click={openModal}
-      class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer flex items-center gap-2"
+      class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
     >
       <Plus size={16} />
       Add Item
@@ -55,11 +55,13 @@
           class="w-16 h-16 rounded overflow-hidden bg-gray-100 flex items-center justify-center"
         >
           {#if item.imageUrl}
-            <img
-              src={item.imageUrl}
-              alt={item.name}
-              class="w-full h-full object-cover"
-            />
+            <a href={`/admin/menu/items/${item._id}`}>
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                class="w-full h-full object-cover"
+              />
+            </a>
           {:else}
             <span class="text-gray-400 text-xs text-center px-2">No Image</span>
           {/if}
@@ -68,7 +70,9 @@
         <div class="flex-1">
           <div class="flex justify-between items-start">
             <h2 class="text-base font-medium text-gray-800 leading-snug">
-              {item.name}
+              <a href={`/admin/menu/items/${item._id}`}>
+                {item.name}
+              </a>
             </h2>
             <span class="text-sm text-gray-600 whitespace-nowrap"
               >TZS {item.price}</span
