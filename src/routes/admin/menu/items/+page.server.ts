@@ -29,8 +29,8 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const categoriesData = await catRes.json();
 
   return {
-    items: itemsData || [],
-    categories: categoriesData || [],
+    items: itemsData ?? [],
+    categories: categoriesData ?? [],
   };
 };
 

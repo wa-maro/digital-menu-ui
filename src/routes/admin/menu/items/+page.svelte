@@ -32,11 +32,57 @@
 
     item = data;
   };
+
+  let search = "";
+  let selectedCategory = "";
+  let sort: "asc" | "desc" = "asc";
+  let sortField: "name" | "price" = "name";
+  let filteredItems: MenuItem[] = items;
+
+  function toggleSort(field: "name" | "price") {
+    if (sortField === field) sort = sort === "asc" ? "desc" : "asc";
+    else {
+      sortField = field;
+      sort = "asc";
+    }
+    applyFilters();
+  }
+
+  function applyFilters() {
+    filteredItems = items
+      .filter((item) => {
+        const matchesSearch = item.name
+          .toLowerCase()
+          .includes(search.toLowerCase());
+        const matchesCategory =
+          !selectedCategory || item.category._id === selectedCategory;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (!sortField) return 0;
+
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sort === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return sort === "asc" ? aValue - bValue : bValue - aValue;
+        }
+
+        return 0;
+      });
+  }
 </script>
 
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
+
     <button
       on:click={openModal}
       class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
@@ -46,65 +92,128 @@
     </button>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {#each items as item}
-      <div
-        class="flex items-center gap-4 bg-white shadow-md rounded-xl p-4 transition hover:shadow-lg"
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-6 items-end mb-6 py-4">
+    <!-- Search Field -->
+    <div class="flex flex-col">
+      <label for="search" class="text-sm font-medium text-gray-700 mb-1"
+        >Search</label
       >
-        <div
-          class="w-16 h-16 rounded overflow-hidden bg-gray-100 flex items-center justify-center"
-        >
-          {#if item.imageUrl}
-            <a href={`/admin/menu/items/${item._id}`}>
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                class="w-full h-full object-cover"
-              />
-            </a>
-          {:else}
-            <span class="text-gray-400 text-xs text-center px-2">No Image</span>
-          {/if}
-        </div>
+      <input
+        id="search"
+        name="search"
+        type="text"
+        bind:value={search}
+        on:input={applyFilters}
+        placeholder="Search by name..."
+        class="w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+      />
+    </div>
 
-        <div class="flex-1">
-          <div class="flex justify-between items-start">
-            <h2 class="text-base font-medium text-gray-800 leading-snug">
-              <a href={`/admin/menu/items/${item._id}`}>
-                {item.name}
-              </a>
-            </h2>
-            <span class="text-sm text-gray-600 whitespace-nowrap"
-              >TZS {item.price}</span
-            >
-          </div>
-          <p class="text-sm text-gray-500">{item.category.name}</p>
-        </div>
-
-        <div class="flex gap-2 items-center ml-2">
-          <button
-            on:click={() => editMenuItem({ ...item, category: item.category })}
-            type="button"
-            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
-            aria-label="Edit"
-          >
-            <Pencil size={12} />
-          </button>
-
-          <form action="?/delete" method="post">
-            <input type="hidden" name="_id" bind:value={item._id} />
-            <button
-              type="submit"
-              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
-              aria-label="Delete"
-            >
-              <Trash size={12} />
-            </button>
-          </form>
-        </div>
-      </div>
-    {/each}
+    <!-- Category Filter -->
+    <div class="flex flex-col">
+      <label for="category" class="text-sm font-medium text-gray-700 mb-1"
+        >Category</label
+      >
+      <select
+        id="category"
+        name="category"
+        bind:value={selectedCategory}
+        on:change={applyFilters}
+        class="w-56 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+      >
+        <option value="">All Categories</option>
+        {#each categories as cat}
+          <option value={cat._id}>{cat.name}</option>
+        {/each}
+      </select>
+    </div>
   </div>
+
+  <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
+    <thead class="bg-gray-50 text-left text-sm text-gray-700">
+      <tr>
+        <th class="p-4">Image</th>
+        <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
+          >Name {#if sortField === "name"}
+            <span>{sort === "asc" ? "↑" : "↓"}</span>
+          {:else}
+            ↑
+          {/if}</th
+        >
+        <th class="p-4">Category </th>
+        <th class="p-4 cursor-pointer" on:click={() => toggleSort("price")}
+          >Price {#if sortField === "price"}
+            <span>{sort === "asc" ? "↑" : "↓"}</span>
+          {:else}
+            ↑
+          {/if}</th
+        >
+        <th class="p-4 text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
+      {#each filteredItems as item}
+        <tr class="hover:bg-gray-50 transition">
+          <td class="py-1 ps-4">
+            {#if item.imageUrl}
+              <a href={`/admin/menu/items/${item._id}`}>
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  class="w-16 h-16 object-cover rounded"
+                />
+              </a>
+            {:else}
+              <div
+                class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
+              >
+                No Image
+              </div>
+            {/if}
+          </td>
+
+          <td class="py-1 ps-4">
+            <a
+              href={`/admin/menu/items/${item._id}`}
+              class="font-medium hover:underline"
+            >
+              {item.name}
+            </a>
+          </td>
+
+          <td class="py-1 ps-4 text-gray-600">{item.category.name}</td>
+
+          <td class="py-1 ps-4 whitespace-nowrap">TZS {item.price}</td>
+
+          <td class="py-1 ps-4 text-center">
+            <div class="flex justify-center gap-2">
+              <button
+                on:click={() =>
+                  editMenuItem({ ...item, category: item.category })}
+                type="button"
+                class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
+                aria-label="Edit"
+              >
+                <Pencil size={12} />
+              </button>
+
+              <form action="?/delete" method="post">
+                <input type="hidden" name="_id" bind:value={item._id} />
+                <button
+                  type="submit"
+                  class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                  aria-label="Delete"
+                >
+                  <Trash size={12} />
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
 
   <MenuItemModalForm bind:show={showModal} bind:item bind:categories />
 </div>
