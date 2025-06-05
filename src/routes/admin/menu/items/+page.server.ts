@@ -45,13 +45,11 @@ export const actions: Actions = {
     const imageUrl = formData.get("imageUrl")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
 
-    const token = cookies.get("token");
-
     const res = await fetch(`${VITE_API_URL}/menu/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${cookies.get("token")}`,
       },
       body: JSON.stringify({
         name,
@@ -74,12 +72,11 @@ export const actions: Actions = {
   delete: async ({ fetch, cookies, request }) => {
     const formData = await request.formData();
     const _id = formData.get("_id")?.toString() || "";
-    const token = cookies.get("token");
 
     const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${cookies.get("token")}`,
       },
     });
 
@@ -102,19 +99,17 @@ export const actions: Actions = {
     const category = formData.get("category")?.toString() || "";
     const _id = formData.get("_id")?.toString() || "";
 
-    const token = cookies.get("token");
-
     const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${cookies.get("token")}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name: name ?? null,
         description: description ?? null,
         price: price ?? null,
-        available: available ?? null,
+        available: available,
         category: category ?? null,
         imageUrl: imageUrl ?? null,
       }),
