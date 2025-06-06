@@ -13,19 +13,7 @@
     showModal = true;
   };
 
-  $: item = {
-    _id: "",
-    name: "",
-    description: "",
-    imageUrl: "",
-    available: true,
-    category: {
-      _id: "",
-      name: "",
-      description: "",
-    },
-    price: 0.0,
-  };
+  let item: MenuItem;
 
   $: editMenuItem = (data: MenuItem) => {
     openModal();

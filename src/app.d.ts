@@ -23,7 +23,7 @@ declare global {
   }
 
   export interface Category {
-    _id: string;
+    _id?: string;
     name: string;
     description: string;
     createdAt?: string;
@@ -40,6 +40,13 @@ declare global {
     imageUrl: string;
     createdAt?: string;
     updatedAt?: string;
+  }
+
+  export interface CartItem {
+    _id: string;
+    name: string;
+    price: number;
+    quantity: number;
   }
 }
 
