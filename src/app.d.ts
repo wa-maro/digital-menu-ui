@@ -41,6 +41,13 @@ declare global {
     createdAt?: string;
     updatedAt?: string;
   }
+
+  export interface CartItem {
+    _id: string;
+    name: string;
+    price: number;
+    quantity: number;
+  }
 }
 
 export {};
