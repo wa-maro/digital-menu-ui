@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const cart = writable<CartItem[]>([
+export const cartStore = writable<CartItem[]>([
   {
     _id: "1a2b3c",
     name: "Wireless Mouse",

@@ -1,17 +1,21 @@
 <script lang="ts">
-  import { cart } from "$lib/stores/cart";
+  import { onMount } from "svelte";
+  import { cartStore } from "$lib/stores/cart";
+  import { sessionStore } from "$lib/stores/session";
 
-  // Mock user session (replace with your actual store)
-  const user = {
-    name: "Alex",
-    avatarUrl: "https://i.pravatar.cc/40?u=alex", // or default avatar
-    loggedIn: true, // toggle this to false to simulate logged out state
-  };
+  export let data: { customer: User | null };
+
+  // Set session on client side
+  onMount(() => {
+    sessionStore.set({
+      customer: data.customer,
+    });
+  });
 
   let mobileNavOpen = false;
   let avatarMenuOpen = false;
 
-  $: itemCount = $cart.reduce((sum, entry) => sum + entry.quantity, 0);
+  $: itemCount = $cartStore.reduce((sum, entry) => sum + entry.quantity, 0);
 
   const toggleMobileNav = () => (mobileNavOpen = !mobileNavOpen);
   const toggleAvatarMenu = () => (avatarMenuOpen = !avatarMenuOpen);
@@ -28,7 +32,7 @@
       <nav class="hidden md:flex items-center space-x-6">
         <a href="/" class="hover:text-[#065B8C]">Home</a>
         <a href="/menu" class="hover:text-[#065B8C]">Menu</a>
-        <a href="/orders" class="hover:text-[#065B8C]">My Orders</a>
+        <a href="/orders/history" class="hover:text-[#065B8C]">My Orders</a>
 
         <!-- Cart -->
         <a href="/cart" class="relative inline-block">
@@ -55,32 +59,46 @@
         </a>
 
         <!-- User -->
-        {#if user.loggedIn}
+        {#if $sessionStore.customer}
           <div class="relative">
-            <button on:click={toggleAvatarMenu} class="ml-4 focus:outline-none">
+            <button
+              on:click={toggleAvatarMenu}
+              class="ml-4 flex items-center justify-center w-8 h-8 focus:outline-none"
+            >
               <img
-                src={user.avatarUrl}
+                src={$sessionStore.customer.avatarUrl ??
+                  "https://i.pravatar.cc/40?u=alex"}
                 alt="User avatar"
-                class="w-8 h-8 rounded-full border-2 border-[#065B8C] hover:opacity-90"
+                class="w-8 h-8 rounded-full border-2 border-[#065B8C] hover:opacity-90 object-cover"
               />
             </button>
 
             {#if avatarMenuOpen}
               <div
-                class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50"
+                class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-50"
               >
                 <a href="/profile" class="block px-4 py-2 hover:bg-gray-100"
                   >Profile</a
                 >
-                <a href="auth/logout" class="block px-4 py-2 hover:bg-gray-100"
-                  >Logout</a
+
+                <form
+                  method="POST"
+                  action="/auth/logout"
+                  class="flex gap-4 mt-2"
                 >
+                  <button
+                    type="submit"
+                    class="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </form>
               </div>
             {/if}
           </div>
         {:else}
           <a
-            href="/login"
+            href="/auth/login"
             class="ml-4 text-sm px-3 py-1 border border-[#065B8C] rounded hover:bg-[#065B8C] hover:text-white"
           >
             Login
@@ -114,9 +132,9 @@
     {#if mobileNavOpen}
       <div class="md:hidden bg-white shadow-inner">
         <nav class="flex flex-col px-4 py-2 space-y-2">
-          <a href="/" class="py-1 border-b hover:text-[#065B8C]">Home</a>
-          <a href="/menu" class="py-1 border-b hover:text-[#065B8C]">Menu</a>
-          <a href="/orders" class="py-1 border-b hover:text-[#065B8C]"
+          <a href="/" class="py-1 hover:text-[#065B8C]">Home</a>
+          <a href="/menu" class="py-1 hover:text-[#065B8C]">Menu</a>
+          <a href="/orders/history" class="py-1 hover:text-[#065B8C]"
             >My Orders</a
           >
           <a
@@ -132,10 +150,8 @@
             {/if}
           </a>
 
-          {#if user.loggedIn}
-            <a href="/profile" class="py-1 border-b hover:text-[#065B8C]"
-              >Profile</a
-            >
+          {#if $sessionStore.customer}
+            <a href="/profile" class="py-1 hover:text-[#065B8C]">Profile</a>
             <a href="/logout" class="py-1 hover:text-[#065B8C]">Logout</a>
           {:else}
             <a href="/login" class="py-1 hover:text-[#065B8C]">Login</a>

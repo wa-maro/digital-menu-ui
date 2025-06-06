@@ -48,6 +48,13 @@ declare global {
     price: number;
     quantity: number;
   }
+
+  export interface User {
+    _id: string;
+    name: string;
+    email: string;
+    avatarUrl?: string;
+  }
 }
 
 export {};
