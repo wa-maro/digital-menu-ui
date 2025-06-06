@@ -23,7 +23,7 @@ declare global {
   }
 
   export interface Category {
-    _id: string;
+    _id?: string;
     name: string;
     description: string;
     createdAt?: string;
