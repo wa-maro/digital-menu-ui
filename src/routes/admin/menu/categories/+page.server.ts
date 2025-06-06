@@ -3,20 +3,24 @@ import type { PageServerLoad } from "./$types";
 import { VITE_API_URL } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
-  const res = await fetch(`${VITE_API_URL}/menu/categories`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("token")}`,
-    },
-  });
+  try {
+    const res = await fetch(`${VITE_API_URL}/menu/categories`, {
+      headers: {
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
+    });
 
-  if (!res.ok) {
-    const error = res.text();
+    if (!res.ok) {
+      const error = res.text();
+      return fail(400, { error: error || "Request Failed" });
+    }
+
+    const data: LoadResult<Category> = await res.json();
+
+    return { data: data ?? {} };
+  } catch (error) {
     return fail(400, { error: error || "Request Failed" });
   }
-
-  const data: LoadResult<Category> = await res.json();
-
-  return { data: data ?? {} };
 };
 
 export const actions: Actions = {
