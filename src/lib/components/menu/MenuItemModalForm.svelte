@@ -4,7 +4,7 @@
   export let categories: Category[] = [];
 
   let onClose = () => {
-    show = !show;
+    show = false;
     item = {
       _id: "",
       name: "",

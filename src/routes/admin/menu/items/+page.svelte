@@ -15,11 +15,10 @@
 
   let item: MenuItem;
 
-  $: editMenuItem = (data: MenuItem) => {
-    openModal();
-
+  function editMenuItem(data: MenuItem) {
     item = data;
-  };
+    openModal();
+  }
 
   let search = "";
   let selectedCategory = "";
