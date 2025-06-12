@@ -1,6 +1,5 @@
 <script lang="ts">
   import AddToCart from "$lib/components/AddToCart.svelte";
-  import { cartStore } from "$lib/stores/cart";
 
   export let data: {
     items: MenuItem[];
@@ -12,33 +11,6 @@
   $: filteredItems = selectedCategory
     ? items.filter((item) => item.category._id === selectedCategory?._id)
     : items;
-
-  let quantities: Record<string, number> = {};
-  function increment(itemId: string) {
-    if (!quantities[itemId]) quantities[itemId] = 1;
-    quantities[itemId]++;
-    quantities = { ...quantities };
-  }
-
-  function decrement(itemId: string) {
-    if (quantities[itemId] <= 1) quantities[itemId] = 1;
-
-    quantities[itemId]--;
-    quantities = { ...quantities };
-  }
-
-  function handleAddToCart(event: Event, item: MenuItem) {
-    event.preventDefault();
-
-    const cartItem: CartItem = {
-      ...item,
-      quantity: quantities[item._id] || 1,
-    };
-    cartStore.addToCart(cartItem);
-
-    quantities[item._id] = 1;
-    quantities = { ...quantities };
-  }
 </script>
 
 <div class="p-6 max-w-7xl mx-auto space-y-6">
