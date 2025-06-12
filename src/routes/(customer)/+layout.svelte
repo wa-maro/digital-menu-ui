@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { cartStore } from "$lib/stores/cart.store";
   import { sessionStore } from "$lib/stores/session.store";
+  import Header from "$lib/components/ui/Header.svelte";
 
   export let data: { customer: User | null };
 
@@ -10,159 +11,22 @@
     sessionStore.set({
       customer: data.customer,
     });
+
+    cartStore.loadCart();
   });
 
-  let mobileNavOpen = false;
-  let avatarMenuOpen = false;
-
-  const toggleMobileNav = () => (mobileNavOpen = !mobileNavOpen);
-  const toggleAvatarMenu = () => (avatarMenuOpen = !avatarMenuOpen);
+  // Watch for login event and reload cart from server
+  $: if ($sessionStore.customer) {
+    cartStore.loadCart();
+  }
 </script>
 
 <div class="min-h-screen flex flex-col text-gray-800">
   <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="/" class="text-xl font-bold text-[#065B8C]">Digital Menu</a>
-
-      <!-- Desktop Nav -->
-      <nav class="hidden md:flex items-center space-x-6">
-        <a href="/" class="hover:text-[#065B8C]">Home</a>
-        <a href="/menu" class="hover:text-[#065B8C]">Menu</a>
-        <a href="/orders/history" class="hover:text-[#065B8C]">My Orders</a>
-
-        <!-- Cart -->
-        <a href="/cart" class="relative inline-block">
-          <svg
-            class="w-6 h-6 text-gray-700"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m13-8l2 8M9 21h6"
-            />
-          </svg>
-
-          <span
-            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-          >
-            {$cartStore.length}
-          </span>
-        </a>
-
-        <!-- User -->
-        {#if $sessionStore.customer}
-          <div class="relative">
-            <button
-              on:click={toggleAvatarMenu}
-              class="ml-4 flex items-center justify-center w-8 h-8 focus:outline-none"
-            >
-              <img
-                src={$sessionStore.customer.avatarUrl ??
-                  "https://i.pravatar.cc/40?u=alex"}
-                alt="User avatar"
-                class="w-8 h-8 rounded-full border-2 border-[#065B8C] hover:opacity-90 object-cover"
-              />
-            </button>
-
-            {#if avatarMenuOpen}
-              <div
-                class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-50"
-              >
-                <a href="/profile" class="block px-4 py-2 hover:bg-gray-100"
-                  >Profile</a
-                >
-
-                <form
-                  method="POST"
-                  action="/auth/logout"
-                  class="flex gap-4 mt-2"
-                >
-                  <button
-                    type="submit"
-                    class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </form>
-              </div>
-            {/if}
-          </div>
-        {:else}
-          <a
-            href="/auth/login"
-            class="ml-4 text-sm px-3 py-1 border border-[#065B8C] rounded hover:bg-[#065B8C] hover:text-white"
-          >
-            Login
-          </a>
-        {/if}
-      </nav>
-
-      <!-- Mobile Hamburger -->
-      <button
-        class="md:hidden"
-        on:click={toggleMobileNav}
-        aria-label="Toggle Menu"
-      >
-        <svg
-          class="w-6 h-6 text-gray-700"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile Nav -->
-    {#if mobileNavOpen}
-      <div class="md:hidden bg-white shadow-inner">
-        <nav class="flex flex-col px-4 py-2 space-y-2">
-          <a href="/" class="py-1 hover:text-[#065B8C]">Home</a>
-          <a href="/menu" class="py-1 hover:text-[#065B8C]">Menu</a>
-          <a href="/orders/history" class="py-1 hover:text-[#065B8C]"
-            >My Orders</a
-          >
-          <a
-            href="/cart"
-            class="py-1 flex justify-between items-center hover:text-[#065B8C]"
-          >
-            Cart
-            <span
-              class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5"
-              >{$cartStore.length}</span
-            >
-          </a>
-
-          {#if $sessionStore.customer}
-            <a href="/profile" class="py-1 hover:text-[#065B8C]">Profile</a>
-            <a href="/logout" class="py-1 hover:text-[#065B8C]">Logout</a>
-          {:else}
-            <a href="/login" class="py-1 hover:text-[#065B8C]">Login</a>
-          {/if}
-        </nav>
-      </div>
-    {/if}
-  </header>
+  <Header />
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-7xl mx-auto px-4 py-6">
+  <main class="flex-grow">
     <slot />
   </main>
-
-  <!-- Footer -->
-  <footer class="text-center text-sm text-gray-500 py-4 shadow-sm">
-    &copy; {new Date().getFullYear()} My Restaurant. All rights reserved.
-  </footer>
 </div>

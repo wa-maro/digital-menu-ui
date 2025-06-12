@@ -6,7 +6,7 @@
   let { item } = data;
 </script>
 
-<div class="p-6 space-y-4">
+<div class="p-6 space-y-4 max-w-5xl mx-auto">
   <BackButton />
 
   {#if item}

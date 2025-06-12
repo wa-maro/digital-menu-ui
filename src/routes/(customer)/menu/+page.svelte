@@ -13,7 +13,7 @@
     : items;
 </script>
 
-<div class="p-6 max-w-7xl mx-auto space-y-6">
+<div class="p-6 max-w-5xl mx-auto space-y-6">
   <!-- Title -->
   <h1 class="text-4xl font-extrabold text-center text-gray-800 tracking-tight">
     Our Menu
