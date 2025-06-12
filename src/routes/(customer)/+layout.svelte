@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { cartStore } from "$lib/stores/cart";
-  import { sessionStore } from "$lib/stores/session";
+  import { cartStore } from "$lib/stores/cart.store";
+  import { sessionStore } from "$lib/stores/session.store";
 
   export let data: { customer: User | null };
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cartStore } from "$lib/stores/cart";
+  import { cartStore } from "$lib/stores/cart.store";
 
   export let item: MenuItem;
   let quantity = 1;

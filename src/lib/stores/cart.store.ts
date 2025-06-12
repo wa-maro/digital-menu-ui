@@ -1,7 +1,14 @@
+import {
+  getCartFromStorage,
+  saveCartToStorage,
+} from "$lib/storage/cart.storage";
 import { derived, writable } from "svelte/store";
 
 export const cartStore = (() => {
-  const { subscribe, update, set } = writable<CartItem[]>([]);
+  const { subscribe, update, set } = writable<CartItem[]>(getCartFromStorage());
+
+  // Persist to localStorage on every change
+  subscribe((items) => saveCartToStorage(items));
 
   return {
     subscribe,

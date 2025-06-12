@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { cartStore, cartTotal } from "$lib/stores/cart";
+  import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { fade, fly } from "svelte/transition";
   import { flip } from "svelte/animate";
 </script>
