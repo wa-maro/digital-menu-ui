@@ -1,12 +1,12 @@
 <script lang="ts">
+  import AddToCart from "$lib/components/AddToCart.svelte";
   import BackButton from "$lib/components/BackButton.svelte";
 
   export let data: { item: MenuItem };
   let { item } = data;
-  let quantity = 1;
 </script>
 
-<div class="max-w-3xl mx-auto p-6 space-y-6">
+<div class="p-6 space-y-4">
   <BackButton />
 
   {#if item}
@@ -18,10 +18,10 @@
     />
 
     <!-- Title + Price -->
-    <div class="flex items-center justify-between">
-      <h1 class="text-3xl font-bold text-gray-800">{item.name}</h1>
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold text-gray-800">{item.name}</h1>
       <div class="text-xl font-semibold text-[#065B8C]">
-        ${item.price.toFixed(2)}
+        TZS {item.price.toFixed(2)}
       </div>
     </div>
 
@@ -38,25 +38,11 @@
     <!-- Description -->
     <p class="text-gray-700 text-base leading-relaxed">{item.description}</p>
 
-    <!-- Quantity Selector -->
-    <div class="flex items-center gap-2">
-      <label for="quantity" class="font-medium">Qty:</label>
-      <input
-        type="number"
-        name="quantity"
-        min="1"
-        bind:value={quantity}
-        class="w-16 border rounded px-2 py-1"
-      />
-    </div>
-
-    <!-- Add to Cart Button -->
+    <!-- Add to Cart -->
     {#if item.available}
-      <button
-        class="bg-[#065B8C] hover:bg-[#044974] text-white px-5 py-2 rounded-lg font-medium transition cursor-pointer"
-      >
-        Add to Cart
-      </button>
+      <div class="p-4">
+        <AddToCart {item} />
+      </div>
     {/if}
   {:else}
     <p class="text-center p-6">Loading item details...</p>
