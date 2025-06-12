@@ -1,22 +1,60 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 
-export const cartStore = writable<CartItem[]>([
-  {
-    _id: "1a2b3c",
-    name: "Wireless Mouse",
-    price: 29.99,
-    quantity: 2,
-  },
-  {
-    _id: "4d5e6f",
-    name: "Mechanical Keyboard",
-    price: 89.99,
-    quantity: 1,
-  },
-  {
-    _id: "7g8h9i",
-    name: "HD Monitor",
-    price: 199.99,
-    quantity: 1,
-  },
-]);
+export const cartStore = (() => {
+  const { subscribe, update, set } = writable<CartItem[]>([]);
+
+  return {
+    subscribe,
+    set,
+    addToCart: async (item: CartItem) => {
+      update((items) => {
+        const existing = items.find((i) => i._id === item._id);
+        if (existing) {
+          return items.map((i) =>
+            i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
+          );
+        } else {
+          return [...items, { ...item }];
+        }
+      });
+    },
+
+    updateQuantity: async (cartId: string, quantity: number) => {
+      update((items) => {
+        const itemIndex = items.findIndex((item) => item._id === cartId);
+        if (itemIndex !== -1) {
+          items[itemIndex].quantity = quantity;
+        }
+        return [...items];
+      });
+    },
+
+    removeFromCart: (itemId: string) => {
+      update((items) => items.filter((item) => item._id !== itemId));
+    },
+
+    increment: (itemId: string) => {
+      update((items) =>
+        items.map((item) =>
+          item._id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+        )
+      );
+    },
+
+    decrement: (itemId: string) => {
+      update((items) =>
+        items.map((item) =>
+          item._id === itemId && item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+      );
+    },
+
+    clearCart: () => set([]),
+  };
+})();
+
+export const cartTotal = derived(cartStore, ($cartStore) =>
+  $cartStore.reduce((sum, item) => sum + item.price * item.quantity, 0)
+);

@@ -15,8 +15,6 @@
   let mobileNavOpen = false;
   let avatarMenuOpen = false;
 
-  $: itemCount = $cartStore.reduce((sum, entry) => sum + entry.quantity, 0);
-
   const toggleMobileNav = () => (mobileNavOpen = !mobileNavOpen);
   const toggleAvatarMenu = () => (avatarMenuOpen = !avatarMenuOpen);
 </script>
@@ -49,13 +47,12 @@
               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 8m13-8l2 8M9 21h6"
             />
           </svg>
-          {#if itemCount > 0}
-            <span
-              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-            >
-              {itemCount}
-            </span>
-          {/if}
+
+          <span
+            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+          >
+            {$cartStore.length}
+          </span>
         </a>
 
         <!-- User -->
@@ -142,12 +139,10 @@
             class="py-1 flex justify-between items-center hover:text-[#065B8C]"
           >
             Cart
-            {#if itemCount > 0}
-              <span
-                class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5"
-                >{itemCount}</span
-              >
-            {/if}
+            <span
+              class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5"
+              >{$cartStore.length}</span
+            >
           </a>
 
           {#if $sessionStore.customer}
