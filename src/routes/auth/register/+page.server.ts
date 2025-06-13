@@ -25,7 +25,11 @@ export const actions: Actions = {
     cookies.set("token", accessToken, { path: "/", httpOnly: true });
     cookies.set("role", role, { path: "/", httpOnly: true });
 
-    // Redirect to login page
-    throw redirect(303, "/admin/dashboard");
+    if (accessToken && role === "customer") throw redirect(303, "/menu");
+
+    if (accessToken && (role === "admin" || role === "manager"))
+      throw redirect(303, "/admin/dashboard");
+
+    throw redirect(303, "/");
   },
 };

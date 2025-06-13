@@ -7,7 +7,10 @@ export const POST: RequestHandler = async ({ cookies }) => {
   cookies.delete("token", { path: "/" });
   cookies.delete("role", { path: "/" });
 
-  if (role === "admin" || role === "admin") throw redirect(303, "/auth/login");
+  if (role === "manager" || role === "admin")
+    throw redirect(303, "/auth/login");
 
-  throw redirect(303, "/menu");
+  if (role === "customer") throw redirect(303, "/menu");
+
+  throw redirect(303, "/");
 };
