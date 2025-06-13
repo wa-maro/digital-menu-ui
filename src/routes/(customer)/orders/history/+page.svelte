@@ -1,1 +1,167 @@
-<h1>Order history</h1>
+<script lang="ts">
+  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import { orderStore } from "$lib/stores/orders.store";
+
+  onMount(() => {
+    orderStore.loadOrders();
+  });
+
+  function reorderNow(order: any) {
+    console.log("Reordering now:", order);
+  }
+
+  function loadToCart(order: Order) {
+    console.log("Load to cart:", order);
+    goto("/cart");
+  }
+
+  function formatDate(dateStr?: string) {
+    if (!dateStr) return "N/A";
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "N/A";
+
+    return d.toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+</script>
+
+<section class="p-6 max-w-3xl mx-auto">
+  <h1 class="text-3xl font-extrabold mb-8 text-gray-900">My Orders</h1>
+
+  {#if $orderStore.length > 0}
+    <div class="space-y-6">
+      {#each $orderStore as order (order._id)}
+        <article
+          class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-lg transition-shadow"
+          aria-label={`Order ${order._id}`}
+        >
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
+          >
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">Order ID</p>
+              <p class="font-mono font-semibold text-gray-900 break-all">
+                #{order._id}
+              </p>
+            </div>
+
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">Order Type</p>
+              <p class="font-medium">{order.type}</p>
+            </div>
+
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">Total</p>
+              <p class="font-medium">TZS {order.total.toFixed(2)}</p>
+            </div>
+
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">Status</p>
+              <p>
+                <span
+                  class={`inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${
+                    order.status === "Pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : order.status === "Completed"
+                        ? "bg-green-100 text-green-800"
+                        : order.status === "Cancelled"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {order.status}
+                </span>
+              </p>
+            </div>
+
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">Date</p>
+              <p class="font-medium">{formatDate(order.createdAt)}</p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
+              on:click={() => alert(`Viewing details for order ${order._id}`)}
+              aria-label={`View details of order ${order._id}`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12H9m6 0a6 6 0 11-12 0 6 6 0 0112 0z"
+                />
+              </svg>
+              View Details
+            </button>
+
+            <button
+              type="button"
+              class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
+              on:click={() => reorderNow(order)}
+              aria-label={`Reorder order ${order._id} now`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v6h6M20 20v-6h-6M4 14l16-4"
+                />
+              </svg>
+              Reorder Now
+            </button>
+
+            <button
+              type="button"
+              class="flex items-center gap-2 px-4 py-2 text-sm font-medium border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
+              on:click={() => loadToCart(order)}
+              aria-label={`Load order ${order._id} to cart`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 7M7 13l-2 4h12"
+                />
+              </svg>
+              Load to Cart
+            </button>
+          </div>
+        </article>
+      {/each}
+    </div>
+  {:else}
+    <p class="text-center text-gray-500 text-lg mt-20">
+      You have no orders yet.
+    </p>
+  {/if}
+</section>
