@@ -11,15 +11,18 @@
     showModal = true;
   };
 
-  $: _id = "";
-  $: name = "";
-  $: description = "";
-  $: editCategory = (id: string, iname: string, idescription: string) => {
+  $: category = {
+    _id: "",
+    name: "",
+    description: "",
+  };
+
+  $: editCategory = (id: string, name: string, description: string) => {
     openModal();
 
-    _id = id;
-    name = iname;
-    description = idescription;
+    category._id = id;
+    category.name = name;
+    category.description = description;
   };
 </script>
 
@@ -51,6 +54,7 @@
         <div class="flex gap-2 items-center">
           <button
             on:click={() =>
+              category._id &&
               editCategory(category._id, category.name, category.description)}
             type="button"
             class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
@@ -74,5 +78,5 @@
     {/each}
   </div>
 
-  <CategoryModal bind:show={showModal} bind:_id bind:name bind:description />
+  <CategoryModal bind:show={showModal} bind:category />
 </div>

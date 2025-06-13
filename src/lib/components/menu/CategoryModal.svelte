@@ -1,14 +1,13 @@
 <script lang="ts">
   export let show = false;
-  export let _id = "";
-  export let name = "";
-  export let description = "";
+
+  export let category: Category;
 
   let onClose = () => {
     show = !show;
-    _id = "";
-    name = "";
-    description = "";
+    category._id = "";
+    category.name = "";
+    category.description = "";
   };
 </script>
 
@@ -31,20 +30,20 @@
       </button>
 
       <h2 class="text-xl font-semibold mb-4">
-        {name && _id ? "Edit" : "Add"} Category
+        {category.name && category._id ? "Edit" : "Add"} Category
       </h2>
 
       <form
-        action={`${name && _id ? "?/update" : "?/create"}`}
+        action={`${category.name && category._id ? "?/update" : "?/create"}`}
         method="post"
         class="space-y-4"
       >
-        {#if _id}
+        {#if category._id}
           <div>
             <label for="_id" class="block mb-1 font-medium"></label>
             <input
               name="_id"
-              bind:value={_id}
+              bind:value={category._id}
               hidden
               required
               class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
@@ -55,7 +54,7 @@
           <label for="name" class="block mb-1 font-medium">Name</label>
           <input
             name="name"
-            bind:value={name}
+            bind:value={category.name}
             required
             class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
           />
@@ -67,7 +66,7 @@
           >
           <textarea
             name="description"
-            bind:value={description}
+            bind:value={category.description}
             class="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-[#044974]"
           ></textarea>
         </div>
