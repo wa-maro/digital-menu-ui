@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { sessionStore } from "$lib/stores/session.store";
   import { cartStore } from "$lib/stores/cart.store";
+  export let user;
 
   let mobileNavOpen = false;
   let avatarMenuOpen = false;
@@ -44,39 +44,15 @@
       </a>
 
       <!-- User -->
-      {#if $sessionStore.customer}
-        <div class="relative">
+      {#if user}
+        <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
           <button
-            on:click={toggleAvatarMenu}
-            class="ml-4 flex items-center justify-center w-8 h-8 focus:outline-none"
+            type="submit"
+            class="text-red-600 hover:underline text-sm cursor-pointer"
           >
-            <img
-              src={$sessionStore.customer.avatarUrl ??
-                "https://i.pravatar.cc/40?u=alex"}
-              alt="User avatar"
-              class="w-8 h-8 rounded-full border-2 border-[#065B8C] hover:opacity-90 object-cover"
-            />
+            Logout
           </button>
-
-          {#if avatarMenuOpen}
-            <div
-              class="absolute right-0 mt-2 w-40 bg-white border border-gray-300 rounded shadow-lg z-50"
-            >
-              <a href="/profile" class="block px-4 py-2 hover:bg-gray-100"
-                >Profile</a
-              >
-
-              <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
-                <button
-                  type="submit"
-                  class="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </form>
-            </div>
-          {/if}
-        </div>
+        </form>
       {:else}
         <a
           href="/auth/login"
@@ -128,7 +104,7 @@
           >
         </a>
 
-        {#if $sessionStore.customer}
+        {#if user}
           <a href="/profile" class="py-1 hover:text-[#065B8C]">Profile</a>
           <a href="/logout" class="py-1 hover:text-[#065B8C]">Logout</a>
         {:else}

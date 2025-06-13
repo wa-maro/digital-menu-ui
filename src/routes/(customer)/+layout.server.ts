@@ -1,23 +1,26 @@
+import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
-import { VITE_API_URL } from "$env/static/private";
 
-export const load: LayoutServerLoad = async ({ fetch, cookies }) => {
-  const token = cookies.get("token");
+const publicRoutePatterns = [
+  /^\/$/,
+  /^\/menu\/?$/,
+  /^\/menu\/items\/[^/]+$/,
+  /^\/cart\/?$/,
+];
 
-  if (!token) return { customer: null };
+export const load: LayoutServerLoad = async ({ locals, url }) => {
+  const user = locals.user;
+  const path = url.pathname;
 
-  try {
-    const res = await fetch(`${VITE_API_URL}/auth/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const isPublicRoute = publicRoutePatterns.some((pattern) =>
+    pattern.test(path)
+  );
 
-    if (!res.ok) return { customer: null };
-
-    const customer = await res.json();
-    return { customer };
-  } catch {
-    return { customer: null };
+  if (!user || user.role !== "customer") {
+    if (!isPublicRoute) throw redirect(303, "/");
   }
+
+  return {
+    user,
+  };
 };
