@@ -57,6 +57,20 @@ declare global {
     avatarUrl?: string;
     role: "customer" | "admin" | "manager";
   }
+
+  export type OrderType = "takeaway" | "delivery" | "dine-in";
+  export type PaymentMethod = "cash" | "mpesa";
+
+  export interface Order {
+    items: CartItem[];
+    type: OrderType;
+    paymentMethod: PaymentMethod;
+    orderDetails?: {
+      tableNumber?: string;
+      pickupTime?: string;
+      deliveryAddress?: string;
+    };
+  }
 }
 
 export {};
