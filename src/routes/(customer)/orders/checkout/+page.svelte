@@ -1,9 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
+  import { orderStore } from "$lib/stores/orders.store";
 
   let orderType: OrderType = "dine-in";
   let paymentMethod: PaymentMethod;
+  let status = "";
 
   // Dynamic fields
   let tableNumber = "";
@@ -12,8 +14,11 @@
 
   function confirmOrder() {
     const order: Order = {
+      _id: "",
+      total: $cartTotal,
       items: $cartStore,
       type: orderType,
+      status: status,
       paymentMethod: paymentMethod,
       orderDetails: {
         tableNumber: tableNumber,
@@ -23,7 +28,7 @@
     };
 
     // TODO: Send order to backend via form action (you will update this later)
-    console.log(order);
+    orderStore.addOrder(order);
 
     cartStore.set([]);
 

@@ -62,14 +62,19 @@ declare global {
   export type PaymentMethod = "cash" | "mpesa";
 
   export interface Order {
+    _id: string;
     items: CartItem[];
     type: OrderType;
     paymentMethod: PaymentMethod;
+    total: number;
+    status: string;
     orderDetails?: {
       tableNumber?: string;
       pickupTime?: string;
       deliveryAddress?: string;
     };
+    createdAt?: string;
+    updatedAt?: string;
   }
 }
 
