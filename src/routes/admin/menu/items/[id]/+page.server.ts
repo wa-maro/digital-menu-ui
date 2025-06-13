@@ -1,5 +1,5 @@
-import { fail, type Cookies } from "@sveltejs/kit";
-import type { PageServerLoad, RouteParams } from "../$types";
+import { fail } from "@sveltejs/kit";
+import type { PageServerLoad } from "../$types";
 import { VITE_API_URL } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
