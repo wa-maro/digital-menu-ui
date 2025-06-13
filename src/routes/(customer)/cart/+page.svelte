@@ -2,6 +2,15 @@
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { fade, fly } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { goto } from "$app/navigation";
+  import { userStore } from "$lib/stores/user.store";
+
+  function proceedToCheckout() {
+    if ($userStore.isAuthenticated) return goto("/orders/checkout");
+
+    const redirectUrl = encodeURIComponent("/orders/checkout");
+    goto(`/auth/login?redirect=${redirectUrl}`);
+  }
 </script>
 
 <div class="p-4 max-w-5xl mx-auto space-y-6">
@@ -92,6 +101,7 @@
         </div>
 
         <button
+          on:click={proceedToCheckout}
           class="w-full bg-[#065B8C] hover:bg-[#044974] text-white text-lg font-semibold py-3 rounded-xl shadow mt-4 transition-colors"
         >
           Proceed to Checkout
