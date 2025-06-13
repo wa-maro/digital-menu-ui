@@ -52,9 +52,10 @@ declare global {
 
   export interface User {
     _id: string;
-    name: string;
+    fullName: string;
     email: string;
     avatarUrl?: string;
+    role: "customer" | "admin" | "manager";
   }
 }
 
