@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cartStore } from "$lib/stores/cart.store";
-  export let user;
+  import { userStore } from "$lib/stores/user.store";
 
   let mobileNavOpen = false;
   let avatarMenuOpen = false;
@@ -44,7 +44,7 @@
       </a>
 
       <!-- User -->
-      {#if user}
+      {#if $userStore.user && $userStore.isAuthenticated}
         <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
           <button
             type="submit"
@@ -104,7 +104,7 @@
           >
         </a>
 
-        {#if user}
+        {#if $userStore.user && $userStore.isAuthenticated}
           <a href="/profile" class="py-1 hover:text-[#065B8C]">Profile</a>
           <a href="/logout" class="py-1 hover:text-[#065B8C]">Logout</a>
         {:else}
