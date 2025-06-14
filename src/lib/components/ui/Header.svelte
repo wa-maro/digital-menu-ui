@@ -105,10 +105,16 @@
         </a>
 
         {#if $userStore.user && $userStore.isAuthenticated}
-          <a href="/profile" class="py-1 hover:text-[#065B8C]">Profile</a>
-          <a href="/logout" class="py-1 hover:text-[#065B8C]">Logout</a>
+          <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
+            <button
+              type="submit"
+              class="text-red-600 hover:underline text-sm cursor-pointer py-1 hover:text-[#065B8C]"
+            >
+              Logout
+            </button>
+          </form>
         {:else}
-          <a href="/login" class="py-1 hover:text-[#065B8C]">Login</a>
+          <a href="/auth/login" class="py-1 hover:text-[#065B8C]"> Login </a>
         {/if}
       </nav>
     </div>

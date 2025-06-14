@@ -14,7 +14,9 @@
       takeaway, and delivery.
     </p>
     <div class="flex justify-center gap-4 flex-wrap">
-      <Button variant="primary">Browse Menu</Button>
+      <Button variant="primary">
+        <a href="/menu">Browse Menu</a>
+      </Button>
       <Button variant="outline">Get Started</Button>
     </div>
   </div>
