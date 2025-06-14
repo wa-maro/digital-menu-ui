@@ -1,11 +1,11 @@
 import type { PageServerLoad } from "./$types";
-import { VITE_API_URL } from "$env/static/private";
+import { VITE_API_URL_PUBLIC } from "$env/static/private";
 import { fail } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ fetch }) => {
   try {
     // fetch menu items
-    const itemsRes = await fetch(`${VITE_API_URL}/menu/items`);
+    const itemsRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/items`);
     if (!itemsRes.ok) {
       const error = await itemsRes.text();
       return fail(400, { error: error || "Request Failed" });
@@ -13,7 +13,7 @@ export const load: PageServerLoad = async ({ fetch }) => {
     const itemsData = await itemsRes.json();
 
     // Fetch categories
-    const catRes = await fetch(`${VITE_API_URL}/menu/categories`);
+    const catRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/categories`);
     if (!catRes.ok) {
       const error = await catRes.text();
       return fail(400, { error: error || "Request Failed" });

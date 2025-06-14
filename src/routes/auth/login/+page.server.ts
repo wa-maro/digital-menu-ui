@@ -1,5 +1,5 @@
+import { VITE_API_URL_PUBLIC } from "$env/static/private";
 import { fail, redirect, type Actions } from "@sveltejs/kit";
-import { VITE_API_URL } from "$env/static/private";
 
 export const actions: Actions = {
   default: async ({ request, cookies, fetch, url }) => {
@@ -7,7 +7,7 @@ export const actions: Actions = {
     const email = formData.get("email")?.toString() || "";
     const password = formData.get("password")?.toString() || "";
 
-    const res = await fetch(`${VITE_API_URL}/auth/login`, {
+    const res = await fetch(`${VITE_API_URL_PUBLIC}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

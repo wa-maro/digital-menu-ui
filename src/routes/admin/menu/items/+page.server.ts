@@ -1,11 +1,11 @@
 import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 import { redirect } from "@sveltejs/kit";
-import { VITE_API_URL } from "$env/static/private";
+import { VITE_API_URL_ADMIN, VITE_API_URL_PUBLIC } from "$env/static/private";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
   // fetch menu items
-  const itemsRes = await fetch(`${VITE_API_URL}/menu/items`, {
+  const itemsRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/items`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const itemsData = await itemsRes.json();
 
   // Fetch categories
-  const catRes = await fetch(`${VITE_API_URL}/menu/categories`, {
+  const catRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
@@ -45,7 +45,7 @@ export const actions: Actions = {
     const imageUrl = formData.get("imageUrl")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
 
-    const res = await fetch(`${VITE_API_URL}/menu/items`, {
+    const res = await fetch(`${VITE_API_URL_ADMIN}/menu/items`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export const actions: Actions = {
     const formData = await request.formData();
     const _id = formData.get("_id")?.toString() || "";
 
-    const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
+    const res = await fetch(`${VITE_API_URL_ADMIN}/menu/items/${_id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${cookies.get("token")}`,
@@ -99,7 +99,7 @@ export const actions: Actions = {
     const category = formData.get("category")?.toString() || "";
     const _id = formData.get("_id")?.toString() || "";
 
-    const res = await fetch(`${VITE_API_URL}/menu/items/${_id}`, {
+    const res = await fetch(`${VITE_API_URL_ADMIN}/menu/items/${_id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${cookies.get("token")}`,
