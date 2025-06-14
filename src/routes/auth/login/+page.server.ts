@@ -24,7 +24,9 @@ export const actions: Actions = {
     cookies.set("token", accessToken, { path: "/", httpOnly: true });
     cookies.set("role", role, { path: "/", httpOnly: true });
 
-    const redirectTo = url.searchParams.get("redirect");
+    const redirectTo =
+      url.searchParams.get("redirectTo") || url.searchParams.get("redirect");
+
     if (redirectTo) throw redirect(303, redirectTo);
 
     if (accessToken && role === "customer") throw redirect(303, "/menu");

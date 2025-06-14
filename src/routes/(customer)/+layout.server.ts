@@ -17,7 +17,8 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
   );
 
   if (!user || user.role !== "customer") {
-    if (!isPublicRoute) throw redirect(303, "/");
+    if (!isPublicRoute)
+      throw redirect(303, `/auth/login?redirectTo=${encodeURIComponent(path)}`);
   }
 
   return {
