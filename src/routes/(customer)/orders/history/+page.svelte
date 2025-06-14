@@ -2,17 +2,21 @@
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { orderStore } from "$lib/stores/orders.store";
+  import { cartStore } from "$lib/stores/cart.store";
 
   onMount(() => {
     orderStore.loadOrders();
   });
 
-  function reorderNow(order: any) {
-    console.log("Reordering now:", order);
+  function reorderNow(order: Order) {
+    cartStore.clearCart();
+    // cartStore.setItems(order.items); // Assuming order.items exists
+    goto("/orders/checkout");
   }
 
   function loadToCart(order: Order) {
-    console.log("Load to cart:", order);
+    cartStore.clearCart();
+    // cartStore.setItems(order.items);
     goto("/cart");
   }
 
@@ -36,14 +40,14 @@
 
   {#if $orderStore.length > 0}
     <div class="space-y-5">
-      {#each $orderStore as order, index (index)}
+      {#each $orderStore as order, i (i)}
         <!-- TODO: use order._id  instead -->
         <article
-          class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 hover:shadow-lg transition-shadow"
+          class="bg-white rounded-2xl shadow p-5 border border-gray-200 hover:shadow-lg transition-shadow"
           aria-label={`Order ${order._id}`}
         >
           <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4 text-gray-700"
+            class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
           >
             <div class="space-y-1">
               <p class="text-xs text-gray-500">Order ID</p>
@@ -56,7 +60,14 @@
 
             <div class="space-y-1">
               <p class="text-xs text-gray-500">Order Type</p>
-              <p class="font-medium text-sm">{order.type}</p>
+              <p class="font-medium text-sm capitalize">{order.type}</p>
+            </div>
+
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Payment Method</p>
+              <p class="font-medium text-sm capitalize">
+                {order.paymentMethod}
+              </p>
             </div>
 
             <div class="space-y-1">
@@ -87,15 +98,61 @@
               <p class="text-xs text-gray-500">Date</p>
               <p class="font-medium text-sm">{formatDate(order.createdAt)}</p>
             </div>
+
+            {#if order.orderDetails?.tableNumber}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Table Number</p>
+                <p class="font-medium text-sm">
+                  {order.orderDetails.tableNumber}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.orderDetails?.pickupTime}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Pickup Time</p>
+                <p class="font-medium text-sm">
+                  {order.orderDetails.pickupTime}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.orderDetails?.deliveryAddress}
+              <div class="space-y-1 md:col-span-2">
+                <p class="text-xs text-gray-500">Delivery Address</p>
+                <p class="font-medium text-sm">
+                  {order.orderDetails.deliveryAddress}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.orderDetails?.phoneNumber}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Phone</p>
+                <p class="font-medium text-sm">
+                  {order.orderDetails.phoneNumber}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.orderDetails?.selectedNetwork}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Network</p>
+                <p class="font-medium text-sm">
+                  {order.orderDetails.selectedNetwork}
+                </p>
+              </div>
+            {/if}
           </div>
 
-          <div class="mt-4 flex flex-wrap gap-2">
+          <div class="mt-5 flex flex-wrap gap-3">
             <button
               type="button"
-              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
               on:click={() => alert(`Viewing details for order ${order._id}`)}
               aria-label={`View details of order ${order._id}`}
             >
+              <!-- View Details Icon -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4"
@@ -115,10 +172,11 @@
 
             <button
               type="button"
-              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
               on:click={() => reorderNow(order)}
               aria-label={`Reorder order ${order._id} now`}
             >
+              <!-- Reorder Now Icon -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4"
@@ -138,10 +196,11 @@
 
             <button
               type="button"
-              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-blue-600 text-blue-600 rounded hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
               on:click={() => loadToCart(order)}
               aria-label={`Load order ${order._id} to cart`}
             >
+              <!-- Load to Cart Icon -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4"
