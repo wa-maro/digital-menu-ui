@@ -1,9 +1,13 @@
+import {
+  getOrdersFromStorage,
+  saveOrdersToStorage,
+} from "$lib/storage/orders.storage";
 import { writable } from "svelte/store";
 
-const storedOrders = JSON.parse(localStorage.getItem("userOrders") || "[]");
+export const createOrderStore = () => {
+  const { subscribe, update, set } = writable<Order[]>(getOrdersFromStorage());
 
-function createOrderStore() {
-  const { subscribe, update, set } = writable<Order[]>(storedOrders);
+  subscribe((items) => saveOrdersToStorage(items));
 
   return {
     subscribe,
@@ -27,6 +31,6 @@ function createOrderStore() {
       return localOrders;
     },
   };
-}
+};
 
 export const orderStore = createOrderStore();
