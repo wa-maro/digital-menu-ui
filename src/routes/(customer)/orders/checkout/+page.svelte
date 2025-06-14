@@ -5,6 +5,9 @@
 
   let orderType: OrderType = "dine-in";
   let paymentMethod: PaymentMethod;
+  let selectedNetwork: "Mpesa" | "tigopesa";
+  let phoneNumber = "";
+
   let status = "";
 
   // Dynamic fields
@@ -24,10 +27,13 @@
         tableNumber: tableNumber,
         pickupTime: pickupTime,
         deliveryAddress: deliveryAddress,
+        selectedNetwork:
+          paymentMethod === "lipa_namba" ? selectedNetwork : undefined,
+        phoneNumber: paymentMethod === "lipa_namba" ? phoneNumber : undefined,
       },
     };
 
-    // TODO: Send order to backend via form action (you will update this later)
+    // Send order to backend via form action (to be implemented)
     orderStore.addOrder(order);
 
     cartStore.set([]);
@@ -55,11 +61,11 @@
   </div>
 
   <!-- Order Section -->
-  <div class="lg:col-span-3 space-y-6">
+  <div class="lg:col-span-3 space-y-8">
     <!-- Order Type -->
-    <div class="bg-white rounded-2xl shadow p-6 space-y-4">
-      <h2 class="text-2xl font-bold border-b pb-3">Order Type</h2>
-      <div class="grid grid-cols-3 gap-3">
+    <div class="bg-white rounded-2xl shadow p-6 space-y-5">
+      <h2 class="text-2xl font-bold border-b pb-4 text-gray-800">Order Type</h2>
+      <div class="grid grid-cols-3 gap-4">
         {#each ["dine-in", "takeaway", "delivery"] as type}
           <label class="cursor-pointer group">
             <input
@@ -69,11 +75,13 @@
               value={type}
             />
             <div
-              class="px-3 py-2 rounded-lg border text-center transition-all
-              peer-checked:bg-blue-600 peer-checked:text-white
-              group-hover:bg-blue-50"
+              class="py-4 rounded-xl border text-center font-medium capitalize
+            transition-all duration-300
+            peer-checked:bg-blue-600 peer-checked:text-white
+            peer-checked:border-blue-600
+            group-hover:bg-blue-50 group-hover:border-blue-300"
             >
-              {type.charAt(0).toUpperCase() + type.slice(1)}
+              {type}
             </div>
           </label>
         {/each}
@@ -81,58 +89,62 @@
     </div>
 
     <!-- Dynamic Order Details -->
-    <div
-      class={`${!orderType ? "hidden" : ""} bg-white rounded-2xl shadow p-6 space-y-4`}
-    >
-      <h2 class="text-2xl font-bold border-b pb-3">Order Details</h2>
+    {#if orderType}
+      <div class="bg-white rounded-2xl shadow p-6 space-y-5">
+        <h2 class="text-2xl font-bold border-b pb-4 text-gray-800">
+          Order Details
+        </h2>
 
-      {#if orderType === "dine-in"}
-        <div class="space-y-2">
-          <label for="tableNumber" class="block text-gray-700 font-medium"
-            >Table Number</label
-          >
-          <input
-            name="tableNumber"
-            bind:value={tableNumber}
-            required
-            placeholder="Enter table number"
-            class="input w-full border rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      {:else if orderType === "takeaway"}
-        <div class="space-y-2">
-          <label for="pickupTime" class="block text-gray-700 font-medium"
-            >Pickup Time</label
-          >
-          <input
-            name="pickupTime"
-            type="time"
-            bind:value={pickupTime}
-            required
-            class="input w-full border rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      {:else if orderType === "delivery"}
-        <div class="space-y-2">
-          <label for="deliveryAddress" class="block text-gray-700 font-medium"
-            >Delivery Address</label
-          >
-          <input
-            name="deliveryAddress"
-            bind:value={deliveryAddress}
-            required
-            placeholder="Enter delivery address"
-            class="input w-full border rounded-lg px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      {/if}
-    </div>
+        {#if orderType === "dine-in"}
+          <div class="space-y-2">
+            <label for="tableNumber" class="block text-gray-700 font-medium"
+              >Table Number</label
+            >
+            <input
+              name="tableNumber"
+              bind:value={tableNumber}
+              required
+              placeholder="Enter table number"
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        {:else if orderType === "takeaway"}
+          <div class="space-y-2">
+            <label for="pickupTime" class="block text-gray-700 font-medium"
+              >Pickup Time</label
+            >
+            <input
+              name="pickupTime"
+              type="time"
+              bind:value={pickupTime}
+              required
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        {:else if orderType === "delivery"}
+          <div class="space-y-2">
+            <label for="deliveryAddress" class="block text-gray-700 font-medium"
+              >Delivery Address</label
+            >
+            <input
+              name="deliveryAddress"
+              bind:value={deliveryAddress}
+              required
+              placeholder="Enter delivery address"
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        {/if}
+      </div>
+    {/if}
 
     <!-- Payment Method -->
-    <div class="bg-white rounded-2xl shadow p-6 space-y-4">
-      <h2 class="text-2xl font-bold border-b pb-3">Payment Method</h2>
-      <div class="grid grid-cols-2 gap-3">
-        {#each ["cash", "mpesa"] as method}
+    <div class="bg-white rounded-2xl shadow p-6 space-y-5">
+      <h2 class="text-2xl font-bold border-b pb-4 text-gray-800">
+        Payment Method
+      </h2>
+      <div class="grid grid-cols-2 gap-4">
+        {#each ["cash", "lipa_namba"] as method}
           <label class="cursor-pointer group">
             <input
               type="radio"
@@ -141,22 +153,61 @@
               value={method}
             />
             <div
-              class="px-3 py-2 rounded-lg border text-center transition-all
-              peer-checked:bg-green-600 peer-checked:text-white
-              group-hover:bg-green-50"
+              class="py-4 rounded-xl border text-center font-medium transition-all duration-300
+            peer-checked:bg-green-600 peer-checked:text-white
+            peer-checked:border-green-600
+            group-hover:bg-green-50 group-hover:border-green-300"
             >
-              {method.toUpperCase()}
+              {method === "lipa_namba" ? "Lipa Namba" : method.toUpperCase()}
             </div>
           </label>
         {/each}
       </div>
+
+      {#if paymentMethod === "lipa_namba"}
+        <div class="mt-6 space-y-4">
+          <div class="space-y-2">
+            <label for="mtandao" class="block text-gray-700 font-medium"
+              >Select Mtandao</label
+            >
+            <select
+              name="mtandao"
+              bind:value={selectedNetwork}
+              required
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="" disabled selected>Select Mtandao</option>
+              <option value="MPESA">MPESA</option>
+              <option value="Tigopesa">Tigopesa</option>
+              <option value="AirtelMoney">Airtel Money</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label for="phoneNumber" class="block text-gray-700 font-medium"
+              >Phone Number</label
+            >
+            <input
+              name="phoneNumber"
+              type="tel"
+              bind:value={phoneNumber}
+              required
+              placeholder="Enter phone number (e.g. 07XXXXXXXX)"
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              pattern="0[67][0-9]{6}"
+            />
+          </div>
+        </div>
+      {/if}
     </div>
 
     <!-- Confirm Button -->
     <button
       on:click={confirmOrder}
-      class="w-full bg-blue-600 text-white py-2 rounded-2xl text-lg font-semibold hover:bg-blue-700 active:scale-95 transition disabled:opacity-50"
-      disabled={!orderType}
+      class="w-full bg-blue-600 text-white py-3 rounded-2xl text-lg font-semibold hover:bg-blue-700 active:scale-95 transition transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      disabled={!orderType ||
+        !paymentMethod ||
+        (paymentMethod === "lipa_namba" && (!selectedNetwork || !phoneNumber))}
     >
       Confirm Order
     </button>

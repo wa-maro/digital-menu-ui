@@ -59,7 +59,8 @@ declare global {
   }
 
   export type OrderType = "takeaway" | "delivery" | "dine-in";
-  export type PaymentMethod = "cash" | "mpesa";
+  export type PaymentMethod = "cash" | "lipa_namba";
+  export type SelectedNetwork = "Mpesa" | "tigopesa";
 
   export interface Order {
     _id: string;
@@ -69,6 +70,8 @@ declare global {
     total: number;
     status: string;
     orderDetails?: {
+      selectedNetwork?: SelectedNetwork;
+      phoneNumber?: string;
       tableNumber?: string;
       pickupTime?: string;
       deliveryAddress?: string;
