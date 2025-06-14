@@ -26,6 +26,8 @@ export const cartStore = (() => {
       });
     },
 
+    setItems: async (items: CartItem[]) => set([...items]),
+
     updateQuantity: async (cartId: string, quantity: number) => {
       update((items) => {
         const itemIndex = items.findIndex((item) => item._id === cartId);

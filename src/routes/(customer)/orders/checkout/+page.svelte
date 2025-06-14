@@ -1,35 +1,35 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
-  import { orderStore } from "$lib/stores/orders.store";
+  import { activeReorder, orderStore } from "$lib/stores/orders.store";
 
-  let orderType: OrderType = "dine-in";
-  let paymentMethod: PaymentMethod;
-  let selectedNetwork: "Mpesa" | "tigopesa";
-  let phoneNumber = "";
-
-  let status = "";
-
-  // Dynamic fields
-  let tableNumber = "";
-  let pickupTime = "";
-  let deliveryAddress = "";
+  let items = $activeReorder?.items ?? $cartStore;
+  let total = $activeReorder?.total ?? $cartTotal;
+  let orderType = $activeReorder?.type ?? "dine-in";
+  let paymentMethod = $activeReorder?.paymentMethod ?? "";
+  let status = $activeReorder?.status ?? "";
+  let selectedNetwork =
+    $activeReorder?.paymentDetails?.selectedNetwork ?? undefined;
+  let phoneNumber = $activeReorder?.paymentDetails?.phoneNumber ?? "";
+  let tableNumber = $activeReorder?.paymentDetails?.tableNumber ?? "";
+  let pickupTime = $activeReorder?.paymentDetails?.pickupTime ?? "";
+  let deliveryAddress = $activeReorder?.paymentDetails?.deliveryAddress ?? "";
 
   function confirmOrder() {
     const order: Order = {
       _id: "",
-      total: $cartTotal,
-      items: $cartStore,
+      items: items,
+      total: total,
       type: orderType,
       status: status,
       paymentMethod: paymentMethod,
-      orderDetails: {
+      paymentDetails: {
         tableNumber: tableNumber,
         pickupTime: pickupTime,
         deliveryAddress: deliveryAddress,
+        phoneNumber: paymentMethod === "lipa_namba" ? phoneNumber : undefined,
         selectedNetwork:
           paymentMethod === "lipa_namba" ? selectedNetwork : undefined,
-        phoneNumber: paymentMethod === "lipa_namba" ? phoneNumber : undefined,
       },
     };
 
@@ -49,7 +49,7 @@
       Cart Summary
     </h2>
     <div class="space-y-4">
-      {#each $cartStore as item}
+      {#each items as item}
         <div class="flex justify-between items-center text-gray-700">
           <span class="truncate">{item.name} x {item.quantity}</span>
           <span class="font-medium">Tsh {item.price * item.quantity}</span>
@@ -58,7 +58,7 @@
     </div>
     <div class="flex justify-between text-xl font-bold pt-6 border-t">
       <span>Total</span>
-      <span>Tsh {$cartTotal.toFixed(2)}</span>
+      <span>Tsh {total.toFixed(2)}</span>
     </div>
   </div>
 

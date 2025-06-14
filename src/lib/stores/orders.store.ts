@@ -33,4 +33,10 @@ export const createOrderStore = () => {
   };
 };
 
+export const activeReorder = writable<Order | null>(null);
+
+export const reorder = (order: Order) => {
+  activeReorder.set(order);
+};
+
 export const orderStore = createOrderStore();

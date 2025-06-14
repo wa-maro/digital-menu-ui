@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
-  import { orderStore } from "$lib/stores/orders.store";
+  import { orderStore, reorder } from "$lib/stores/orders.store";
   import { cartStore } from "$lib/stores/cart.store";
 
   onMount(() => {
@@ -9,14 +9,12 @@
   });
 
   function reorderNow(order: Order) {
-    cartStore.clearCart();
-    // cartStore.setItems(order.items); // Assuming order.items exists
+    reorder(order);
     goto("/orders/checkout");
   }
 
   function loadToCart(order: Order) {
-    cartStore.clearCart();
-    // cartStore.setItems(order.items);
+    cartStore.setItems(order.items);
     goto("/cart");
   }
 
@@ -101,47 +99,47 @@
               <p class="font-medium text-sm">{formatDate(order.createdAt)}</p>
             </div>
 
-            {#if order.orderDetails?.tableNumber}
+            {#if order.paymentDetails?.tableNumber}
               <div class="space-y-1">
                 <p class="text-xs text-gray-500">Table Number</p>
                 <p class="font-medium text-sm">
-                  {order.orderDetails.tableNumber}
+                  {order.paymentDetails.tableNumber}
                 </p>
               </div>
             {/if}
 
-            {#if order.orderDetails?.pickupTime}
+            {#if order.paymentDetails?.pickupTime}
               <div class="space-y-1">
                 <p class="text-xs text-gray-500">Pickup Time</p>
                 <p class="font-medium text-sm">
-                  {order.orderDetails.pickupTime}
+                  {order.paymentDetails.pickupTime}
                 </p>
               </div>
             {/if}
 
-            {#if order.orderDetails?.deliveryAddress}
+            {#if order.paymentDetails?.deliveryAddress}
               <div class="space-y-1 md:col-span-2">
                 <p class="text-xs text-gray-500">Delivery Address</p>
                 <p class="font-medium text-sm">
-                  {order.orderDetails.deliveryAddress}
+                  {order.paymentDetails.deliveryAddress}
                 </p>
               </div>
             {/if}
 
-            {#if order.orderDetails?.phoneNumber}
+            {#if order.paymentDetails?.phoneNumber}
               <div class="space-y-1">
                 <p class="text-xs text-gray-500">Phone</p>
                 <p class="font-medium text-sm">
-                  {order.orderDetails.phoneNumber}
+                  {order.paymentDetails.phoneNumber}
                 </p>
               </div>
             {/if}
 
-            {#if order.orderDetails?.selectedNetwork}
+            {#if order.paymentDetails?.selectedNetwork}
               <div class="space-y-1">
                 <p class="text-xs text-gray-500">Network</p>
                 <p class="font-medium text-sm">
-                  {order.orderDetails.selectedNetwork}
+                  {order.paymentDetails.selectedNetwork}
                 </p>
               </div>
             {/if}

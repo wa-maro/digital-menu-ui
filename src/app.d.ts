@@ -62,20 +62,22 @@ declare global {
   export type PaymentMethod = "cash" | "lipa_namba";
   export type SelectedNetwork = "Mpesa" | "tigopesa";
 
+  interface PaymentDetails {
+    selectedNetwork?: SelectedNetwork;
+    phoneNumber?: string;
+    tableNumber?: string;
+    pickupTime?: string;
+    deliveryAddress?: string;
+  }
+
   export interface Order {
     _id: string;
     items: CartItem[];
     type: OrderType;
-    paymentMethod: PaymentMethod;
+    paymentMethod: PaymentMethod | "";
     total: number;
     status: string;
-    orderDetails?: {
-      selectedNetwork?: SelectedNetwork;
-      phoneNumber?: string;
-      tableNumber?: string;
-      pickupTime?: string;
-      deliveryAddress?: string;
-    };
+    paymentDetails?: PaymentDetails;
     createdAt?: string;
     updatedAt?: string;
   }
