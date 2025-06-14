@@ -4,16 +4,16 @@
   export let item: MenuItem;
   let quantity = 1;
 
-  const decrement = () => {
-    if (quantity > 1) quantity--;
-  };
+  // const decrement = () => {
+  //   if (quantity > 1) quantity--;
+  // };
 
-  const increment = () => quantity++;
+  // const increment = () => quantity++;
 </script>
 
-<div class="p-4 space-y-4">
+<div>
   <!-- Quantity Selector -->
-  <div class="flex items-center gap-3">
+  <!-- <div class="flex items-center gap-3">
     <span class="text-sm font-medium">Qty:</span>
 
     <button
@@ -32,7 +32,7 @@
     >
       +
     </button>
-  </div>
+  </div> -->
 
   <!-- Add to Cart Button -->
   <button
