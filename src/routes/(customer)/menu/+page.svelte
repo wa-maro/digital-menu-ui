@@ -50,8 +50,8 @@
       </button>
     {/each}
   </div>
-
-  <!-- Menu Items -->
+  imageURL
+  <!-- Menu Items -->imageURL
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {#each filteredItems as item}
       <div
@@ -59,9 +59,9 @@
       >
         <div class="flex items-center gap-4 p-4">
           <!-- Item Image -->
-          {#if item.imageUrl}
+          {#if item.imageURL}
             <img
-              src={item.imageUrl || "https://via.placeholder.com/80"}
+              src={item.imageURL || "https://via.placeholder.com"}
               alt={item.name}
               class="w-20 h-20 object-cover rounded-lg flex-shrink-0"
             />

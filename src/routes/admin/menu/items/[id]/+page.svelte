@@ -23,9 +23,9 @@
   </div>
 
   <!-- Image -->
-  {#if item.imageUrl}
+  {#if item.imageURL}
     <img
-      src={item.imageUrl}
+      src={item.imageURL}
       alt={item.name}
       class="w-full h-64 object-cover rounded-lg shadow"
     />

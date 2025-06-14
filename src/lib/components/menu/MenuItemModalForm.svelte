@@ -9,7 +9,7 @@
       _id: "",
       name: "",
       description: "",
-      imageUrl: "",
+      imageURL: "",
       available: false,
       category: {
         _id: "",
@@ -123,13 +123,25 @@
           </div>
         </div>
 
-        <div>
-          <label for="imageUrl" class="block mb-1 font-medium">Image URL</label>
-          <input
-            name="imageUrl"
-            bind:value={item.imageUrl}
-            class="w-full border px-3 py-2 rounded"
-          />
+        <div class="flex gap-x-4">
+          {#if item.imageURL}
+            <img
+              src={item.imageURL}
+              alt={item.name}
+              class="w-16 h-16 object-cover rounded mt-2"
+            />
+          {/if}
+
+          <div class="flex-1">
+            <label for="imageURL" class="block mb-1 font-medium"
+              >Image URL</label
+            >
+            <input
+              name="imageURL"
+              bind:value={item.imageURL}
+              class="w-full border px-3 py-2 rounded"
+            />
+          </div>
         </div>
 
         <div class="flex justify-end">

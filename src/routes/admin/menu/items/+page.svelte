@@ -20,7 +20,7 @@
     price: 0,
     available: false,
     category: { _id: "", name: "", description: "" },
-    imageUrl: "",
+    imageURL: "",
   };
 
   $: editMenuItem = (data: MenuItem) => {
@@ -30,7 +30,7 @@
     item.price = data.price;
     item.available = data.available;
     item.category = { ...data.category } as Category;
-    item.imageUrl = data.imageUrl;
+    item.imageURL = data.imageURL;
 
     openModal();
   };
@@ -158,10 +158,10 @@
       {#each filteredItems as item}
         <tr class="hover:bg-gray-50 transition">
           <td class="py-1 ps-4">
-            {#if item.imageUrl}
+            {#if item.imageURL}
               <a href={`/admin/menu/items/${item._id}`}>
                 <img
-                  src={item.imageUrl}
+                  src={item.imageURL}
                   alt={item.name}
                   class="w-16 h-16 object-cover rounded"
                 />

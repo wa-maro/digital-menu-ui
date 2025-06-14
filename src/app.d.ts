@@ -37,7 +37,7 @@ declare global {
     price: number;
     available: boolean;
     category: Category;
-    imageUrl: string;
+    imageURL: string;
     createdAt?: string;
     updatedAt?: string;
   }
@@ -46,7 +46,7 @@ declare global {
     _id: string;
     name: string;
     price: number;
-    imageUrl?: string;
+    imageURL?: string;
     quantity: number;
   }
 

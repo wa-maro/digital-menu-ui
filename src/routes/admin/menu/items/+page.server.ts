@@ -42,7 +42,7 @@ export const actions: Actions = {
     const description = formData.get("description")?.toString() || "";
     const price = parseFloat(formData.get("price")?.toString() || "0");
     const available = formData.get("available")?.toString() === "true";
-    const imageUrl = formData.get("imageUrl")?.toString() || "";
+    const imageURL = formData.get("imageURL")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
 
     const res = await fetch(`${VITE_API_URL_ADMIN}/menu/items`, {
@@ -56,7 +56,7 @@ export const actions: Actions = {
         description,
         price,
         available,
-        imageUrl,
+        imageURL,
         category,
       }),
     });
@@ -95,7 +95,7 @@ export const actions: Actions = {
     const description = formData.get("description")?.toString() || "";
     const price = parseFloat(formData.get("price")?.toString() || "0");
     const available = formData.get("available")?.toString() === "true";
-    const imageUrl = formData.get("imageUrl")?.toString() || "";
+    const imageURL = formData.get("imageURL")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
     const _id = formData.get("_id")?.toString() || "";
 
@@ -111,7 +111,7 @@ export const actions: Actions = {
         price: price ?? null,
         available: available,
         category: category ?? null,
-        imageUrl: imageUrl ?? null,
+        imageURL: imageURL ?? null,
       }),
     });
 

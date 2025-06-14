@@ -20,7 +20,7 @@
     <div class="grid md:grid-cols-3 gap-6">
       <!-- Cart Items -->
       <div class="md:col-span-2 space-y-4">
-        {#each $cartStore as { _id, name, price, quantity, imageUrl } (_id)}
+        {#each $cartStore as { _id, name, price, quantity, imageURL } (_id)}
           <div
             in:fly={{ y: 20, duration: 300 }}
             out:fade={{ duration: 200 }}
@@ -29,7 +29,7 @@
           >
             <div class="flex items-center gap-4">
               <img
-                src={imageUrl}
+                src={imageURL}
                 alt={name}
                 class="w-20 h-20 object-cover rounded-xl shrink-0"
               />
