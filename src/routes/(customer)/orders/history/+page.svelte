@@ -36,7 +36,9 @@
 </script>
 
 <section class="p-6 max-w-4xl mx-auto">
-  <h1 class="text-3xl font-extrabold mb-8 text-gray-900">My Orders</h1>
+  <h1 class="text-3xl font-extrabold mb-8 text-gray-900 drop-shadow-sm">
+    My Orders
+  </h1>
 
   {#if $orderStore.length > 0}
     <div class="space-y-5">

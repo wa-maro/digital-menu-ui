@@ -40,9 +40,7 @@
 
     <!-- Add to Cart -->
     {#if item.available}
-      <div class="p-4">
-        <AddToCart {item} />
-      </div>
+      <AddToCart {item} />
     {/if}
   {:else}
     <p class="text-center p-6">Loading item details...</p>

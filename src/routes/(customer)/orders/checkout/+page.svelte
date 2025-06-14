@@ -45,7 +45,9 @@
 <section class="p-4 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-7 gap-6">
   <!-- Cart Summary -->
   <div class="lg:col-span-4 bg-white rounded-2xl shadow p-6 space-y-6">
-    <h2 class="text-2xl font-bold border-b pb-3">Cart Summary</h2>
+    <h2 class="text-2xl font-bold border-b pb-3 drop-shadow-sm">
+      Cart Summary
+    </h2>
     <div class="space-y-4">
       {#each $cartStore as item}
         <div class="flex justify-between items-center text-gray-700">

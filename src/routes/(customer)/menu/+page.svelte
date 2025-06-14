@@ -15,7 +15,9 @@
 
 <div class="p-6 max-w-5xl mx-auto space-y-6">
   <!-- Title -->
-  <h1 class="text-4xl font-extrabold text-center text-gray-800 tracking-tight">
+  <h1
+    class="text-4xl font-extrabold text-center text-gray-800 tracking-tight drop-shadow-sm"
+  >
     Our Menu
   </h1>
 
@@ -101,9 +103,7 @@
 
         <!-- Add to Cart -->
         {#if item.available}
-          <div class="p-4">
-            <AddToCart {item} />
-          </div>
+          <AddToCart {item} />
         {/if}
       </div>
     {:else}
