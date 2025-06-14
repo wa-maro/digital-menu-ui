@@ -31,41 +31,44 @@
   }
 </script>
 
-<section class="p-6 max-w-3xl mx-auto">
+<section class="p-6 max-w-4xl mx-auto">
   <h1 class="text-3xl font-extrabold mb-8 text-gray-900">My Orders</h1>
 
   {#if $orderStore.length > 0}
-    <div class="space-y-6">
-      {#each $orderStore as order (order._id)}
+    <div class="space-y-5">
+      {#each $orderStore as order, index (index)}
+        <!-- TODO: use order._id  instead -->
         <article
-          class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 hover:shadow-lg transition-shadow"
+          class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 hover:shadow-lg transition-shadow"
           aria-label={`Order ${order._id}`}
         >
           <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
+            class="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4 text-gray-700"
           >
-            <div class="space-y-2">
-              <p class="text-sm text-gray-500">Order ID</p>
-              <p class="font-mono font-semibold text-gray-900 break-all">
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Order ID</p>
+              <p
+                class="font-mono font-semibold text-gray-900 break-all text-sm"
+              >
                 #{order._id}
               </p>
             </div>
 
-            <div class="space-y-2">
-              <p class="text-sm text-gray-500">Order Type</p>
-              <p class="font-medium">{order.type}</p>
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Order Type</p>
+              <p class="font-medium text-sm">{order.type}</p>
             </div>
 
-            <div class="space-y-2">
-              <p class="text-sm text-gray-500">Total</p>
-              <p class="font-medium">TZS {order.total.toFixed(2)}</p>
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Total</p>
+              <p class="font-medium text-sm">TZS {order.total.toFixed(2)}</p>
             </div>
 
-            <div class="space-y-2">
-              <p class="text-sm text-gray-500">Status</p>
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Status</p>
               <p>
                 <span
-                  class={`inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${
+                  class={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide ${
                     order.status === "Pending"
                       ? "bg-yellow-100 text-yellow-800"
                       : order.status === "Completed"
@@ -80,16 +83,16 @@
               </p>
             </div>
 
-            <div class="space-y-2">
-              <p class="text-sm text-gray-500">Date</p>
-              <p class="font-medium">{formatDate(order.createdAt)}</p>
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Date</p>
+              <p class="font-medium text-sm">{formatDate(order.createdAt)}</p>
             </div>
           </div>
 
-          <div class="mt-6 flex flex-wrap gap-3">
+          <div class="mt-4 flex flex-wrap gap-2">
             <button
               type="button"
-              class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
+              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
               on:click={() => alert(`Viewing details for order ${order._id}`)}
               aria-label={`View details of order ${order._id}`}
             >
@@ -112,7 +115,7 @@
 
             <button
               type="button"
-              class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
+              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
               on:click={() => reorderNow(order)}
               aria-label={`Reorder order ${order._id} now`}
             >
@@ -135,7 +138,7 @@
 
             <button
               type="button"
-              class="flex items-center gap-2 px-4 py-2 text-sm font-medium border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
+              class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-blue-600 text-blue-600 rounded hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
               on:click={() => loadToCart(order)}
               aria-label={`Load order ${order._id} to cart`}
             >
