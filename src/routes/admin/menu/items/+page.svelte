@@ -13,12 +13,27 @@
     showModal = true;
   };
 
-  let item: MenuItem;
+  let item: MenuItem = {
+    _id: "",
+    name: "",
+    description: "",
+    price: 0,
+    available: false,
+    category: { _id: "", name: "", description: "" },
+    imageUrl: "",
+  };
 
-  function editMenuItem(data: MenuItem) {
-    item = data;
+  $: editMenuItem = (data: MenuItem) => {
+    item._id = data._id;
+    item.name = data.name;
+    item.description = data.description;
+    item.price = data.price;
+    item.available = data.available;
+    item.category = { ...data.category } as Category;
+    item.imageUrl = data.imageUrl;
+
     openModal();
-  }
+  };
 
   let search = "";
   let selectedCategory = "";
