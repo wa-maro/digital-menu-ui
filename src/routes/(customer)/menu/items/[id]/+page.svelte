@@ -1,9 +1,11 @@
 <script lang="ts">
   import AddToCart from "$lib/components/AddToCart.svelte";
   import BackButton from "$lib/components/BackButton.svelte";
+  import QuantitySelector from "$lib/components/QuantitySelector.svelte";
 
   export let data: { item: MenuItem };
   let { item } = data;
+  let quantity: number = 1;
 </script>
 
 <div class="p-6 space-y-4 max-w-5xl mx-auto">
@@ -40,7 +42,8 @@
 
     <!-- Add to Cart -->
     {#if item.available}
-      <AddToCart {item} />
+      <QuantitySelector bind:quantity />
+      <AddToCart {item} bind:quantity />
     {/if}
   {:else}
     <p class="text-center p-6">Loading item details...</p>

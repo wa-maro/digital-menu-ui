@@ -103,7 +103,9 @@
         </div>
         <!-- Add to Cart -->
         {#if item.available}
-          <div class="p-4"><AddToCart {item} /></div>
+          <div class="p-4">
+            <AddToCart {item} />
+          </div>
         {/if}
       </div>
     {:else}
