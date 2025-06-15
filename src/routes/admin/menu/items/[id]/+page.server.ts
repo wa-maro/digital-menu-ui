@@ -12,8 +12,7 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
       },
     });
     if (!res.ok) {
-      const error = await res.text();
-      return fail(400, { error: error || "Request Failed" });
+      return {};
     }
     const item = await res.json();
 

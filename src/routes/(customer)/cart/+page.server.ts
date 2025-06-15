@@ -1,6 +1,6 @@
 import { VITE_API_URL_CUSTOMER } from "$env/static/private";
 import type { PageServerLoad } from "./$types";
-import { fail, type Actions } from "@sveltejs/kit";
+import { type Actions } from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
   try {
@@ -11,8 +11,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     });
 
     if (!res.ok) {
-      const error = (await res.text()) || "Request Error";
-      return fail(400, { error });
+      return {};
     }
     const data = await res.json();
 

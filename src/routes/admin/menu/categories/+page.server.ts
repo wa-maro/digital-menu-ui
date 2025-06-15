@@ -60,10 +60,7 @@ export const actions: Actions = {
       body: JSON.stringify({ name, description }),
     });
 
-    if (!res.ok) {
-      const error = await res.text();
-      return fail(400, { error: error || "Request Failed" });
-    }
+    if (!res.ok) return {};
 
     throw redirect(303, "/admin/menu/categories");
   },

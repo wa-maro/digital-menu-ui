@@ -10,10 +10,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
       Authorization: `Bearer ${cookies.get("token")}`,
     },
   });
-  if (!itemsRes.ok) {
-    const error = await itemsRes.text();
-    return fail(400, { error: error || "Request Failed" });
-  }
+  if (!itemsRes.ok) return {};
   const itemsData = await itemsRes.json();
 
   // Fetch categories

@@ -9,8 +9,7 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
     // fetch menu items
     const itemsRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/items/${id}`);
     if (!itemsRes.ok) {
-      const error = await itemsRes.text();
-      return fail(400, { error: error || "Request Failed" });
+      return {};
     }
     const itemData = await itemsRes.json();
 

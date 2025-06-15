@@ -6,18 +6,14 @@ export const load: PageServerLoad = async ({ fetch }) => {
   try {
     // fetch menu items
     const itemsRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/items`);
-    if (!itemsRes.ok) {
-      const error = await itemsRes.text();
-      return fail(400, { error: error || "Request Failed" });
-    }
+    if (!itemsRes.ok) return {};
+
     const itemsData = await itemsRes.json();
 
     // Fetch categories
     const catRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/categories`);
-    if (!catRes.ok) {
-      const error = await catRes.text();
-      return fail(400, { error: error || "Request Failed" });
-    }
+    if (!catRes.ok) return {};
+
     const categoriesData = await catRes.json();
 
     return {
