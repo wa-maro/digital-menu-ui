@@ -1,9 +1,19 @@
 <script lang="ts">
-  import { cartStore, cartTotal } from "$lib/stores/cart.store";
-  import { fade, fly } from "svelte/transition";
-  import { flip } from "svelte/animate";
   import { goto } from "$app/navigation";
   import { userStore } from "$lib/stores/user.store";
+  import { cartStore, cartTotal } from "$lib/stores/cart.store";
+  import { getItemDetailsById } from "$lib/storage/cart.storage";
+  import { fade, fly } from "svelte/transition";
+  import { flip } from "svelte/animate";
+  import { enhance } from "$app/forms";
+
+  export let data: { data: UserCart; user: User };
+
+  let quantity: number = 1;
+
+  if (data.data) {
+    cartStore.set(data.data);
+  }
 
   function proceedToCheckout() {
     if ($userStore.isAuthenticated) return goto("/orders/checkout");
@@ -11,16 +21,25 @@
     const redirectUrl = encodeURIComponent("/orders/checkout");
     goto(`/auth/login?redirect=${redirectUrl}`);
   }
+
+  function increment(id: string) {
+    quantity += 1;
+    cartStore.updateItemQuantity(id, quantity);
+  }
+
+  function decrement(id: string) {
+    quantity -= 1;
+    cartStore.updateItemQuantity(id, quantity);
+  }
 </script>
 
 <div class="p-4 max-w-5xl mx-auto space-y-6">
-  <h1 class="text-3xl font-bold text-center text-gray-900">Your Cart</h1>
-
-  {#if $cartStore.length > 0}
+  {#if $cartStore.items.length > 0}
     <div class="grid md:grid-cols-3 gap-6">
       <!-- Cart Items -->
       <div class="md:col-span-2 space-y-4">
-        {#each $cartStore as { _id, name, price, quantity, imageURL } (_id)}
+        {#each $cartStore.items as cartItem (cartItem._id)}
+          {@const { item } = getItemDetailsById(cartItem._id)}
           <div
             in:fly={{ y: 20, duration: 300 }}
             out:fade={{ duration: 200 }}
@@ -29,28 +48,30 @@
           >
             <div class="flex items-center gap-4">
               <img
-                src={imageURL}
-                alt={name}
+                src={item.imageURL}
+                alt={item.name}
                 class="w-20 h-20 object-cover rounded-xl shrink-0"
               />
               <div>
-                <p class="font-semibold text-gray-800">{name}</p>
+                <p class="font-semibold text-gray-800">{item.name}</p>
                 <div class="flex items-center gap-2 mt-2">
                   <button
                     type="button"
-                    on:click={() => cartStore.decrement(_id)}
-                    class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center disabled:opacity-40"
-                    disabled={quantity <= 1}
+                    on:click={() => decrement(item._id)}
+                    class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center disabled:opacity-40 cursor-pointer"
+                    disabled={cartItem.quantity <= 1}
                   >
                     −
                   </button>
 
-                  <span class="w-8 text-center text-base">{quantity}</span>
+                  <span class="w-8 text-center text-base"
+                    >{cartItem.quantity}</span
+                  >
 
                   <button
                     type="button"
-                    on:click={() => cartStore.increment(_id)}
-                    class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center"
+                    on:click={() => increment(item._id)}
+                    class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -60,17 +81,18 @@
 
             <div class="flex flex-col items-end">
               <p class="text-lg font-semibold text-gray-900">
-                TZS {(price * quantity).toFixed(2)}
+                TZS {(cartItem.price * cartItem.quantity).toFixed(2)}
               </p>
               <form
+                use:enhance
                 method="post"
                 action="?/removeItem"
-                on:submit={() => cartStore.removeFromCart(_id)}
+                on:submit={() => cartStore.removeItem(item._id)}
               >
-                <input type="hidden" name="itemId" value={_id} />
+                <input type="hidden" name="itemId" value={item._id} />
                 <button
                   type="submit"
-                  class="text-sm text-red-500 hover:text-red-700 mt-2"
+                  class="text-sm text-red-500 hover:text-red-700 mt-2 cursor-pointer"
                 >
                   Remove
                 </button>
@@ -79,13 +101,20 @@
           </div>
         {/each}
 
-        <button
-          on:click={cartStore.clearCart}
-          class="w-full bg-red-500 hover:bg-red-600 text-white text-base font-semibold py-3 rounded-xl shadow mt-4 transition-colors"
-          disabled={$cartStore.length === 0}
+        <form
+          use:enhance
+          method="post"
+          action="?/clearCart"
+          on:submit={cartStore.clear}
         >
-          Clear Cart
-        </button>
+          <button
+            type="submit"
+            class="w-full bg-red-500 hover:bg-red-600 text-white text-base font-semibold py-3 rounded-xl shadow mt-4 transition-colors cursor-pointer"
+            disabled={$cartStore.items.length === 0}
+          >
+            Clear Cart
+          </button>
+        </form>
       </div>
 
       <!-- Checkout Summary -->
@@ -102,7 +131,7 @@
 
         <button
           on:click={proceedToCheckout}
-          class="w-full bg-[#065B8C] hover:bg-[#044974] text-white text-lg font-semibold py-3 rounded-xl shadow mt-4 transition-colors"
+          class="w-full bg-[#065B8C] hover:bg-[#044974] text-white text-lg font-semibold py-3 rounded-xl shadow mt-4 transition-colors cursor-pointer"
         >
           Proceed to Checkout
         </button>

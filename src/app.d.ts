@@ -81,6 +81,21 @@ declare global {
     createdAt?: string;
     updatedAt?: string;
   }
+
+  export interface CartItemPopulated {
+    _id: string;
+    item: MenuItem;
+    quantity: number;
+    price: number;
+  }
+
+  export interface UserCart {
+    _id: string;
+    user: string;
+    items: CartItemPopulated[];
+    createdAt?: string;
+    updatedAt?: string;
+  }
 }
 
 export {};

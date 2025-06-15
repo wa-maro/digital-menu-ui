@@ -1,69 +1,42 @@
 import {
-  getCartFromStorage,
-  saveCartToStorage,
+  getCartStorage,
+  initialCart,
+  saveCartStorage,
 } from "$lib/storage/cart.storage";
 import { derived, writable } from "svelte/store";
 
 export const cartStore = (() => {
-  const { subscribe, update, set } = writable<CartItem[]>(getCartFromStorage());
+  const { subscribe, update, set } = writable<UserCart>(getCartStorage());
 
   // Persist to localStorage on every change
-  subscribe((items) => saveCartToStorage(items));
+  subscribe((items) => saveCartStorage(items));
 
   return {
     subscribe,
     set,
-    addToCart: async (item: CartItem) => {
-      update((items) => {
-        const existing = items.find((i) => i._id === item._id);
-        if (existing) {
-          return items.map((i) =>
-            i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i
-          );
-        } else {
-          return [...items, { ...item }];
+
+    // Update item quantity
+    updateItemQuantity: (itemId: string, quantity: number) =>
+      update((cart) => {
+        const item = cart.items.find((i) => i.item._id === itemId);
+        if (item) {
+          item.quantity = quantity;
         }
-      });
-    },
+        return { ...cart };
+      }),
 
-    setItems: async (items: CartItem[]) => set([...items]),
+    // Remove item
+    removeItem: (itemId: string) =>
+      update((cart) => {
+        cart.items = cart.items.filter((i) => i.item._id !== itemId);
+        return { ...cart };
+      }),
 
-    updateQuantity: async (cartId: string, quantity: number) => {
-      update((items) => {
-        const itemIndex = items.findIndex((item) => item._id === cartId);
-        if (itemIndex !== -1) {
-          items[itemIndex].quantity = quantity;
-        }
-        return [...items];
-      });
-    },
-
-    removeFromCart: (itemId: string) => {
-      update((items) => items.filter((item) => item._id !== itemId));
-    },
-
-    increment: (itemId: string) => {
-      update((items) =>
-        items.map((item) =>
-          item._id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    },
-
-    decrement: (itemId: string) => {
-      update((items) =>
-        items.map((item) =>
-          item._id === itemId && item.quantity > 1
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-      );
-    },
-
-    clearCart: () => set([]),
+    // Clear the cart
+    clear: () => set(initialCart),
   };
 })();
 
-export const cartTotal = derived(cartStore, ($cartStore) =>
-  $cartStore.reduce((sum, item) => sum + item.price * item.quantity, 0)
+export const cartTotal = derived(cartStore, ($cart) =>
+  $cart.items.reduce((total, item) => total + item.price * item.quantity, 0)
 );
