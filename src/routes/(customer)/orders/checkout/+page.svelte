@@ -1,9 +1,10 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { initialCart } from "$lib/storage/cart.storage";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { activeReorder, orderStore } from "$lib/stores/orders.store";
 
-  let items = $activeReorder?.items ?? $cartStore;
+  let items = $activeReorder?.items ?? $cartStore.items;
   let total = $activeReorder?.total ?? $cartTotal;
   let orderType = $activeReorder?.type ?? "dine-in";
   let paymentMethod = $activeReorder?.paymentMethod ?? "";
@@ -36,7 +37,7 @@
     // Send order to backend via form action (to be implemented)
     orderStore.addOrder(order);
 
-    cartStore.set([]);
+    cartStore.set(initialCart);
 
     goto("/orders/order-success");
   }
@@ -49,10 +50,11 @@
       Cart Summary
     </h2>
     <div class="space-y-4">
-      {#each items as item}
+      {#each items as i}
+        <!-- {const details as item.i} -->
         <div class="flex justify-between items-center text-gray-700">
-          <span class="truncate">{item.name} x {item.quantity}</span>
-          <span class="font-medium">Tsh {item.price * item.quantity}</span>
+          <span class="truncate">{i.item.name} x {i.quantity}</span>
+          <span class="font-medium">Tsh {i.price * i.quantity}</span>
         </div>
       {/each}
     </div>

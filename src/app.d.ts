@@ -72,7 +72,7 @@ declare global {
 
   export interface Order {
     _id: string;
-    items: CartItem[];
+    items: CartItemPopulated[];
     type: OrderType;
     paymentMethod: PaymentMethod | "";
     total: number;
