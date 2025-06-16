@@ -18,9 +18,22 @@ export const cartStore = (() => {
     // Update item quantity
     updateItemQuantity: (itemId: string, quantity: number) =>
       update((cart) => {
-        const item = cart.items.find((i) => i.item._id === itemId);
-        if (item) {
-          item.quantity = quantity;
+        const updatedItems = cart.items.map((i) =>
+          i.item._id === itemId ? { ...i, quantity } : i
+        );
+        return { ...cart, items: updatedItems };
+      }),
+
+    // add item to a cart
+    addItem: (newItem: CartItemPopulated) =>
+      update((cart) => {
+        const existing = cart.items.find(
+          (i) => i.item._id === newItem.item._id
+        );
+        if (existing) {
+          existing.quantity += newItem.quantity;
+        } else {
+          cart.items.push(newItem);
         }
         return { ...cart };
       }),

@@ -5,14 +5,14 @@ export const initialCart = {
   _id: "",
   items: [],
   user: "",
-  createdAt: "",
-  updatedAt: "",
+  createdAt: undefined,
+  updatedAt: undefined,
 };
 
 // Read cart from localStorage
 export const getCartStorage = (): UserCart => {
   if (typeof localStorage !== "undefined") {
-    const stored = localStorage.getItem("my-cart");
+    const stored = localStorage.getItem("cart");
     return stored ? JSON.parse(stored) : initialCart;
   }
   return initialCart;
@@ -21,14 +21,9 @@ export const getCartStorage = (): UserCart => {
 // Write cart to localStorage
 export const saveCartStorage = (cart: UserCart) => {
   if (typeof localStorage !== "undefined") {
-    localStorage.setItem("my-cart", JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
 };
-
-export function getItemDetailsById2(itemId: string) {
-  const { items } = get(cartStore);
-  return items.find((p) => p._id === itemId);
-}
 
 export function getItemDetailsById(itemId: string) {
   const { items } = get(cartStore);

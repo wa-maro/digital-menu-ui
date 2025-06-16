@@ -1,15 +1,27 @@
 <script lang="ts">
+  import { cartStore } from "$lib/stores/cart.store";
+  import { userStore } from "$lib/stores/user.store";
+
   export let item: MenuItem;
   export let quantity: number = 1;
 
   async function addToCart() {
     try {
-      await fetch("/../cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ item, quantity }),
+      if ($userStore.isAuthenticated) {
+        await fetch("/../cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ item, quantity }),
+        });
+      }
+
+      cartStore.addItem({
+        _id: crypto.randomUUID(),
+        item,
+        quantity,
+        price: item.price,
       });
     } catch (err) {
       console.error("Error adding to cart:", err);
