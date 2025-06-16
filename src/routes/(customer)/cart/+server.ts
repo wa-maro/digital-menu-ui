@@ -42,3 +42,26 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
     status: 201,
   });
 };
+
+export const PATCH: RequestHandler = async ({ request, cookies }) => {
+  const { quantity, id } = await request.json();
+
+  try {
+    const res = await fetch(`${VITE_API_URL_CUSTOMER}/cart/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
+      body: JSON.stringify({ quantity: Number(quantity) }),
+    });
+
+    if (!res.ok) {
+      return new Response("Failed to update cart.", { status: 400 });
+    }
+
+    return new Response("Successful", { status: 200 });
+  } catch (error) {
+    return new Response("Error updating cart", { status: 500 });
+  }
+};

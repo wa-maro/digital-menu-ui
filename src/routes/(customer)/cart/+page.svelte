@@ -9,28 +9,35 @@
 
   export let data: { data: UserCart; user: User };
 
-  let quantity: number = 1;
-
   if (data.data) {
     cartStore.set(data.data);
   }
 
-  function proceedToCheckout() {
+  const proceedToCheckout = async () => {
     if ($userStore.isAuthenticated) return goto("/orders/checkout");
 
     const redirectUrl = encodeURIComponent("/orders/checkout");
     goto(`/auth/login?redirect=${redirectUrl}`);
-  }
+  };
 
-  function increment(id: string) {
-    quantity += 1;
-    cartStore.updateItemQuantity(id, quantity);
-  }
+  const updateQuantity = async (id: string, quantity: number) => {
+    if ($userStore.isAuthenticated) {
+      const res = await fetch(`/cart`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id, quantity: quantity }),
+      });
 
-  function decrement(id: string) {
-    quantity -= 1;
+      if (!res.ok) {
+        console.error("Failed to update quantity");
+        return;
+      }
+    }
+
     cartStore.updateItemQuantity(id, quantity);
-  }
+  };
 </script>
 
 <div class="p-4 max-w-5xl mx-auto space-y-6">
@@ -57,7 +64,8 @@
                 <div class="flex items-center gap-2 mt-2">
                   <button
                     type="button"
-                    on:click={() => decrement(item._id)}
+                    on:click={() =>
+                      updateQuantity(item._id, cartItem.quantity - 1)}
                     class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center disabled:opacity-40 cursor-pointer"
                     disabled={cartItem.quantity <= 1}
                   >
@@ -70,7 +78,8 @@
 
                   <button
                     type="button"
-                    on:click={() => increment(item._id)}
+                    on:click={() =>
+                      updateQuantity(item._id, cartItem.quantity + 1)}
                     class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-lg flex items-center justify-center cursor-pointer"
                   >
                     +
