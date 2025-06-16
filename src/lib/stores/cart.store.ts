@@ -38,6 +38,12 @@ export const cartStore = (() => {
         return { ...cart };
       }),
 
+    setItems: (items: CartItemPopulated[]) =>
+      update((cart) => ({
+        ...cart,
+        items,
+      })),
+
     // Remove item
     removeItem: (itemId: string) =>
       update((cart) => {
