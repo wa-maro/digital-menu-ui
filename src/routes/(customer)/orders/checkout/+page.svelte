@@ -1,46 +1,51 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
-  import { initialCart } from "$lib/storage/cart.storage";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
-  import { activeReorder, orderStore } from "$lib/stores/orders.store";
+  import { activeReorder } from "$lib/stores/orders.store";
+  import { formatCurrency } from "$lib/utils/currency_format";
 
-  let items = $activeReorder?.items ?? $cartStore.items;
-  let total = $activeReorder?.total ?? $cartTotal;
-  let orderType = $activeReorder?.type ?? "dine-in";
-  let paymentMethod = $activeReorder?.paymentMethod ?? "";
-  let status = $activeReorder?.status ?? "pending";
-  let selectedNetwork =
-    $activeReorder?.paymentDetails?.selectedNetwork ?? undefined;
-  let phoneNumber = $activeReorder?.paymentDetails?.phoneNumber ?? "";
-  let tableNumber = $activeReorder?.paymentDetails?.tableNumber ?? "";
-  let pickupTime = $activeReorder?.paymentDetails?.pickupTime ?? "";
-  let deliveryAddress = $activeReorder?.paymentDetails?.deliveryAddress ?? "";
+  $: orderForm = {
+    items: $activeReorder?.items ?? $cartStore.items,
+    total: $activeReorder?.total ?? $cartTotal,
+    type: $activeReorder?.type ?? "dine-in",
+    paymentMethod: $activeReorder?.paymentMethod ?? "cash",
+    status: $activeReorder?.status ?? "pending",
+    paymentDetails: {
+      selectedNetwork: $activeReorder?.paymentDetails?.selectedNetwork ?? null,
+      phoneNumber: $activeReorder?.paymentDetails?.phoneNumber ?? "",
+      tableNumber: $activeReorder?.paymentDetails?.tableNumber ?? "",
+      pickupTime: $activeReorder?.paymentDetails?.pickupTime ?? "",
+      deliveryAddress: $activeReorder?.paymentDetails?.deliveryAddress ?? "",
+    },
+  };
 
-  function confirmOrder() {
-    const order: Order = {
-      _id: "",
-      items: items,
-      total: total,
-      type: orderType,
-      status: status,
-      paymentMethod: paymentMethod,
-      paymentDetails: {
-        tableNumber: tableNumber,
-        pickupTime: pickupTime,
-        deliveryAddress: deliveryAddress,
-        phoneNumber: paymentMethod === "lipa_namba" ? phoneNumber : undefined,
-        selectedNetwork:
-          paymentMethod === "lipa_namba" ? selectedNetwork : undefined,
-      },
-    };
+  $: isOrderTypeValid = ["dine-in", "takeaway", "delivery"].includes(
+    orderForm.type
+  );
 
-    // Send order to backend via form action (to be implemented)
-    orderStore.addOrder(order);
+  $: isPaymentValid =
+    orderForm.paymentMethod === "cash" ||
+    (orderForm.paymentMethod === "lipa_namba" &&
+      orderForm.paymentDetails.selectedNetwork &&
+      orderForm.paymentDetails.phoneNumber);
 
-    cartStore.set(initialCart);
+  $: isOrderDetailsValid =
+    orderForm.type === "dine-in"
+      ? !!orderForm.paymentDetails.tableNumber
+      : orderForm.type === "takeaway"
+        ? !!orderForm.paymentDetails.pickupTime
+        : orderForm.type === "delivery"
+          ? !!orderForm.paymentDetails.deliveryAddress
+          : false;
 
-    goto("/orders/order-success");
-  }
+  $: canConfirm = isOrderTypeValid && isPaymentValid && isOrderDetailsValid;
+
+  const onSubmitHandler = async () => {
+    cartStore.clear();
+
+    await goto("/orders/order-success");
+  };
 </script>
 
 <section class="p-4 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-7 gap-6">
@@ -50,32 +55,48 @@
       Cart Summary
     </h2>
     <div class="space-y-4">
-      {#each items as i}
+      {#each orderForm.items as i}
         <!-- {const details as item.i} -->
         <div class="flex justify-between items-center text-gray-700">
           <span class="truncate">{i.item.name} x {i.quantity}</span>
-          <span class="font-medium">Tsh {i.price * i.quantity}</span>
+          <span class="font-medium"
+            >Tsh {formatCurrency(i.price * i.quantity)}</span
+          >
         </div>
       {/each}
     </div>
     <div class="flex justify-between text-xl font-bold pt-6 border-t">
       <span>Total</span>
-      <span>Tsh {total.toFixed(2)}</span>
+      <span>Tsh {orderForm.total.toFixed(2)}</span>
     </div>
   </div>
 
   <!-- Order Section -->
-  <div class="lg:col-span-3 space-y-8">
+  <form
+    action=""
+    method="post"
+    use:enhance={onSubmitHandler}
+    class="lg:col-span-3 space-y-8"
+  >
     <!-- Order Type -->
     <div class="bg-white rounded-2xl shadow p-6 space-y-5">
       <h2 class="text-2xl font-bold border-b pb-4 text-gray-800">Order Type</h2>
+
+      <input
+        type="hidden"
+        name="items"
+        value={JSON.stringify(orderForm.items)}
+      />
+      <input type="hidden" name="total" value={orderForm.total} />
+
       <div class="grid grid-cols-3 gap-4">
         {#each ["dine-in", "takeaway", "delivery"] as type}
           <label class="cursor-pointer group">
             <input
               type="radio"
+              name="type"
               class="peer hidden"
-              bind:group={orderType}
+              bind:group={orderForm.type}
               value={type}
             />
             <div
@@ -93,26 +114,26 @@
     </div>
 
     <!-- Dynamic Order Details -->
-    {#if orderType}
+    {#if orderForm.type}
       <div class="bg-white rounded-2xl shadow p-6 space-y-5">
         <h2 class="text-2xl font-bold border-b pb-4 text-gray-800">
           Order Details
         </h2>
 
-        {#if orderType === "dine-in"}
+        {#if orderForm.type === "dine-in"}
           <div class="space-y-2">
             <label for="tableNumber" class="block text-gray-700 font-medium"
               >Table Number</label
             >
             <input
               name="tableNumber"
-              bind:value={tableNumber}
+              bind:value={orderForm.paymentDetails.tableNumber}
               required
               placeholder="Enter table number"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-        {:else if orderType === "takeaway"}
+        {:else if orderForm.type === "takeaway"}
           <div class="space-y-2">
             <label for="pickupTime" class="block text-gray-700 font-medium"
               >Pickup Time</label
@@ -120,19 +141,19 @@
             <input
               name="pickupTime"
               type="time"
-              bind:value={pickupTime}
+              bind:value={orderForm.paymentDetails.pickupTime}
               required
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-        {:else if orderType === "delivery"}
+        {:else if orderForm.type === "delivery"}
           <div class="space-y-2">
             <label for="deliveryAddress" class="block text-gray-700 font-medium"
               >Delivery Address</label
             >
             <input
               name="deliveryAddress"
-              bind:value={deliveryAddress}
+              bind:value={orderForm.paymentDetails.deliveryAddress}
               required
               placeholder="Enter delivery address"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -152,8 +173,9 @@
           <label class="cursor-pointer group">
             <input
               type="radio"
+              name="paymentMethod"
               class="peer hidden"
-              bind:group={paymentMethod}
+              bind:group={orderForm.paymentMethod}
               value={method}
             />
             <div
@@ -168,19 +190,19 @@
         {/each}
       </div>
 
-      {#if paymentMethod === "lipa_namba"}
+      {#if orderForm.paymentMethod === "lipa_namba"}
         <div class="mt-6 space-y-4">
           <div class="space-y-2">
-            <label for="mtandao" class="block text-gray-700 font-medium"
-              >Select Mtandao</label
+            <label for="selectedNetwork" class="block text-gray-700 font-medium"
+              >Select Network</label
             >
             <select
-              name="mtandao"
-              bind:value={selectedNetwork}
+              name="selectedNetwork"
+              bind:value={orderForm.paymentDetails.selectedNetwork}
               required
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
-              <option value="" disabled selected>Select Mtandao</option>
+              <option value="" disabled selected>Select Network</option>
               <option value="MPESA">MPESA</option>
               <option value="Tigopesa">Tigopesa</option>
               <option value="AirtelMoney">Airtel Money</option>
@@ -194,11 +216,11 @@
             <input
               name="phoneNumber"
               type="tel"
-              bind:value={phoneNumber}
+              bind:value={orderForm.paymentDetails.phoneNumber}
               required
               placeholder="Enter phone number (e.g. 07XXXXXXXX)"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-              pattern="0[67][0-9]{6}"
+              pattern="^0[67][0-9]{8}$"
             />
           </div>
         </div>
@@ -207,13 +229,11 @@
 
     <!-- Confirm Button -->
     <button
-      on:click={confirmOrder}
+      type="submit"
       class="w-full bg-blue-600 text-white py-3 rounded-2xl text-lg font-semibold hover:bg-blue-700 active:scale-95 transition transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      disabled={!orderType ||
-        !paymentMethod ||
-        (paymentMethod === "lipa_namba" && (!selectedNetwork || !phoneNumber))}
+      disabled={!canConfirm}
     >
       Confirm Order
     </button>
-  </div>
+  </form>
 </section>
