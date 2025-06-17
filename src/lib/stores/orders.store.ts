@@ -11,21 +11,22 @@ export const createOrderStore = () => {
 
   return {
     subscribe,
+    set,
 
     addOrder: (order: Order) =>
       update((orders) => {
         const updated = [order, ...orders];
-        localStorage.setItem("userOrders", JSON.stringify(updated));
+        localStorage.setItem("orders", JSON.stringify(updated));
         return updated;
       }),
 
     loadOrder: (orderId: string) => {
-      const orders = JSON.parse(localStorage.getItem("userOrders") || "[]");
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
       return orders.find((order: Order) => order._id === orderId) || null;
     },
 
     loadOrders: async () => {
-      const storedOrders = localStorage.getItem("userOrders");
+      const storedOrders = localStorage.getItem("orders");
       const localOrders = JSON.parse(storedOrders || "[]");
       set(localOrders);
       return localOrders;

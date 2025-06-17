@@ -55,8 +55,14 @@ declare global {
     | "confirmed"
     | "preparing"
     | "ready"
+    | "out_for_delivery"
     | "delivered"
-    | "cancelled";
+    | "picked"
+    | "completed"
+    | "cancel_request"
+    | "cancelled"
+    | "rejected_cancel_request"
+    | "failed";
   export type OrderType = "takeaway" | "delivery" | "dine-in";
   export type PaymentMethod = "cash" | "lipa_namba";
   export type SelectedNetwork = "Mpesa" | "tigopesa";
@@ -70,10 +76,10 @@ declare global {
   }
 
   export interface Order {
-    _id: string;
+    _id?: string;
     items: CartItemPopulated[];
     type: OrderType;
-    paymentMethod: PaymentMethod | "";
+    paymentMethod: PaymentMethod;
     total: number;
     status: OrderStatus;
     paymentDetails?: PaymentDetails;

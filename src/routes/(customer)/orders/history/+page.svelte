@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { goto } from "$app/navigation";
   import { orderStore, reorder } from "$lib/stores/orders.store";
   import { cartStore } from "$lib/stores/cart.store";
 
-  onMount(() => {
-    orderStore.loadOrders();
-  });
+  export let data;
+
+  orderStore.set(data.data);
 
   function reorderNow(order: Order) {
     reorder(order);
@@ -54,7 +53,7 @@
               <p
                 class="font-mono font-semibold text-gray-900 break-all text-sm"
               >
-                #{order._id}
+                {order._id}
               </p>
             </div>
 
@@ -80,11 +79,11 @@
               <p>
                 <span
                   class={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide ${
-                    order.status === "Pending"
+                    order.status === "pending"
                       ? "bg-yellow-100 text-yellow-800"
-                      : order.status === "Completed"
+                      : order.status === "completed"
                         ? "bg-green-100 text-green-800"
-                        : order.status === "Cancelled"
+                        : order.status === "cancelled"
                           ? "bg-red-100 text-red-800"
                           : "bg-gray-100 text-gray-700"
                   }`}
