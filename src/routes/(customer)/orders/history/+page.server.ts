@@ -17,9 +17,14 @@ export const load: PageServerLoad = async ({ cookies, fetch }) => {
     const data = await res.json();
 
     return {
+      success: true,
       data,
     };
   } catch (error) {
-    console.log(error);
+    console.error("Error loading orders:", error);
+    return {
+      success: false,
+      error: "Failed to load orders",
+    };
   }
 };

@@ -2,10 +2,11 @@
   import { goto } from "$app/navigation";
   import { orderStore, reorder } from "$lib/stores/orders.store";
   import { cartStore } from "$lib/stores/cart.store";
+  import { formatDate } from "$lib/utils/formatter";
 
-  export let data;
+  export let data: { data: Order[]; user: User };
 
-  orderStore.set(data.data);
+  if (data.data) orderStore.set(data.data);
 
   function reorderNow(order: Order) {
     reorder(order);
@@ -15,20 +16,6 @@
   function loadToCart(order: Order) {
     cartStore.setItems(order.items);
     goto("/cart");
-  }
-
-  function formatDate(dateStr?: string) {
-    if (!dateStr) return "N/A";
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return "N/A";
-
-    return d.toLocaleDateString(undefined, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
   }
 </script>
 

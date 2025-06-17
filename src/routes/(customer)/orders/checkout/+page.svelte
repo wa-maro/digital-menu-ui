@@ -3,7 +3,7 @@
   import { goto } from "$app/navigation";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { activeReorder } from "$lib/stores/orders.store";
-  import { formatCurrency } from "$lib/utils/currency_format";
+  import { formatCurrency } from "$lib/utils/formatter";
 
   $: orderForm = {
     items: $activeReorder?.items ?? $cartStore.items,
