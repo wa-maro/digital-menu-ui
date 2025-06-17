@@ -8,7 +8,7 @@
   let total = $activeReorder?.total ?? $cartTotal;
   let orderType = $activeReorder?.type ?? "dine-in";
   let paymentMethod = $activeReorder?.paymentMethod ?? "";
-  let status = $activeReorder?.status ?? "";
+  let status = $activeReorder?.status ?? "pending";
   let selectedNetwork =
     $activeReorder?.paymentDetails?.selectedNetwork ?? undefined;
   let phoneNumber = $activeReorder?.paymentDetails?.phoneNumber ?? "";

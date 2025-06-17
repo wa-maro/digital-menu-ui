@@ -42,14 +42,6 @@ declare global {
     updatedAt?: string;
   }
 
-  export interface CartItem {
-    _id: string;
-    name: string;
-    price: number;
-    imageURL?: string;
-    quantity: number;
-  }
-
   export interface User {
     _id: string;
     fullName: string;
@@ -58,6 +50,13 @@ declare global {
     role: "customer" | "admin" | "manager";
   }
 
+  export type OrderStatus =
+    | "pending"
+    | "confirmed"
+    | "preparing"
+    | "ready"
+    | "delivered"
+    | "cancelled";
   export type OrderType = "takeaway" | "delivery" | "dine-in";
   export type PaymentMethod = "cash" | "lipa_namba";
   export type SelectedNetwork = "Mpesa" | "tigopesa";
@@ -76,7 +75,7 @@ declare global {
     type: OrderType;
     paymentMethod: PaymentMethod | "";
     total: number;
-    status: string;
+    status: OrderStatus;
     paymentDetails?: PaymentDetails;
     createdAt?: string;
     updatedAt?: string;
