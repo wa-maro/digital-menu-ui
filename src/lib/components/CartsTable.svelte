@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { buildQuery } from "$lib/utils/query-builder";
+
   export let carts: UserCart[];
   export let page: number;
   export let search: string;
   export let sortBy: string;
   export let order: string;
   export let limit: number;
-  export let buildQuery: (params: Record<string, string | number>) => string;
 
   const cartTotal = (cart: UserCart) =>
     cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);

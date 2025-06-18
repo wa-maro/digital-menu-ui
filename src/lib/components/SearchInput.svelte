@@ -1,9 +1,10 @@
 <script lang="ts">
+  import { buildQuery } from "$lib/utils/query-builder";
+
   export let limit: number;
   export let search: string;
   export let sortBy: string;
   export let order: string;
-  export let buildQuery: (params: Record<string, string | number>) => string;
 </script>
 
 <div class="flex justify-between items-center mb-4">

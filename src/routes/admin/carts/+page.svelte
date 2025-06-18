@@ -13,12 +13,6 @@
   };
 
   const { carts, page, limit, search, sortBy, order } = data;
-
-  const buildQuery = (params: Record<string, string | number>) => {
-    const query = new URLSearchParams();
-    Object.entries(params).forEach(([key, val]) => query.set(key, String(val)));
-    return `?${query.toString()}`;
-  };
 </script>
 
 <div class="p-4">
@@ -26,17 +20,9 @@
     <h1 class="text-2xl font-bold text-[#044974]">Carts</h1>
   </div>
 
-  <SearchInput {limit} {search} {sortBy} {order} {buildQuery} />
+  <SearchInput {limit} {search} {sortBy} {order} />
 
-  <CartsTable {carts} {page} {limit} {search} {sortBy} {order} {buildQuery} />
+  <CartsTable {carts} {page} {limit} {search} {sortBy} {order} />
 
-  <Paginator
-    total={carts.length}
-    {page}
-    {limit}
-    {search}
-    {sortBy}
-    {order}
-    {buildQuery}
-  />
+  <Paginator total={carts.length} {page} {limit} {search} {sortBy} {order} />
 </div>
