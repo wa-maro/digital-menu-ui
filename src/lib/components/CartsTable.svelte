@@ -16,7 +16,7 @@
 </script>
 
 <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-  <thead class="bg-gray-100 text-gray-700 uppercase tracking-wider">
+  <thead class="bg-gray-100 text-lime-800 uppercase tracking-wider">
     <tr>
       <th class="px-4 py-3">Cart ID</th>
       <th class="px-4 py-3">User</th>
