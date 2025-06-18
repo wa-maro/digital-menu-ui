@@ -96,7 +96,7 @@ declare global {
 
   export interface UserCart {
     _id: string;
-    user: string;
+    user: any;
     items: CartItemPopulated[];
     createdAt?: string;
     updatedAt?: string;
