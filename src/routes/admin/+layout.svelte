@@ -1,6 +1,6 @@
 <script>
-  import Sidebar from "$lib/components/Sidebar.svelte";
-  import TopBar from "$lib/components/TopBar.svelte";
+  import Sidebar from "$lib/components/admin/Sidebar.svelte";
+  import TopBar from "$lib/components/admin/TopBar.svelte";
 </script>
 
 <TopBar />

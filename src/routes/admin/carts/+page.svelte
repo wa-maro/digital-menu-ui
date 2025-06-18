@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CartsTable from "$lib/components/CartsTable.svelte";
+  import CartsTable from "$lib/components/admin/carts/CartsTable.svelte";
   import Paginator from "$lib/components/Paginator.svelte";
   import SearchInput from "$lib/components/SearchInput.svelte";
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import OrdersTable from "$lib/components/OrdersTable.svelte";
+  import OrdersTable from "$lib/components/admin/orders/OrdersTable.svelte";
   import Paginator from "$lib/components/Paginator.svelte";
   import SearchInput from "$lib/components/SearchInput.svelte";
 

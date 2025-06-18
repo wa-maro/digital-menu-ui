@@ -1,6 +1,6 @@
 <script lang="ts">
+  import MenuItemModalForm from "$lib/components/admin/menu/MenuItemModalForm.svelte";
   import { Pencil, Plus, Trash } from "lucide-svelte";
-  import MenuItemModalForm from "$lib/components/menu/MenuItemModalForm.svelte";
 
   export let data;
 
