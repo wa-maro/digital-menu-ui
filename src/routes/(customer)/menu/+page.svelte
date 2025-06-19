@@ -1,5 +1,6 @@
 <script lang="ts">
   import AddToCart from "$lib/components/AddToCart.svelte";
+  import { notify } from "$lib/stores/notifications";
 
   export let data: {
     items: MenuItem[];
@@ -11,6 +12,8 @@
   $: filteredItems = selectedCategory
     ? items.filter((item) => item.category._id === selectedCategory?._id)
     : items;
+
+  notify("Menu Items loaded", "success");
 </script>
 
 <div class="p-6 max-w-5xl mx-auto space-y-6">
