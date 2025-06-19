@@ -1,9 +1,9 @@
 <script lang="ts">
   export let data;
-  const item: MenuItem = data.item;
+  const item: MenuItem = data.data;
 </script>
 
-<div class="max-w-3xl mx-auto p-6 space-y-6">
+<div class="max-w-4xl mx-auto space-y-6">
   <!-- Back Button -->
   <div class="pt-6">
     <a href="/admin/menu/items" class="text-sm text-gray-600 hover:underline"
@@ -12,7 +12,7 @@
   </div>
 
   <!-- Header -->
-  <div class="flex justify-between items-center">
+  <div class="flex justify-between items-center w-3/4">
     <h1 class="text-2xl font-bold text-gray-800">{item.name}</h1>
     <a
       href={`/admin/menu/items/${item._id}`}
@@ -27,7 +27,7 @@
     <img
       src={item.imageURL}
       alt={item.name}
-      class="w-full h-64 object-cover rounded-lg shadow"
+      class="w-3/4 h-64 object-cover rounded-lg shadow"
     />
   {:else}
     <div>
