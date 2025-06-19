@@ -1,6 +1,7 @@
 <script lang="ts">
   import MenuItemModalForm from "$lib/components/admin/menu/MenuItemModalForm.svelte";
   import { Pencil, Plus, Trash } from "lucide-svelte";
+  import { onMount } from "svelte";
 
   export let data;
 
@@ -37,11 +38,11 @@
 
   let search = "";
   let selectedCategory = "";
-  let sort: "asc" | "desc" = "asc";
+  let sort: "asc" | "desc" = "desc";
   let sortField: "name" | "price" = "name";
   let filteredItems: MenuItem[] = items;
 
-  function toggleSort(field: "name" | "price") {
+  function toggleSort(field: "name" | "price" = "name") {
     if (sortField === field) sort = sort === "asc" ? "desc" : "asc";
     else {
       sortField = field;
@@ -79,6 +80,8 @@
         return 0;
       });
   }
+
+  onMount(() => toggleSort());
 </script>
 
 <div class="p-4">
@@ -139,16 +142,12 @@
         <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
           >Name {#if sortField === "name"}
             <span>{sort === "asc" ? "↑" : "↓"}</span>
-          {:else}
-            ↑
           {/if}</th
         >
         <th class="p-4">Category </th>
         <th class="p-4 cursor-pointer" on:click={() => toggleSort("price")}
           >Price {#if sortField === "price"}
             <span>{sort === "asc" ? "↑" : "↓"}</span>
-          {:else}
-            ↑
           {/if}</th
         >
         <th class="p-4 text-center">Actions</th>
