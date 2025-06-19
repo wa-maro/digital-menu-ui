@@ -60,7 +60,7 @@
     <thead class="bg-gray-100 text-gray-600 text-sm uppercase">
       <tr>
         <th class="px-4 py-2.5 text-left">Customer</th>
-        <th class="px-4 py-2.5 text-left">Total</th>
+        <th class="px-4 py-2.5 text-left">Total (TZS)</th>
         <th class="px-4 py-2.5 text-left">Status</th>
         <th class="px-4 py-2.5 text-left">Date</th>
       </tr>
@@ -72,7 +72,7 @@
           class="cursor-pointer hover:bg-gray-100 transition"
         >
           <td class="px-4 py-2.5">{order.customer}</td>
-          <td class="px-4 py-2.5">${Number(order.total).toFixed(2)}</td>
+          <td class="px-4 py-2.5">{Number(order.total).toFixed(2)}</td>
           <td class="px-4 py-2.5">
             <span
               class={`inline-block px-2 py-1 text-xs font-semibold rounded-full

@@ -1,8 +1,15 @@
 <script lang="ts">
+  import { ChevronLeft } from "lucide-svelte";
+
   export let form: any;
 </script>
 
-<div class="max-w-md mx-auto mt-20 bg-white p-8 rounded shadow">
+<div class="max-w-md mx-auto mt-10 px-8 flex items-center gap-1">
+  <ChevronLeft size={16} />
+  <a href="/">Go back home</a>
+</div>
+
+<div class="max-w-md mx-auto mt-20 bg-white px-8 rounded shadow">
   <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
   <form method="POST" class="space-y-4">
     <div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Receipt, DollarSign, Utensils, Users } from "lucide-svelte";
+  import { Receipt, Utensils, Users, HandCoinsIcon } from "lucide-svelte";
 
   const stats = [
     {
@@ -11,7 +11,7 @@
     {
       title: "Revenue",
       value: "TZS 5,450",
-      icon: DollarSign,
+      icon: HandCoinsIcon,
       color: "bg-green-100 text-green-800",
     },
     {
