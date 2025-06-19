@@ -14,7 +14,7 @@
 <div class="flex justify-center mt-4 space-x-2">
   {#each Array(totalPages) as _, i}
     <button
-      class={`px-3 py-1 rounded-lg border text-sm font-medium transition-colors duration-200
+      class={`px-3 py-1 rounded-lg border text-sm font-medium transition-colors duration-200 cursor-pointer
         ${
           page === i + 1
             ? "bg-amber-600 text-white border-amber-600 hover:bg-amber-700"

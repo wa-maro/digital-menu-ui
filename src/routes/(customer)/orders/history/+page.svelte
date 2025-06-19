@@ -131,10 +131,10 @@
             {/if}
           </div>
 
-          <div class="mt-5 flex flex-wrap gap-3">
+          <div class="mt-5 flex flex-wrap gap-5">
             <button
               type="button"
-              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 transition cursor-pointer"
               on:click={() => alert(`Viewing details for order ${order._id}`)}
               aria-label={`View details of order ${order._id}`}
             >
@@ -158,7 +158,7 @@
 
             <button
               type="button"
-              class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition cursor-pointer"
               on:click={() => reorderNow(order)}
               aria-label={`Reorder order ${order._id} now`}
             >
@@ -182,7 +182,7 @@
 
             <button
               type="button"
-              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition cursor-pointer"
               on:click={() => loadToCart(order)}
               aria-label={`Load order ${order._id} to cart`}
             >

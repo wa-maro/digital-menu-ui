@@ -41,7 +41,7 @@
     {/if}
     <button
       type="submit"
-      class="w-full bg-green-500 text-white rounded py-2 hover:bg-green-600"
+      class="w-full bg-green-500 text-white rounded py-2 hover:bg-green-600 cursor-pointer"
     >
       Register
     </button>

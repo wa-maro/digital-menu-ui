@@ -193,7 +193,7 @@
                 on:click={() =>
                   editMenuItem({ ...item, category: item.category })}
                 type="button"
-                class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
+                class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
                 aria-label="Edit"
               >
                 <Pencil size={12} />
@@ -203,7 +203,7 @@
                 <input type="hidden" name="_id" bind:value={item._id} />
                 <button
                   type="submit"
-                  class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                  class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
                   aria-label="Delete"
                 >
                   <Trash size={12} />

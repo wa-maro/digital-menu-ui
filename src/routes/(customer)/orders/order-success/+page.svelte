@@ -73,10 +73,19 @@
   {/if}
 
   <!-- Action Buttons -->
-  <div class="flex gap-4">
-    <button on:click={backToMenu} class="btn btn-primary">Back to Menu</button>
-    <button on:click={viewOrders} class="btn btn-secondary"
-      >View My Orders</button
+  <div class="flex flex-wrap gap-4 mt-6">
+    <button
+      on:click={backToMenu}
+      class="px-5 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
     >
+      Back to Menu
+    </button>
+
+    <button
+      on:click={viewOrders}
+      class="px-5 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 transition"
+    >
+      View My Orders
+    </button>
   </div>
 </section>

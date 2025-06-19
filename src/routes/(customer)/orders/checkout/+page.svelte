@@ -220,8 +220,8 @@
               required
               placeholder="Enter phone number (e.g. 07XXXXXXXX)"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <!-- pattern="^0[67][0-9]{8}$" -->
+            />
+            <!-- pattern="^0[67][0-9]{8}$" -->
           </div>
         </div>
       {/if}
@@ -230,7 +230,7 @@
     <!-- Confirm Button -->
     <button
       type="submit"
-      class="w-full bg-blue-600 text-white py-3 rounded-2xl text-lg font-semibold hover:bg-blue-700 active:scale-95 transition transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="w-full bg-blue-600 text-white py-3 rounded-2xl text-lg font-semibold hover:bg-blue-700 active:scale-95 transition transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       disabled={!canConfirm}
     >
       Confirm Order

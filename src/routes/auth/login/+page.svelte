@@ -9,7 +9,7 @@
   <a href="/">Go back home</a>
 </div>
 
-<div class="max-w-md mx-auto mt-20 bg-white px-8 rounded shadow">
+<div class="max-w-md mx-auto mt-20 bg-white px-8 pb-8 rounded shadow">
   <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
   <form method="POST" class="space-y-4">
     <div>
@@ -37,7 +37,7 @@
     {/if}
     <button
       type="submit"
-      class="w-full bg-blue-500 text-white rounded py-2 hover:bg-blue-600 curser-pointer"
+      class="w-full bg-blue-500 text-white rounded py-2 hover:bg-blue-600 cursor-pointer"
     >
       Login
     </button>
