@@ -15,6 +15,7 @@
       selectedNetwork: $activeReorder?.paymentDetails?.selectedNetwork ?? null,
       phoneNumber: $activeReorder?.paymentDetails?.phoneNumber ?? "",
       tableNumber: $activeReorder?.paymentDetails?.tableNumber ?? "",
+      contactPhone: $activeReorder?.paymentDetails?.contactPhone ?? "",
       pickupTime: $activeReorder?.paymentDetails?.pickupTime ?? "",
       deliveryAddress: $activeReorder?.paymentDetails?.deliveryAddress ?? "",
     },
@@ -148,6 +149,19 @@
           </div>
         {:else if orderForm.type === "delivery"}
           <div class="space-y-2">
+            <label for="contactPhone" class="block text-gray-700 font-medium"
+              >Contact Phone</label
+            >
+            <input
+              name="contactPhone"
+              bind:value={orderForm.paymentDetails.contactPhone}
+              required
+              placeholder="Enter phone number"
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div class="space-y-2">
             <label for="deliveryAddress" class="block text-gray-700 font-medium"
               >Delivery Address</label
             >
@@ -203,9 +217,9 @@
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               <option value="" disabled selected>Select Network</option>
-              <option value="MPESA">MPESA</option>
-              <option value="Tigopesa">Tigopesa</option>
-              <option value="AirtelMoney">Airtel Money</option>
+              <option value="mpesa">MPESA</option>
+              <option value="tigopesa">Tigopesa</option>
+              <option value="airtel-money">Airtel Money</option>
             </select>
           </div>
 

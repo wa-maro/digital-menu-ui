@@ -65,11 +65,12 @@ declare global {
     | "failed";
   export type OrderType = "takeaway" | "delivery" | "dine-in";
   export type PaymentMethod = "cash" | "lipa_namba";
-  export type SelectedNetwork = "Mpesa" | "tigopesa";
+  export type SelectedNetwork = "mpesa" | "tigopesa" | "airtel-money";
 
   interface PaymentDetails {
     selectedNetwork?: SelectedNetwork;
     phoneNumber?: string;
+    contactPhone?: string;
     tableNumber?: string;
     pickupTime?: string;
     deliveryAddress?: string;

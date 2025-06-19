@@ -17,6 +17,13 @@
     cartStore.setItems(order.items);
     goto("/cart");
   }
+
+  function maskPhone(phone: string): string {
+    if (!phone || phone.length < 5) return phone;
+    const start = phone.slice(0, 2);
+    const end = phone.slice(-3);
+    return `${start}*****${end}`;
+  }
 </script>
 
 <section class="p-6 max-w-4xl mx-auto">
@@ -112,20 +119,29 @@
               </div>
             {/if}
 
-            {#if order.paymentDetails?.phoneNumber}
-              <div class="space-y-1">
-                <p class="text-xs text-gray-500">Phone</p>
-                <p class="font-medium text-sm">
-                  {order.paymentDetails.phoneNumber}
-                </p>
-              </div>
-            {/if}
-
             {#if order.paymentDetails?.selectedNetwork}
               <div class="space-y-1">
                 <p class="text-xs text-gray-500">Network</p>
                 <p class="font-medium text-sm">
                   {order.paymentDetails.selectedNetwork}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.paymentDetails?.contactPhone}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Contact Phone</p>
+                <p class="font-medium text-sm">
+                  {order.paymentDetails.contactPhone}
+                </p>
+              </div>
+            {/if}
+
+            {#if order.paymentDetails?.phoneNumber && order.paymentMethod === "lipa_namba"}
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500">Payment Number</p>
+                <p class="font-medium text-sm">
+                  {maskPhone(order.paymentDetails.phoneNumber)}
                 </p>
               </div>
             {/if}

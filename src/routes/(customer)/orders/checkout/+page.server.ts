@@ -21,6 +21,7 @@ export const actions: Actions = {
       ?.toString() as SelectedNetwork;
     const phoneNumber = formData.get("phoneNumber")?.toString();
     const deliveryAddress = formData.get("deliveryAddress")?.toString();
+    const contactPhone = formData.get("contactPhone")?.toString();
 
     const orderItems = items.map((i: any) => ({
       itemId: i.item._id,
@@ -43,6 +44,7 @@ export const actions: Actions = {
           paymentDetails: {
             selectedNetwork,
             deliveryAddress,
+            contactPhone,
             phoneNumber,
             pickupTime,
             tableNumber,
