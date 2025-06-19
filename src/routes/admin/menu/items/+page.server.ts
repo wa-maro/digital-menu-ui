@@ -38,7 +38,7 @@ export const actions: Actions = {
     const name = formData.get("name")?.toString() || "";
     const description = formData.get("description")?.toString() || "";
     const price = parseFloat(formData.get("price")?.toString() || "0");
-    const available = formData.get("available")?.toString() === "true";
+    const available = formData.get("available")?.toString() === "on";
     const imageURL = formData.get("imageURL")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
 
@@ -91,7 +91,7 @@ export const actions: Actions = {
     const name = formData.get("name")?.toString() || "";
     const description = formData.get("description")?.toString() || "";
     const price = parseFloat(formData.get("price")?.toString() || "0");
-    const available = formData.get("available")?.toString() === "true";
+    const available = formData.get("available")?.toString() === "on";
     const imageURL = formData.get("imageURL")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
     const _id = formData.get("_id")?.toString() || "";

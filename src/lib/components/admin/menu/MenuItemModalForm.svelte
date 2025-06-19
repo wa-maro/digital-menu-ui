@@ -74,6 +74,7 @@
         <div class="mt-4 flex items-center space-x-2">
           <input
             type="checkbox"
+            name="available"
             id="available"
             bind:checked={item.available}
             class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"

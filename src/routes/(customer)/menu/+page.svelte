@@ -17,7 +17,7 @@
   <!-- Category Filters -->
   <div class="flex flex-wrap justify-center gap-2">
     <button
-      class="px-4 py-1 rounded-full text-sm border font-medium transition-all
+      class="px-4 py-1 rounded-full text-sm border font-medium transition-all cursor-pointer
              duration-200 ease-in-out
              hover:shadow-sm
              {selectedCategory === null
@@ -30,7 +30,7 @@
 
     {#each categories as category}
       <button
-        class="px-4 py-1 rounded-full text-sm border font-medium transition-all
+        class="px-4 py-1 rounded-full text-sm border font-medium transition-all cursor-pointer
                duration-200 ease-in-out
                hover:shadow-sm
                {selectedCategory === category
