@@ -69,6 +69,7 @@
 </script>
 
 <button
+  type="button"
   on:click={useMyLocation}
   class="mb-2 p-2 bg-blue-500 text-white rounded"
 >

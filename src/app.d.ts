@@ -78,13 +78,13 @@ declare global {
     contactPhone?: string;
     tableNumber?: string;
     pickupTime?: string;
-    deliveryAddress: string;
+    deliveryAddress?: string;
     deliveryLocation?: DeliveryLocation;
   }
 
   export interface Order {
     _id?: string;
-    user: any;
+    user?: any;
     items: CartItemPopulated[];
     type: OrderType;
     paymentMethod: PaymentMethod;

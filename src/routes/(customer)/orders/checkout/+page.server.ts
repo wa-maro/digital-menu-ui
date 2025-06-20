@@ -22,6 +22,10 @@ export const actions: Actions = {
     const phoneNumber = formData.get("phoneNumber")?.toString();
     const deliveryAddress = formData.get("deliveryAddress")?.toString();
     const contactPhone = formData.get("contactPhone")?.toString();
+    const rawLocation = formData.get("deliveryLocation");
+    const deliveryLocation = rawLocation
+      ? JSON.parse(rawLocation.toString())
+      : null;
 
     const orderItems = items.map((i: any) => ({
       itemId: i.item._id,
@@ -30,6 +34,21 @@ export const actions: Actions = {
       // customization: i.customization ?? null,
     }));
 
+    const order = {
+      items: orderItems,
+      type: type,
+      paymentMethod,
+      paymentDetails: {
+        selectedNetwork,
+        deliveryAddress,
+        deliveryLocation,
+        contactPhone,
+        phoneNumber,
+        pickupTime,
+        tableNumber,
+      },
+    };
+
     try {
       const res = await fetch(`${VITE_API_URL_CUSTOMER}/orders`, {
         method: "POST",
@@ -37,26 +56,18 @@ export const actions: Actions = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.get("token")}`,
         },
-        body: JSON.stringify({
-          items: orderItems,
-          type: type,
-          paymentMethod,
-          paymentDetails: {
-            selectedNetwork,
-            deliveryAddress,
-            contactPhone,
-            phoneNumber,
-            pickupTime,
-            tableNumber,
-          },
-        }),
+        body: JSON.stringify(order),
       });
 
       if (!res.ok) {
         const error = await res.text();
         return { success: false, error };
       }
+
+      throw redirect(303, "/orders/order-success");
     } catch (error) {
+      console.log(error);
+
       return {
         success: false,
         error: "Failed to place order. Please try again.",

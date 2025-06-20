@@ -43,7 +43,8 @@
       : orderForm.type === "takeaway"
         ? !!orderForm.paymentDetails.pickupTime
         : orderForm.type === "delivery"
-          ? !!orderForm.paymentDetails.deliveryAddress
+          ? !!orderForm.paymentDetails.deliveryAddress ||
+            !!orderForm.paymentDetails.deliveryLocation
           : false;
 
   $: canConfirm = isOrderTypeValid && isPaymentValid && isOrderDetailsValid;
@@ -52,15 +53,20 @@
     ? orderForm.paymentDetails.deliveryLocation.address
     : "";
 
-  const onSubmitHandler = async () => {
-    cartStore.clear();
-
-    await goto("/orders/order-success");
-  };
+  if (!useMap) {
+    selectedLocation = null;
+    orderForm.paymentDetails.deliveryLocation = null;
+  }
 
   function handleSelect(location: DeliveryLocation) {
     selectedLocation = location;
     orderForm.paymentDetails.deliveryLocation = { ...selectedLocation };
+  }
+
+  async function handleSubmit() {
+    cartStore.clear();
+
+    await goto("/orders/order-success");
   }
 </script>
 
@@ -91,7 +97,7 @@
   <form
     action=""
     method="post"
-    use:enhance={onSubmitHandler}
+    use:enhance={handleSubmit}
     class="lg:col-span-3 space-y-8"
   >
     <!-- Order Type -->
@@ -104,6 +110,12 @@
         value={JSON.stringify(orderForm.items)}
       />
       <input type="hidden" name="total" value={orderForm.total} />
+      <input
+        type="hidden"
+        name="paymentDetails"
+        value={JSON.stringify(orderForm.paymentDetails)}
+      />
+      <input type="hidden" name="status" value={orderForm.status} />
 
       <div class="grid grid-cols-3 gap-4">
         {#each ["dine-in", "takeaway", "delivery"] as type}
@@ -196,6 +208,13 @@
                 required
                 placeholder="Select address from map"
                 class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="hidden"
+                name="deliveryLocation"
+                value={JSON.stringify(
+                  orderForm.paymentDetails.deliveryLocation
+                )}
               />
 
               <MapSelector
