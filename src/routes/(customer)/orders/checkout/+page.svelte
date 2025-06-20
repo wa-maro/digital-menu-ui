@@ -1,9 +1,13 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
   import { goto } from "$app/navigation";
+  import { PUBLIC_MAPBOX_ACCESS_TOKEN } from "$env/static/public";
+  import MapSelector from "$lib/components/maps/MapSelector.svelte";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { activeReorder } from "$lib/stores/orders.store";
   import { formatCurrency } from "$lib/utils/formatter";
+  let selectedLocation: DeliveryLocation | null = null;
+  let useMap = true;
 
   $: orderForm = {
     items: $activeReorder?.items ?? $cartStore.items,
@@ -17,6 +21,8 @@
       tableNumber: $activeReorder?.paymentDetails?.tableNumber ?? "",
       contactPhone: $activeReorder?.paymentDetails?.contactPhone ?? "",
       pickupTime: $activeReorder?.paymentDetails?.pickupTime ?? "",
+      deliveryLocation:
+        $activeReorder?.paymentDetails?.deliveryLocation ?? null,
       deliveryAddress: $activeReorder?.paymentDetails?.deliveryAddress ?? "",
     },
   };
@@ -42,11 +48,20 @@
 
   $: canConfirm = isOrderTypeValid && isPaymentValid && isOrderDetailsValid;
 
+  $: address = orderForm.paymentDetails.deliveryLocation
+    ? orderForm.paymentDetails.deliveryLocation.address
+    : "";
+
   const onSubmitHandler = async () => {
     cartStore.clear();
 
     await goto("/orders/order-success");
   };
+
+  function handleSelect(location: DeliveryLocation) {
+    selectedLocation = location;
+    orderForm.paymentDetails.deliveryLocation = { ...selectedLocation };
+  }
 </script>
 
 <section class="p-4 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-7 gap-6">
@@ -163,15 +178,49 @@
 
           <div class="space-y-2">
             <label for="deliveryAddress" class="block text-gray-700 font-medium"
-              >Delivery Address</label
+              >Delivery Location</label
             >
-            <input
-              name="deliveryAddress"
-              bind:value={orderForm.paymentDetails.deliveryAddress}
-              required
-              placeholder="Enter delivery address"
-              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+
+            <button
+              type="button"
+              on:click={() => (useMap = !useMap)}
+              class="text-sm text-blue-600 underline"
+            >
+              {useMap ? "Switch to Manual Input" : "Use Map Instead"}
+            </button>
+
+            {#if useMap}
+              <input
+                bind:value={address}
+                readonly
+                required
+                placeholder="Select address from map"
+                class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
+              <MapSelector
+                token={PUBLIC_MAPBOX_ACCESS_TOKEN}
+                onSelect={handleSelect}
+              />
+            {:else}
+              <input
+                name="deliveryAddress"
+                bind:value={orderForm.paymentDetails.deliveryAddress}
+                required
+                class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter delivery address manually"
+              />
+            {/if}
+
+            {#if selectedLocation}
+              <div class="mt-4 p-2 border rounded bg-gray-50">
+                <h3 class="font-semibold">Selected Address:</h3>
+                <p>{selectedLocation.address}</p>
+                <p class="text-sm text-gray-600">
+                  Coordinates: {selectedLocation.lat}, {selectedLocation.lng}
+                </p>
+              </div>
+            {/if}
           </div>
         {/if}
       </div>

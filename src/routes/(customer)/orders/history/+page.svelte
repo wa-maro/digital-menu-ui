@@ -110,6 +110,15 @@
               </div>
             {/if}
 
+            {#if order.paymentDetails?.deliveryLocation?.address}
+              <div class="space-y-1 md:col-span-2">
+                <p class="text-xs text-gray-500">Delivery Address</p>
+                <p class="font-medium text-sm">
+                  {order.paymentDetails.deliveryLocation.address}
+                </p>
+              </div>
+            {/if}
+
             {#if order.paymentDetails?.deliveryAddress}
               <div class="space-y-1 md:col-span-2">
                 <p class="text-xs text-gray-500">Delivery Address</p>

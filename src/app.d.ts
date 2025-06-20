@@ -66,6 +66,11 @@ declare global {
   export type OrderType = "takeaway" | "delivery" | "dine-in";
   export type PaymentMethod = "cash" | "lipa_namba";
   export type SelectedNetwork = "mpesa" | "tigopesa" | "airtel-money";
+  export interface DeliveryLocation {
+    lng: number;
+    lat: number;
+    address: string;
+  }
 
   interface PaymentDetails {
     selectedNetwork?: SelectedNetwork;
@@ -73,7 +78,8 @@ declare global {
     contactPhone?: string;
     tableNumber?: string;
     pickupTime?: string;
-    deliveryAddress?: string;
+    deliveryAddress: string;
+    deliveryLocation?: DeliveryLocation;
   }
 
   export interface Order {
