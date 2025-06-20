@@ -9,43 +9,79 @@
   let { items, categories } = data;
 
   let selectedCategory: Category | null = null;
-  $: filteredItems = selectedCategory
-    ? items.filter((item) => item.category._id === selectedCategory?._id)
-    : items;
+  let searchTerm = "";
+  $: filteredItems = items.filter((item) => {
+    const matchesCategory = selectedCategory
+      ? item.category._id === selectedCategory._id
+      : true;
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   notify("Menu Items loaded", "success");
 </script>
 
 <div class="p-6 max-w-5xl mx-auto space-y-6">
-  <!-- Category Filters -->
-  <div class="flex flex-wrap justify-center gap-2">
-    <button
-      class="px-4 py-1 rounded-full text-sm border font-medium transition-all cursor-pointer
-             duration-200 ease-in-out
-             hover:shadow-sm
-             {selectedCategory === null
-        ? 'bg-[#065B8C] text-white border-[#065B8C]'
-        : 'bg-gray-100 text-gray-700 border-gray-300'}"
-      on:click={() => (selectedCategory = null)}
-    >
-      All
-    </button>
-
-    {#each categories as category}
-      <button
-        class="px-4 py-1 rounded-full text-sm border font-medium transition-all cursor-pointer
-               duration-200 ease-in-out
-               hover:shadow-sm
-               {selectedCategory === category
-          ? 'bg-[#065B8C] text-white border-[#065B8C]'
-          : 'bg-gray-100 text-gray-700 border-gray-300'}"
-        on:click={() =>
-          (selectedCategory = selectedCategory === category ? null : category)}
+  <!-- Search & Filters Wrapper -->
+  <div class="flex flex-col sm:items-center sm:justify-between gap-6 mb-12">
+    <!-- Search Input -->
+    <div class="relative w-full sm:max-w-lg">
+      <input
+        type="text"
+        placeholder="Search menu items..."
+        bind:value={searchTerm}
+        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-[#065B8C] focus:border-[#065B8C] transition-all duration-150 text-sm"
+      />
+      <!-- Search Icon -->
+      <svg
+        class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
       >
-        {category.name}
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+        />
+      </svg>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex flex-wrap gap-2 justify-start sm:justify-end">
+      <button
+        class={`px-4 py-1 rounded-full text-xs font-medium transition-all border
+        ${
+          selectedCategory === null
+            ? "bg-[#065B8C] text-white border-[#065B8C] shadow"
+            : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+        }`}
+        on:click={() => (selectedCategory = null)}
+      >
+        All
       </button>
-    {/each}
+
+      {#each categories as category}
+        <button
+          class={`px-4 py-1 rounded-full text-xs font-medium transition-all border
+          ${
+            selectedCategory === category
+              ? "bg-[#065B8C] text-white border-[#065B8C] shadow"
+              : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+          }`}
+          on:click={() =>
+            (selectedCategory =
+              selectedCategory === category ? null : category)}
+        >
+          {category.name}
+        </button>
+      {/each}
+    </div>
   </div>
+
   <!-- Menu Items -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     {#each filteredItems as item}
