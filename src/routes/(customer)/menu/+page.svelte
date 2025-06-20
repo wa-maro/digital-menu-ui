@@ -20,7 +20,7 @@
     return matchesCategory && matchesSearch;
   });
 
-  notify("Menu Items loaded", "success");
+  notify(`${items.length} Menu Items loaded`, "info");
 </script>
 
 <div class="p-6 max-w-5xl mx-auto space-y-6">

@@ -3,6 +3,7 @@
   import { orderStore, reorder } from "$lib/stores/orders.store";
   import { cartStore } from "$lib/stores/cart.store";
   import { formatDate } from "$lib/utils/formatter";
+  import { notify } from "$lib/stores/notifications";
 
   export let data: { data: Order[]; user: User };
 
@@ -16,6 +17,8 @@
   function loadToCart(order: Order) {
     cartStore.setItems(order.items);
     goto("/cart");
+
+    notify(`Order loaded to a cart`, "info");
   }
 
   function maskPhone(phone: string): string {

@@ -6,6 +6,7 @@
   import { fade, fly } from "svelte/transition";
   import { flip } from "svelte/animate";
   import { enhance } from "$app/forms";
+  import { notify } from "$lib/stores/notifications";
 
   export let data: { data: UserCart; user: User };
 
@@ -37,6 +38,8 @@
     }
 
     cartStore.updateItemQuantity(id, quantity);
+
+    notify(`quantity updated successful`, "success");
   };
 </script>
 
@@ -93,7 +96,7 @@
                 TZS {(cartItem.price * cartItem.quantity).toFixed(2)}
               </p>
               <form
-                use:enhance
+                use:enhance={() => notify(`cart item removed`, "error")}
                 method="post"
                 action="?/removeItem"
                 on:submit={() => cartStore.removeItem(item._id)}
@@ -111,7 +114,7 @@
         {/each}
 
         <form
-          use:enhance
+          use:enhance={() => notify(`all cart item removed`, "error")}
           method="post"
           action="?/clearCart"
           on:submit={cartStore.clear}

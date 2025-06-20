@@ -1,5 +1,6 @@
 <script lang="ts">
   import { cartStore } from "$lib/stores/cart.store";
+  import { notify } from "$lib/stores/notifications";
   import { userStore } from "$lib/stores/user.store";
 
   export let item: MenuItem;
@@ -23,6 +24,8 @@
         quantity,
         price: item.price,
       });
+
+      notify("item was addes to a cart", "success");
     } catch (err) {
       console.error("Error adding to cart:", err);
     }
