@@ -24,26 +24,26 @@ export const cartStore = (() => {
         return { ...cart, items: updatedItems };
       }),
 
-    // add item to a cart
     addItem: (newItem: CartItemPopulated) =>
       update((cart) => {
         const existing = cart.items.find(
           (i) => i.item._id === newItem.item._id
         );
+        let updatedItems;
+
         if (existing) {
-          existing.quantity += newItem.quantity;
+          updatedItems = cart.items.map((i) =>
+            i.item._id === newItem.item._id
+              ? { ...i, quantity: i.quantity + newItem.quantity }
+              : i
+          );
         } else {
-          cart.items.push(newItem);
+          updatedItems = [...cart.items, newItem];
         }
-        return { ...cart };
+
+        return { ...cart, items: updatedItems };
       }),
-
-    setItems: (items: CartItemPopulated[]) =>
-      update((cart) => ({
-        ...cart,
-        items,
-      })),
-
+      
     // Remove item
     removeItem: (itemId: string) =>
       update((cart) => {

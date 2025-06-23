@@ -14,11 +14,23 @@
     goto("/orders/checkout");
   }
 
-  function loadToCart(order: Order) {
-    cartStore.setItems(order.items);
-    goto("/cart");
+  async function loadToCart(orderId: string) {
+    try {
+      const res = await fetch("/cart/from-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderId, merge: true }),
+      });
 
-    notify(`Order loaded to a cart`, "info");
+      if (!res.ok) return {};
+
+      await goto("/cart");
+      notify("Order loaded to cart", "info");
+    } catch (err) {
+      notify("Could not load order to cart", "error");
+    }
   }
 
   function maskPhone(phone: string): string {
@@ -36,8 +48,7 @@
 
   {#if $orderStore.length > 0}
     <div class="space-y-5">
-      {#each $orderStore as order, i (i)}
-        <!-- TODO: use order._id  instead -->
+      {#each $orderStore as order (order._id)}
         <article
           class="bg-white rounded-2xl shadow p-5 border border-gray-200 hover:shadow-lg transition-shadow"
           aria-label={`Order ${order._id}`}
@@ -211,7 +222,7 @@
             <button
               type="button"
               class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition cursor-pointer"
-              on:click={() => loadToCart(order)}
+              on:click={() => order._id && loadToCart(order._id)}
               aria-label={`Load order ${order._id} to cart`}
             >
               <!-- Load to Cart Icon -->
