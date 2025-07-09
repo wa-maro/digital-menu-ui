@@ -47,12 +47,7 @@
 
       <!-- User -->
       {#if $userStore.user && $userStore.isAuthenticated}
-        <form
-          method="POST"
-          use:enhance={() => notify(`You have logged out`, "info")}
-          action="/auth/logout"
-          class="flex gap-4 mt-2"
-        >
+        <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
           <button
             type="submit"
             class="text-red-600 hover:underline text-sm cursor-pointer"
