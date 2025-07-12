@@ -1,28 +1,29 @@
 <script lang="ts">
   import { Receipt, Utensils, Users, HandCoinsIcon } from "lucide-svelte";
+  export let summaryMetrics: DashboardSummary;
 
   const stats = [
     {
       title: "Total Orders",
-      value: "1,320",
+      value: summaryMetrics.totalOrders,
       icon: Receipt,
       color: "bg-blue-100 text-[#044974]",
     },
     {
       title: "Revenue",
-      value: "TZS 5,450",
+      value: summaryMetrics.totalRevenue,
       icon: HandCoinsIcon,
       color: "bg-green-100 text-green-800",
     },
     {
       title: "Menu Items",
-      value: "78",
+      value: summaryMetrics.totalMenuItems,
       icon: Utensils,
       color: "bg-yellow-100 text-yellow-800",
     },
     {
       title: "Active Users",
-      value: "213",
+      value: summaryMetrics.activeUsers,
       icon: Users,
       color: "bg-purple-100 text-purple-800",
     },

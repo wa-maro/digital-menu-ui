@@ -109,6 +109,17 @@ declare global {
     createdAt?: string;
     updatedAt?: string;
   }
+
+  export interface DashboardSummary {
+    totalOrders: number;
+    totalRevenue: number; // in smallest currency unit (e.g. cents)
+    totalMenuItems: number;
+    activeUsers: number;
+  }
+
+  export interface DashboardPageData {
+    summary: DashboardSummary;
+  }
 }
 
 export {};
