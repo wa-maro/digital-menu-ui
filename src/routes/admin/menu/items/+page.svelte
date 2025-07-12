@@ -102,12 +102,14 @@
   <div class="flex justify-between items-center mb-3">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
 
-    <button
-      on:click={openModal}
-      class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
-    >
-      <Plus size={16} />
-      Add Item
+    <button on:click={openModal}>
+      <a
+        href="/admin/menu/items/new"
+        class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
+      >
+        <Plus size={16} />
+        Add Item
+      </a>
     </button>
   </div>
 

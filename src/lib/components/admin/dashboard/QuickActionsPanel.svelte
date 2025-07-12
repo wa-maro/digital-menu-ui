@@ -6,7 +6,7 @@
       label: "Add New Menu Item",
       tooltip: "Create a new menu item",
       icon: PlusCircle,
-      href: "/admin/menu/items",
+      href: "/admin/menu/items/new",
       bg: "bg-[#044974] text-white",
       hover: "hover:bg-[#033c61]",
     },
