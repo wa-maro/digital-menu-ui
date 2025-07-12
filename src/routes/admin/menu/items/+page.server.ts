@@ -13,14 +13,14 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, { headers }),
   ]);
 
-  if (!catRes.ok) {
-    const error = (await catRes.text()) || (await itemsRes.text());
-    return fail(400, { error: error || "Failed to load categories" });
+  if (!itemsRes.ok) {
+    const error = await itemsRes.text();
+    return fail(400, { error: error || "Failed to load items" });
   }
 
-  if (!itemsRes.ok) {
-    const error = (await catRes.text()) || (await itemsRes.text());
-    return fail(400, { error: error || "Failed to load items" });
+  if (!catRes.ok) {
+    const error = await catRes.text();
+    return fail(400, { error: error || "Failed to load categories" });
   }
 
   const itemsData: MenuItem[] = await itemsRes.json();

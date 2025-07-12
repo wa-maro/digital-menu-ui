@@ -1,5 +1,8 @@
 <script lang="ts">
   import CategoryModal from "$lib/components/admin/menu/CategoryModal.svelte";
+
+  export let data;
+  const { category } = data;
 </script>
 
 <!-- Back Button -->
@@ -15,8 +18,8 @@
   aria-modal="true"
 >
   <h2 class="text-xl text-amber-700 font-semibold mb-3 ms-auto w-fit">
-    Add New Category
+    Edit Category
   </h2>
 
-  <CategoryModal />
+  <CategoryModal {category} />
 </div>

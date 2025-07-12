@@ -1,11 +1,8 @@
 <script lang="ts">
-  import CategoryModal from "$lib/components/admin/menu/CategoryModal.svelte";
   import { Pencil, Trash } from "lucide-svelte";
 
   export let data: LoadResult<Category>;
   let categories: Category[] = data.data;
-
-  let showModal = false;
 
   let search = "";
   let filteredCategories: Category[] = categories;
@@ -15,24 +12,6 @@
       category.name.toLowerCase().includes(search.toLowerCase())
     );
   }
-
-  const openModal = () => {
-    showModal = true;
-  };
-
-  $: category = {
-    _id: "",
-    name: "",
-    description: "",
-  };
-
-  $: editCategory = (id: string, name: string, description: string) => {
-    openModal();
-
-    category._id = id;
-    category.name = name;
-    category.description = description;
-  };
 </script>
 
 <div class="p-4">
@@ -82,14 +61,13 @@
 
         <div class="flex gap-2 items-center">
           <button
-            on:click={() =>
-              category._id &&
-              editCategory(category._id, category.name, category.description)}
             type="button"
             class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
             aria-label="Edit"
           >
-            <Pencil size={12} />
+            <a href={`/admin/menu/categories/${category._id}/update`}>
+              <Pencil size={12} /></a
+            >
           </button>
 
           <form action="?/delete" method="post">
@@ -106,6 +84,4 @@
       </div>
     {/each}
   </div>
-
-  <CategoryModal bind:show={showModal} bind:category />
 </div>
