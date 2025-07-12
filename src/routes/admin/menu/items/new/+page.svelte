@@ -5,6 +5,13 @@
   const { categories } = data;
 </script>
 
+<!-- Back Button -->
+<div class="pt-6 max-w-2xl mx-auto">
+  <a href="/admin/menu/items" class="text-sm text-gray-600 hover:underline"
+    >← Back to menu</a
+  >
+</div>
+
 <div
   class="max-w-2xl mx-auto rounded-2xl shadow-xl px-12 py-6 relative animate-fadeIn max-h-full overflow-y-auto"
   role="dialog"

@@ -9,6 +9,11 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
     },
   });
 
+  if (!catRes.ok) {
+    const error = await catRes.text();
+    return fail(400, { error: error || "Failed to load categories" });
+  }
+
   const categoriesData = await catRes.json();
 
   return {
