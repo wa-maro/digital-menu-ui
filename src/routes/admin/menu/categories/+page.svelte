@@ -38,11 +38,12 @@
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold text-[#044974]">Categories</h1>
-    <button
-      on:click={openModal}
-      class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer"
-    >
-      Add Category
+    <button>
+      <a
+        href="/admin/menu/categories/new"
+        class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer"
+        >Add Category</a
+      >
     </button>
   </div>
 
