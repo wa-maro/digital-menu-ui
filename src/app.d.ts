@@ -117,6 +117,22 @@ declare global {
     activeUsers: number;
   }
 
+  export interface RecentOrder {
+    _id: string;
+    user: User;
+    items: OrderItem[];
+    type: OrderType;
+    status: OrderStatus;
+    paymentMethod: PaymentMethod;
+    paymentStatus: PaymentStatus;
+    paymentLog: PaymentLogEntry[];
+    paymentDetails: PaymentDetails;
+    total: number;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }
+
   export interface DashboardPageData {
     summary: DashboardSummary;
   }

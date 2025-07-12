@@ -4,11 +4,11 @@
   import SummaryCards from "$lib/components/admin/dashboard/SummaryCards.svelte";
 
   export let data;
-  const { summaryMetrics } = data;
+  const { summaryMetrics, recentOrders } = data;
 </script>
 
 <div class="p-4 space-y-6">
   <SummaryCards {summaryMetrics} />
   <QuickActionsPanel />
-  <RecentOrdersTable />
+  <RecentOrdersTable {recentOrders} />
 </div>
