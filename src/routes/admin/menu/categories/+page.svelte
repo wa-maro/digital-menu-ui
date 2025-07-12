@@ -7,6 +7,15 @@
 
   let showModal = false;
 
+  let search = "";
+  let filteredCategories: Category[] = categories;
+
+  function applyFilters() {
+    filteredCategories = categories.filter((category) =>
+      category.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
   const openModal = () => {
     showModal = true;
   };
@@ -37,8 +46,27 @@
     </button>
   </div>
 
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-6 items-end mb-6 py-4">
+    <!-- Search Field -->
+    <div class="flex basis-1/2 flex-col">
+      <label for="search" class="text-sm font-medium text-gray-700 mb-1"
+        >Search</label
+      >
+      <input
+        id="search"
+        name="search"
+        type="text"
+        bind:value={search}
+        on:input={applyFilters}
+        placeholder="Search by name..."
+        class="w-80 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+      />
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {#each categories as category}
+    {#each filteredCategories as category}
       <div
         class="bg-white shadow-sm hover:shadow-md duration-200 rounded-xl px-4 py-3 flex items-center justify-between group transform hover:scale-[1.01] transition-[box-shadow,transform]"
       >

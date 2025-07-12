@@ -98,7 +98,7 @@
   </div>
 
   <!-- Filters -->
-  <div class="flex flex-wrap gap-6 items-end mb-6 py-4">
+  <div class="flex flex-wrap justify-between gap-6 items-end mb-6 py-4">
     <!-- Search Field -->
     <div class="flex flex-col">
       <label for="search" class="text-sm font-medium text-gray-700 mb-1"
@@ -111,7 +111,7 @@
         bind:value={search}
         on:input={applyFilters}
         placeholder="Search by name..."
-        class="w-64 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+        class="w-80 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
       />
     </div>
 
