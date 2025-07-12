@@ -41,6 +41,20 @@
   let sort: "asc" | "desc" = "desc";
   let sortField: "name" | "price" = "name";
   let filteredItems: MenuItem[] = items;
+  let currentPage = 1;
+  const itemsPerPage = 5;
+
+  $: totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  $: paginatedItems = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  function goToPage(page: number) {
+    if (page >= 1 && page <= totalPages) {
+      currentPage = page;
+    }
+  }
 
   function toggleSort(field: "name" | "price" = "name") {
     if (sortField === field) sort = sort === "asc" ? "desc" : "asc";
@@ -85,7 +99,7 @@
 </script>
 
 <div class="p-4">
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center mb-3">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
 
     <button
@@ -98,7 +112,7 @@
   </div>
 
   <!-- Filters -->
-  <div class="flex flex-wrap justify-between gap-6 items-end mb-6 py-4">
+  <div class="flex flex-wrap justify-between gap-6 items-end mb-3">
     <!-- Search Field -->
     <div class="flex flex-col">
       <label for="search" class="text-sm font-medium text-gray-700 mb-1"
@@ -135,86 +149,124 @@
     </div>
   </div>
 
-  <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
-    <thead class="bg-gray-50 text-left text-sm text-gray-700">
-      <tr>
-        <th class="p-4">Image</th>
-        <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
-          >Name {#if sortField === "name"}
-            <span>{sort === "asc" ? "↑" : "↓"}</span>
-          {/if}</th
-        >
-        <th class="p-4">Category </th>
-        <th class="p-4 cursor-pointer" on:click={() => toggleSort("price")}
-          >Price {#if sortField === "price"}
-            <span>{sort === "asc" ? "↑" : "↓"}</span>
-          {/if}</th
-        >
-        <th class="p-4 text-center">Actions</th>
-      </tr>
-    </thead>
-    <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
-      {#each filteredItems as item}
-        <tr class="hover:bg-gray-50 transition">
-          <td class="py-1 ps-4">
-            {#if item.imageURL}
-              <a href={`/admin/menu/items/${item._id}`}>
-                <img
-                  src={item.imageURL}
-                  alt={item.name}
-                  class="w-16 h-16 object-cover rounded"
-                />
-              </a>
-            {:else}
-              <div
-                class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
-              >
-                No Image
-              </div>
-            {/if}
-          </td>
-
-          <td class="py-1 ps-4">
-            <a
-              href={`/admin/menu/items/${item._id}`}
-              class="font-medium hover:underline"
-            >
-              {item.name}
-            </a>
-          </td>
-
-          <td class="py-1 ps-4 text-gray-600">{item.category.name}</td>
-
-          <td class="py-1 ps-4 whitespace-nowrap">TZS {item.price}</td>
-
-          <td class="py-1 ps-4 text-center">
-            <div class="flex justify-center gap-2">
-              <button
-                on:click={() =>
-                  editMenuItem({ ...item, category: item.category })}
-                type="button"
-                class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
-                aria-label="Edit"
-              >
-                <Pencil size={12} />
-              </button>
-
-              <form action="?/delete" method="post">
-                <input type="hidden" name="_id" bind:value={item._id} />
-                <button
-                  type="submit"
-                  class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
-                  aria-label="Delete"
-                >
-                  <Trash size={12} />
-                </button>
-              </form>
-            </div>
-          </td>
+  <div class="min-h-[300px]">
+    <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
+      <thead class="bg-gray-50 text-left text-sm text-gray-700">
+        <tr>
+          <th class="p-4">Image</th>
+          <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
+            >Name {#if sortField === "name"}
+              <span>{sort === "asc" ? "↑" : "↓"}</span>
+            {/if}</th
+          >
+          <th class="p-4">Category </th>
+          <th class="p-4 cursor-pointer" on:click={() => toggleSort("price")}
+            >Price {#if sortField === "price"}
+              <span>{sort === "asc" ? "↑" : "↓"}</span>
+            {/if}</th
+          >
+          <th class="p-4 text-center">Actions</th>
         </tr>
-      {/each}
-    </tbody>
-  </table>
+      </thead>
+      <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
+        {#each paginatedItems as item}
+          <tr class="hover:bg-gray-50 transition">
+            <td class="py-1 ps-4">
+              {#if item.imageURL}
+                <a href={`/admin/menu/items/${item._id}`}>
+                  <img
+                    src={item.imageURL}
+                    alt={item.name}
+                    class="w-16 h-16 object-cover rounded"
+                  />
+                </a>
+              {:else}
+                <div
+                  class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
+                >
+                  No Image
+                </div>
+              {/if}
+            </td>
+
+            <td class="py-1 ps-4">
+              <a
+                href={`/admin/menu/items/${item._id}`}
+                class="font-medium hover:underline"
+              >
+                {item.name}
+              </a>
+            </td>
+
+            <td class="py-1 ps-4 text-gray-600">{item.category.name}</td>
+
+            <td class="py-1 ps-4 whitespace-nowrap">TZS {item.price}</td>
+
+            <td class="py-1 ps-4 text-center">
+              <div class="flex justify-center gap-2">
+                <button
+                  on:click={() =>
+                    editMenuItem({ ...item, category: item.category })}
+                  type="button"
+                  class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
+                  aria-label="Edit"
+                >
+                  <Pencil size={12} />
+                </button>
+
+                <form action="?/delete" method="post">
+                  <input type="hidden" name="_id" bind:value={item._id} />
+                  <button
+                    type="submit"
+                    class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                    aria-label="Delete"
+                  >
+                    <Trash size={12} />
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-end">
+    <div class="flex gap-x-4 items-center mt-4 px-4">
+      <button
+        on:click={() => goToPage(currentPage - 1)}
+        class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm"
+        disabled={currentPage === 1}
+      >
+        Prev
+      </button>
+
+      <div class="space-x-1">
+        {#each Array(totalPages)
+          .fill(0)
+          .map((_, i) => i + 1) as page}
+          <button
+            on:click={() => goToPage(page)}
+            class="px-3 py-1 rounded text-sm
+            {page === currentPage
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 hover:bg-gray-200'}"
+          >
+            {page}
+          </button>
+        {/each}
+      </div>
+
+      <button
+        on:click={() => goToPage(currentPage + 1)}
+        class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm"
+        disabled={currentPage === totalPages}
+      >
+        Next
+      </button>
+    </div>
+  </div>
 
   <MenuItemModalForm bind:show={showModal} bind:item bind:categories />
 </div>
