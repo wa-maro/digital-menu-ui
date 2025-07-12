@@ -15,7 +15,7 @@
   <div class="flex justify-between items-center w-3/4">
     <h1 class="text-2xl font-bold text-gray-800">{item.name}</h1>
     <a
-      href={`/admin/menu/items/${item._id}`}
+      href={`/admin/menu/items/${item._id}/update`}
       class="text-blue-600 hover:underline"
     >
       Edit

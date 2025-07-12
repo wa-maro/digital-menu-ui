@@ -1,40 +1,10 @@
 <script lang="ts">
-  import MenuItemModalForm from "$lib/components/admin/menu/MenuItemModalForm.svelte";
   import { Pencil, Plus, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
 
   export let data;
-
   let items: MenuItem[] = data.items || [];
   let categories: Category[] = data.categories || [];
-
-  let showModal = false;
-
-  const openModal = () => {
-    showModal = true;
-  };
-
-  let item: MenuItem = {
-    _id: "",
-    name: "",
-    description: "",
-    price: 0,
-    available: false,
-    category: { _id: "", name: "", description: "" },
-    imageURL: "",
-  };
-
-  $: editMenuItem = (data: MenuItem) => {
-    item._id = data._id;
-    item.name = data.name;
-    item.description = data.description;
-    item.price = data.price;
-    item.available = data.available;
-    item.category = { ...data.category } as Category;
-    item.imageURL = data.imageURL;
-
-    openModal();
-  };
 
   let search = "";
   let selectedCategory = "";
@@ -99,10 +69,10 @@
 </script>
 
 <div class="p-4">
-  <div class="flex justify-between items-center mb-3">
+  <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
 
-    <button on:click={openModal}>
+    <button>
       <a
         href="/admin/menu/items/new"
         class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
@@ -114,11 +84,13 @@
   </div>
 
   <!-- Filters -->
-  <div class="flex flex-wrap justify-between gap-6 items-end mb-3">
+  <div class="flex flex-wrap justify-between gap-6 items-end mb-6">
     <!-- Search Field -->
     <div class="flex flex-col">
-      <label for="search" class="text-sm font-medium text-gray-700 mb-1"
-        >Search</label
+      <label
+        for="search"
+        class="text-sm font-medium text-gray-700 mb-1 hidden"
+        aria-label="search">Search</label
       >
       <input
         id="search"
@@ -133,8 +105,10 @@
 
     <!-- Category Filter -->
     <div class="flex flex-col">
-      <label for="category" class="text-sm font-medium text-gray-700 mb-1"
-        >Category</label
+      <label
+        for="category"
+        class="text-sm font-medium text-gray-700 mb-1 hidden"
+        aria-label="category">Category</label
       >
       <select
         id="category"
@@ -207,13 +181,13 @@
             <td class="py-1 ps-4 text-center">
               <div class="flex justify-center gap-2">
                 <button
-                  on:click={() =>
-                    editMenuItem({ ...item, category: item.category })}
                   type="button"
-                  class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
                   aria-label="Edit"
+                  class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
                 >
-                  <Pencil size={12} />
+                  <a href={`/admin/menu/items/${item._id}/update`}>
+                    <Pencil size={12} /></a
+                  >
                 </button>
 
                 <form action="?/delete" method="post">
@@ -269,6 +243,4 @@
       </button>
     </div>
   </div>
-
-  <MenuItemModalForm bind:show={showModal} bind:item bind:categories />
 </div>
