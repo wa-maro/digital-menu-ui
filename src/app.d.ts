@@ -136,6 +136,22 @@ declare global {
   export interface DashboardPageData {
     summary: DashboardSummary;
   }
+
+  export interface MediaItem {
+    _id: string;
+    name: string;
+    url: string;
+    category: Category;
+    linkedMenuItemIds: MenuItem[];
+    uploadedBy: string;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  export interface MediaResponse {
+    items: MediaItem[];
+    total: number;
+  }
 }
 
 export {};

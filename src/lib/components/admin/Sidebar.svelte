@@ -13,6 +13,7 @@
     Wallet,
     Banknote,
     Settings,
+    Image,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -100,6 +101,12 @@
                 icon={UtensilsCrossed}
                 label="Menu Items"
                 href="/admin/menu/items"
+                {isSidebarExpanded}
+              />
+              <SidebarItem
+                icon={Image}
+                label="Media Library"
+                href="/admin/media"
                 {isSidebarExpanded}
               />
             </ul>
