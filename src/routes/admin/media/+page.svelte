@@ -20,6 +20,19 @@
       return matchesSearch && matchesCategory;
     });
   }
+
+  let currentPage = 1;
+  const itemsPerPage = 5;
+
+  $: totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  $: paginatedItems = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  function goToPage(page: number) {
+    if (page >= 1 && page <= totalPages) currentPage = page;
+  }
 </script>
 
 <div class="p-4">
@@ -92,14 +105,14 @@
         </tr>
       </thead>
       <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
-        {#each filteredItems as item}
+        {#each paginatedItems as item}
           <tr class="hover:bg-gray-50 transition">
             <td class="py-1 ps-4">
               {#if item.url}
                 <a href={`/admin/media/${item._id}`}>
                   <img
                     src={item.url}
-                    alt={item.name}
+                    alt={item.name.slice(0, item.name.indexOf(" "))}
                     class="w-16 h-16 object-cover rounded"
                   />
                 </a>
@@ -174,5 +187,42 @@
         {/each}
       </tbody>
     </table>
+  </div>
+
+  <!-- Paginator -->
+  <div class="flex justify-end">
+    <div class="flex gap-x-4 items-center mt-5 px-4">
+      <button
+        on:click={() => goToPage(currentPage - 1)}
+        class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm"
+        disabled={currentPage === 1}
+      >
+        Prev
+      </button>
+
+      <div class="space-x-1">
+        {#each Array(totalPages)
+          .fill(0)
+          .map((_, i) => i + 1) as page}
+          <button
+            on:click={() => goToPage(page)}
+            class="px-3 py-1 rounded text-sm
+            {page === currentPage
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 hover:bg-gray-200'}"
+          >
+            {page}
+          </button>
+        {/each}
+      </div>
+
+      <button
+        on:click={() => goToPage(currentPage + 1)}
+        class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-sm"
+        disabled={currentPage === totalPages}
+      >
+        Next
+      </button>
+    </div>
   </div>
 </div>
