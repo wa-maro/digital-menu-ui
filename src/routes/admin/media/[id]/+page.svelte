@@ -70,12 +70,20 @@
               href={`/admin/menu/items/${item._id}`}
               class="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              <img
-                src={item.imageURL}
-                alt={item.name}
-                class="w-full h-32 object-cover"
-                loading="lazy"
-              />
+              {#if item.imageURL}
+                <img
+                  src={item.imageURL}
+                  alt={item.name}
+                  class="w-full h-24 object-cover"
+                  loading="lazy"
+                />
+              {:else}
+                <div
+                  class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
+                >
+                  No Image
+                </div>
+              {/if}
               <div class="p-2">
                 <h3
                   class="text-sm font-semibold text-blue-600 hover:underline truncate"
