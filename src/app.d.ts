@@ -152,6 +152,12 @@ declare global {
     items: MediaItem[];
     total: number;
   }
+
+  interface MediaUploadResponse {
+    message: string;
+    url: string;
+    filename: string;
+  }
 }
 
 export {};

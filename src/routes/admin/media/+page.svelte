@@ -41,7 +41,7 @@
 
     <button>
       <a
-        href="/admin/media"
+        href="/admin/media/upload"
         class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
       >
         <Upload size={16} />
