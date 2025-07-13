@@ -1,8 +1,25 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
 
+  export let media: MediaItem = {
+    _id: "",
+    name: "",
+    category: { _id: "", description: "", name: "" },
+    linkedMenuItemIds: [],
+    uploadedBy: {
+      _id: "",
+      email: "",
+      fullName: "",
+      avatarUrl: "",
+      role: "manager",
+    },
+    url: "",
+  };
+
   let file: File | null = null;
-  let previewUrl: string | null = null;
+  let previewUrl: string | null = media.url
+    ? `http://127.0.0.1:3000${media.url}`
+    : null;
   let uploading = false;
 
   function handleFileChange(event: Event) {

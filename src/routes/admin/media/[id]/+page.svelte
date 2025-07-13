@@ -1,30 +1,37 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-
   export let data: { media: MediaItem };
   const media: MediaItem = data.media;
 </script>
 
 <main class="max-w-4xl mx-auto py-6">
-  <!-- Back Button -->
-  <div class="mb-5">
+  <!-- Header -->
+  <div class="flex justify-between items-center mb-5">
+    <!-- Back Button -->
     <a href="/admin/media" class="text-sm text-gray-600 hover:underline"
       >← Back to menu</a
     >
+
+    <!-- Edit Button -->
+    <a
+      href={`/admin/media/${media._id}/update`}
+      class="text-blue-600 hover:underline"
+    >
+      Edit
+    </a>
   </div>
 
-  <h1 class="text-2xl font-bold mb-6">Media Details</h1>
-
-  <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-    <div class="overflow-hidden rounded-lg shadow-md">
+  <div
+    class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 justify-start items-start"
+  >
+    <div class="overflow-hidden rounded-lg shadow-md col-span-1">
       <img
-        src={media.url}
+        src={`http://127.0.0.1:3000${media.url}`}
         alt={media.name}
         class="w-full h-64 md:h-full object-cover transition-transform duration-300 hover:scale-105"
       />
     </div>
 
-    <div class="flex flex-col justify-center space-y-6">
+    <div class="flex flex-col justify-center space-y-6 col-span-2">
       <h2 class="text-2xl font-bold text-gray-900">{media.name}</h2>
 
       <div class="space-y-2 text-gray-700">

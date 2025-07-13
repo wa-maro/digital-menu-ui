@@ -144,8 +144,8 @@ declare global {
     category: Category;
     linkedMenuItemIds: MenuItem[];
     uploadedBy: User;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
   }
 
   export interface MediaResponse {

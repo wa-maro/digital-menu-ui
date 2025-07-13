@@ -1,14 +1,28 @@
 <script lang="ts">
   export let url: string = "";
+  export let media: MediaItem = {
+    _id: "",
+    name: "",
+    category: { _id: "", description: "", name: "" },
+    linkedMenuItemIds: [],
+    uploadedBy: {
+      _id: "",
+      email: "",
+      fullName: "",
+      avatarUrl: "",
+      role: "manager",
+    },
+    url: "",
+  };
   export let categories: Category[] = [];
 
-  let name = "";
-  let category = "";
+  let name = media.name ?? "";
+  let category = media.category._id ?? "";
   let linkedMenuItemIds: string[] = [];
 </script>
 
 <form
-  action="?/mediaCreation"
+  action={`${media._id ? "?/mediaUpdation" : "?/mediaCreation"}`}
   method="post"
   class="space-y-6 bg-white rounded-l p-6"
 >
@@ -18,9 +32,10 @@
   <div class="flex flex-col">
     <label
       for="name"
-      class="text-sm font-medium text-gray-700 mb-1 hidden"
-      aria-label="name">Name</label
-    >
+      class="text-sm font-medium text-gray-700 mb-1"
+      aria-label="name"
+      >Name
+    </label>
     <input
       id="name"
       name="name"
