@@ -3,6 +3,23 @@
 
   export let data;
   const mediaItems: MediaItem[] = data.media?.items || [];
+  let categories: Category[] = data.categories || [];
+
+  let search = "";
+  let selectedCategory = "";
+
+  let filteredItems: MediaItem[] = mediaItems;
+
+  function applyFilters() {
+    filteredItems = mediaItems.filter((item) => {
+      const matchesSearch = item.name
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      const matchesCategory =
+        !selectedCategory || item.category._id === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }
 </script>
 
 <div class="p-4">
@@ -20,6 +37,48 @@
     </button>
   </div>
 
+  <!-- Filters -->
+  <div class="flex flex-wrap justify-between gap-6 items-end mb-6">
+    <!-- Search Field -->
+    <div class="flex flex-col">
+      <label
+        for="search"
+        class="text-sm font-medium text-gray-700 mb-1 hidden"
+        aria-label="search">Search</label
+      >
+      <input
+        id="search"
+        name="search"
+        type="text"
+        bind:value={search}
+        on:input={applyFilters}
+        placeholder="Search by name..."
+        class="w-80 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+      />
+    </div>
+
+    <!-- Category Filter -->
+    <div class="flex flex-col">
+      <label
+        for="category"
+        class="text-sm font-medium text-gray-700 mb-1 hidden"
+        aria-label="category">Category</label
+      >
+      <select
+        id="category"
+        name="category"
+        bind:value={selectedCategory}
+        on:change={applyFilters}
+        class="w-56 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500 text-sm"
+      >
+        <option value="">All Categories</option>
+        {#each categories as cat}
+          <option value={cat._id}>{cat.name}</option>
+        {/each}
+      </select>
+    </div>
+  </div>
+
   <!-- Media Table -->
   <div class="min-h-[300px]">
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
@@ -33,7 +92,7 @@
         </tr>
       </thead>
       <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
-        {#each mediaItems as item}
+        {#each filteredItems as item}
           <tr class="hover:bg-gray-50 transition">
             <td class="py-1 ps-4">
               {#if item.url}
