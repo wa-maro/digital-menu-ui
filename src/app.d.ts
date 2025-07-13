@@ -143,7 +143,7 @@ declare global {
     url: string;
     category: Category;
     linkedMenuItemIds: MenuItem[];
-    uploadedBy: string;
+    uploadedBy: User;
     createdAt: string;
     updatedAt: string;
   }
