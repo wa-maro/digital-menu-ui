@@ -111,7 +111,7 @@
               {#if item.url}
                 <a href={`/admin/media/${item._id}`}>
                   <img
-                    src={item.url}
+                    src={`http://127.0.0.1:3000${item.url}`}
                     alt={item.name.slice(0, item.name.indexOf(" "))}
                     class="w-16 h-16 object-cover rounded"
                   />
