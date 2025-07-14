@@ -1,26 +1,10 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
-
-  export let media: MediaItem = {
-    _id: "",
-    name: "",
-    category: { _id: "", description: "", name: "" },
-    linkedMenuItemIds: [],
-    uploadedBy: {
-      _id: "",
-      email: "",
-      fullName: "",
-      avatarUrl: "",
-      role: "manager",
-    },
-    url: "",
-  };
+  export let media;
 
   let file: File | null = null;
   let previewUrl: string | null = media.url
     ? `http://127.0.0.1:3000${media.url}`
     : null;
-  let uploading = false;
 
   function handleFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -31,11 +15,7 @@
   }
 </script>
 
-<form
-  action="?/mediaUpload"
-  method="post"
-  enctype="multipart/form-data"
-  use:enhance
+<div
   class="space-y-6 max-w-xs mx-auto p-3 bg-white rounded-lg shadow-md border border-gray-200"
 >
   <label
@@ -75,12 +55,4 @@
       draggable="false"
     />
   {/if}
-
-  <button
-    type="submit"
-    disabled={uploading || !file}
-    class="w-full rounded-md bg-blue-600 py-3 text-white font-semibold shadow-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors"
-  >
-    {uploading ? "Uploading..." : "Upload Image"}
-  </button>
-</form>
+</div>
