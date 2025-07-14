@@ -21,68 +21,31 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
 };
 
 export const actions: Actions = {
-  mediaUpload: async ({ fetch, cookies, request }) => {
-    const formData = await request.formData();
-    const file = formData.get("file");
-
-    if (!file || !(file instanceof File)) {
-      return fail(400, { error: "No file uploaded" });
-    }
-
-    const uploadForm = new FormData();
-    uploadForm.append("file", file);
-
-    const uploadRes = await fetch(`${VITE_API_URL_ADMIN}/media/upload`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${cookies.get("token")}`,
-      },
-      body: uploadForm,
-    });
-
-    if (!uploadRes.ok) {
-      const errorText = await uploadRes.text();
-      return fail(400, { error: errorText || "Upload Failed" });
-    }
-
-    const uploadedData: MediaUploadResponse = await uploadRes.json();
-
-    return { uploadedData };
-  },
-
-  mediaUpdation: async ({ fetch, cookies, request, params }) => {
+  updateMedia: async ({ fetch, cookies, request, params }) => {
     const id = params.id;
     const formData = await request.formData();
 
-    const url = formData.get("url")?.toString() || "";
-    const name = formData.get("name")?.toString() || "";
+    const file = formData.get("file");
+    const displayName = formData.get("displayName")?.toString() || "";
     const category = formData.get("category")?.toString() || "";
-    const linkedMenuItemIds =
-      formData.get("linkedMenuItemIds")?.toString() || "";
 
-    const linkedIdsArray = linkedMenuItemIds
-      ? linkedMenuItemIds
-          .split(",")
-          .map((id) => id.trim())
-          .filter(Boolean)
-      : [];
+    if (!file || !(file instanceof File))
+      return fail(400, { error: "No file uploaded" });
 
-    if (!url) return fail(400, { error: "Please upload an image first" });
-    if (!name && !category)
+    if (!displayName || !category)
       return fail(400, { error: "Name and Category are required fields" });
+
+    const uploadForm = new FormData();
+    uploadForm.append("file", file);
+    uploadForm.append("displayName", displayName);
+    uploadForm.append("category", category);
 
     const updatedRes = await fetch(`${VITE_API_URL_ADMIN}/media/${id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.get("token")}`,
       },
-      body: JSON.stringify({
-        name,
-        url,
-        category,
-        linkedMenuItemIds: linkedIdsArray,
-      }),
+      body: uploadForm,
     });
 
     if (!updatedRes.ok) {
@@ -90,6 +53,6 @@ export const actions: Actions = {
       return fail(400, { error: errorText || "Media updation failed" });
     }
 
-    throw redirect(303, "/admin/media");
+    throw redirect(303, `/admin/media/${id}`);
   },
 };

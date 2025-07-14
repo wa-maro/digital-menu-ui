@@ -24,7 +24,7 @@
 </script>
 
 <form
-  action="?/updateMedia"
+  action="?/createMedia"
   method="post"
   enctype="multipart/form-data"
   use:enhance
