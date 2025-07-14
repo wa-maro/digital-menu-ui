@@ -45,7 +45,7 @@
 
     <div>
       <h2 class="font-semibold text-gray-700">Price</h2>
-      <p class="text-gray-600">${item.price.toFixed(2)}</p>
+      <p class="text-gray-600">TZS {item.price.toFixed(2)}</p>
     </div>
 
     <div>

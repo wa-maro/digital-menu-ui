@@ -113,5 +113,6 @@
     bind:selectImageUrl={item.imageURL}
     bind:selectImageName
     {mediaItems}
+    {categories}
   />
 {/if}
