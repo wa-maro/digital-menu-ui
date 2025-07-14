@@ -8,7 +8,7 @@
 
   function selectImage(url: string, displayName: string) {
     selectImageUrl = `${PUBLIC_API_URL}${url}`;
-    selectImageName = displayName;
+    selectImageName = displayName ?? selectImageUrl;
     showModal = false;
   }
 </script>

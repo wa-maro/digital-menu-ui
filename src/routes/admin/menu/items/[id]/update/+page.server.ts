@@ -8,9 +8,10 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
     Authorization: `Bearer ${cookies.get("token")}`,
   };
 
-  const [catRes, itemRes] = await Promise.all([
+  const [catRes, itemRes, mediaRes] = await Promise.all([
     fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, { headers }),
     fetch(`${VITE_API_URL_PUBLIC}/menu/items/${id}`, { headers }),
+    fetch(`${VITE_API_URL_PUBLIC}/media`, { headers }),
   ]);
 
   if (!catRes.ok) {
@@ -23,12 +24,19 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
     return fail(400, { error: error || "Failed to load item" });
   }
 
+  if (!mediaRes.ok) {
+    const error = await mediaRes.text();
+    return fail(400, { error: error || "Failed to load categories" });
+  }
+
   const categoriesData: Category[] = await catRes.json();
   const itemData: MenuItem = await itemRes.json();
+  const mediaData: MediaResponse = await mediaRes.json();
 
   return {
     categories: categoriesData,
     item: itemData,
+    media: mediaData,
   };
 };
 

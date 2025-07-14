@@ -21,6 +21,16 @@
   let showModal = false;
   $: item.imageURL = item.imageURL;
   $: selectImageName = "";
+
+  $: {
+    const match = mediaItems.find((media) => {
+      return (
+        media.url === item.imageURL.slice(item.imageURL.indexOf("/upload"))
+      );
+    });
+
+    selectImageName = match ? match.displayName : "";
+  }
 </script>
 
 <form method="POST" class="space-y-4">
