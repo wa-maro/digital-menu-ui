@@ -1,11 +1,11 @@
-import { VITE_API_URL_ADMIN } from "$env/static/private";
+import { VITE_API_URL_PUBLIC } from "$env/static/private";
 import { fail } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
   const id = params.id;
 
-  const mediaRes = await fetch(`${VITE_API_URL_ADMIN}/media/${id}`, {
+  const mediaRes = await fetch(`${VITE_API_URL_PUBLIC}/media/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
     },

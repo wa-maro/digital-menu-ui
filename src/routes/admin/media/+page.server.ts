@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   };
 
   const [mediaRes, catRes] = await Promise.all([
-    fetch(`${VITE_API_URL_ADMIN}/media`, { headers }),
+    fetch(`${VITE_API_URL_PUBLIC}/media`, { headers }),
     fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, { headers }),
   ]);
 

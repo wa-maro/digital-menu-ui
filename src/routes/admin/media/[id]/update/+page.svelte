@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import MediaFormDetailsSection from "$lib/components/admin/media/MediaFormDetailsSection.svelte";
   import MediaFormUploadSection from "$lib/components/admin/media/MediaFormUploadSection.svelte";
 
@@ -9,17 +8,21 @@
   const categories = data.categories;
 </script>
 
+<!-- Back Button -->
+<div class="py-3 max-w-4xl mx-auto">
+  <a href="/admin/menu/items" class="text-sm text-gray-600 hover:underline"
+    >← Back to menu</a
+  >
+</div>
+
 <form
   action="?/updateMedia"
   method="post"
   enctype="multipart/form-data"
-  use:enhance
   class="max-w-4xl mx-auto grid grid-cols-11 gap-x-14 p-8 bg-white rounded-lg shadow-lg border border-gray-200"
 >
   <div class="col-span-full pb-1.5 mb-6 border-b border-teal-600">
-    <h2 class="text-xl font-semibold text-gray-800 text-end">
-      Upload New Media
-    </h2>
+    <h2 class="text-xl font-semibold text-gray-800 text-end">Edit Media</h2>
   </div>
 
   <!-- Step 1: Upload Image -->
@@ -40,7 +43,7 @@
       type="submit"
       class="w-full rounded-md bg-blue-600 py-3 text-white font-semibold shadow-md hover:bg-blue-700 cursor-pointer transition-colors"
     >
-      Create Media
+      Save changes
     </button>
   </div>
 </form>

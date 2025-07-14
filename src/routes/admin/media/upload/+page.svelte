@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import DetailsSection from "$lib/components/admin/media/MediaFormDetailsSection.svelte";
   import UploadSection from "$lib/components/admin/media/MediaFormUploadSection.svelte";
 
@@ -23,11 +22,17 @@
   };
 </script>
 
+<!-- Back Button -->
+<div class="py-3 max-w-4xl mx-auto">
+  <a href="/admin/menu/items" class="text-sm text-gray-600 hover:underline"
+    >← Back to menu</a
+  >
+</div>
+
 <form
   action="?/createMedia"
   method="post"
   enctype="multipart/form-data"
-  use:enhance
   class="max-w-4xl mx-auto grid grid-cols-11 gap-x-14 p-8 bg-white rounded-lg shadow-lg border border-gray-200"
 >
   <div class="col-span-full pb-1.5 mb-6 border-b border-teal-600">
