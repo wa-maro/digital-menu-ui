@@ -96,10 +96,11 @@
 
   <MediaPicker {item} bind:showModal bind:selectImageName />
 
-  <div class="flex justify-end">
+  <div class="flex">
     <button
+      disabled={!item.name || !item.price || !item.imageURL || !item.category}
       type="submit"
-      class="bg-[#044974] text-white px-4 py-2 rounded hover:opacity-90 cursor-pointer"
+      class="bg-[#044974] w-full text-white px-4 py-2 rounded hover:opacity-90 cursor-pointer mt-8 disabled:opacity-0 transition-opacity duration-300"
     >
       Save
     </button>
