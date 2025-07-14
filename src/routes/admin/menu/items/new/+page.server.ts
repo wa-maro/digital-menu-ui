@@ -3,21 +3,30 @@ import { fail, redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "../$types";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
-  const catRes = await fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("token")}`,
-    },
-  });
+  const headers = {
+    Authorization: `Bearer ${cookies.get("token")}`,
+  };
+
+  const [catRes, mediaRes] = await Promise.all([
+    fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, { headers }),
+    fetch(`${VITE_API_URL_PUBLIC}/media`, { headers }),
+  ]);
 
   if (!catRes.ok) {
     const error = await catRes.text();
     return fail(400, { error: error || "Failed to load categories" });
   }
+  if (!mediaRes.ok) {
+    const error = await mediaRes.text();
+    return fail(400, { error: error || "Failed to load categories" });
+  }
 
-  const categoriesData = await catRes.json();
+  const categoriesData: Category[] = await catRes.json();
+  const mediaData: MediaResponse = await mediaRes.json();
 
   return {
-    categories: categoriesData ?? [],
+    categories: categoriesData,
+    media: mediaData,
   };
 };
 

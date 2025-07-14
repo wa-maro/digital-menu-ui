@@ -2,7 +2,7 @@
   import MenuItemModalForm from "$lib/components/admin/menu/MenuItemModalForm.svelte";
 
   export let data;
-  const { categories } = data;
+  const { categories, media } = data;
 </script>
 
 <!-- Back Button -->
@@ -21,5 +21,5 @@
     Add New Item
   </h2>
 
-  <MenuItemModalForm {categories} />
+  <MenuItemModalForm {categories} mediaItems={media?.items} />
 </div>

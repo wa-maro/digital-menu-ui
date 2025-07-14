@@ -1,4 +1,7 @@
 <script lang="ts">
+  import MediaModal from "./MediaModal.svelte";
+  import MediaPicker from "./MediaPicker.svelte";
+
   export let item: MenuItem = {
     _id: "",
     name: "",
@@ -13,6 +16,11 @@
     price: 0.0,
   };
   export let categories: Category[] = [];
+  export let mediaItems: MediaItem[] = [];
+
+  let showModal = false;
+  $: item.imageURL = item.imageURL;
+  $: selectImageName = "";
 </script>
 
 <form method="POST" class="space-y-4">
@@ -76,24 +84,7 @@
     </div>
   </div>
 
-  <div class="flex gap-x-4">
-    {#if item.imageURL}
-      <img
-        src={item.imageURL}
-        alt={item.name}
-        class="w-16 h-16 object-cover rounded mt-2"
-      />
-    {/if}
-
-    <div class="flex-1">
-      <label for="imageURL" class="block mb-1 font-medium">Image URL</label>
-      <input
-        name="imageURL"
-        bind:value={item.imageURL}
-        class="w-full border px-3 py-2 rounded"
-      />
-    </div>
-  </div>
+  <MediaPicker {item} bind:showModal bind:selectImageName />
 
   <div class="flex justify-end">
     <button
@@ -104,3 +95,12 @@
     </button>
   </div>
 </form>
+
+{#if showModal}
+  <MediaModal
+    bind:showModal
+    bind:selectImageUrl={item.imageURL}
+    bind:selectImageName
+    {mediaItems}
+  />
+{/if}
