@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
 
   const [catRes, mediaRes] = await Promise.all([
     fetch(`${VITE_API_URL_PUBLIC}/menu/categories`, { headers }),
-    fetch(`${VITE_API_URL_ADMIN}/media/${id}`, { headers }),
+    fetch(`${VITE_API_URL_PUBLIC}/media/${id}`, { headers }),
   ]);
 
   if (!catRes.ok) throw new Error("Failed to load categories");
