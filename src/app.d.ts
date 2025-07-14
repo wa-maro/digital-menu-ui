@@ -139,7 +139,8 @@ declare global {
 
   export interface MediaItem {
     _id: string;
-    name: string;
+    displayName: string;
+    filename: string;
     url: string;
     category: Category;
     linkedMenuItemIds: MenuItem[];

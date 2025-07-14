@@ -12,7 +12,7 @@
 
   function applyFilters() {
     filteredItems = mediaItems.filter((item) => {
-      const matchesSearch = item.name
+      const matchesSearch = item.displayName
         .toLowerCase()
         .includes(search.toLowerCase());
       const matchesCategory =
@@ -112,7 +112,7 @@
                 <a href={`/admin/media/${item._id}`}>
                   <img
                     src={`http://127.0.0.1:3000${item.url}`}
-                    alt={item.name.slice(0, item.name.indexOf(" "))}
+                    alt={item.filename}
                     class="w-16 h-16 object-cover rounded"
                   />
                 </a>
@@ -130,7 +130,7 @@
                 href={`/admin/media/${item._id}`}
                 class="font-medium hover:underline"
               >
-                {item.name}
+                {item.displayName}
               </a>
             </td>
 

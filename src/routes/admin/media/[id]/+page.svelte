@@ -26,13 +26,13 @@
     <div class="overflow-hidden rounded-lg shadow-md col-span-1">
       <img
         src={`http://127.0.0.1:3000${media.url}`}
-        alt={media.name}
+        alt={media.displayName}
         class="w-full h-64 md:h-full object-cover transition-transform duration-300 hover:scale-105"
       />
     </div>
 
     <div class="flex flex-col justify-center space-y-6 col-span-2">
-      <h2 class="text-2xl font-bold text-gray-900">{media.name}</h2>
+      <h2 class="text-2xl font-bold text-gray-900">{media.displayName}</h2>
 
       <div class="space-y-2 text-gray-700">
         <div class="flex items-center space-x-2">
@@ -47,16 +47,16 @@
 
         <div class="flex items-center space-x-2 text-sm text-gray-500">
           <span class="font-semibold">Created At:</span>
-          <time datetime={media.createdAt}
-            >{new Date(media.createdAt).toLocaleString()}</time
-          >
+          <time dateTime={media.createdAt!}>
+            {new Date(media.createdAt!).toLocaleString()}
+          </time>
         </div>
 
         <div class="flex items-center space-x-2 text-sm text-gray-500">
           <span class="font-semibold">Updated At:</span>
-          <time datetime={media.updatedAt}
-            >{new Date(media.updatedAt).toLocaleString()}</time
-          >
+          <time dateTime={media.updatedAt!}>
+            {new Date(media.updatedAt!).toLocaleString()}
+          </time>
         </div>
       </div>
     </div>
