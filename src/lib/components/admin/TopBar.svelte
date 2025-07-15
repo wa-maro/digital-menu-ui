@@ -1,15 +1,9 @@
 <script lang="ts">
+  import AccountMenu from "./AccountMenu.svelte";
 </script>
 
-<nav class="bg-white shadow p-4 flex justify-between">
+<nav class="bg-white shadow p-3 px-8 flex justify-between">
   <div class="font-bold">Digital Menu</div>
 
-  <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
-    <button
-      type="submit"
-      class="text-red-600 hover:underline text-sm cursor-pointer"
-    >
-      Logout
-    </button>
-  </form>
+  <AccountMenu />
 </nav>
