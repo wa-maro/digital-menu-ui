@@ -3,6 +3,7 @@
   import { cartStore } from "$lib/stores/cart.store";
   import { notify } from "$lib/stores/notifications";
   import { userStore } from "$lib/stores/user.store";
+  import AccountMenu from "../admin/AccountMenu.svelte";
 
   let mobileNavOpen = false;
   let avatarMenuOpen = false;
@@ -12,7 +13,7 @@
 </script>
 
 <header class="bg-white shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-12 py-3 flex items-center justify-between">
     <!-- Logo -->
     <a href="/" class="text-xl font-bold text-[#065B8C]">Digital Menu</a>
 
@@ -47,14 +48,7 @@
 
       <!-- User -->
       {#if $userStore.user && $userStore.isAuthenticated}
-        <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
-          <button
-            type="submit"
-            class="text-red-600 hover:underline text-sm cursor-pointer"
-          >
-            Logout
-          </button>
-        </form>
+        <AccountMenu />
       {:else}
         <a
           href="/auth/login"
@@ -107,14 +101,7 @@
         </a>
 
         {#if $userStore.user && $userStore.isAuthenticated}
-          <form method="POST" action="/auth/logout" class="flex gap-4 mt-2">
-            <button
-              type="submit"
-              class="text-red-600 hover:underline text-sm cursor-pointer py-1 hover:text-[#065B8C]"
-            >
-              Logout
-            </button>
-          </form>
+          <AccountMenu />
         {:else}
           <a href="/auth/login" class="py-1 hover:text-[#065B8C]"> Login </a>
         {/if}
