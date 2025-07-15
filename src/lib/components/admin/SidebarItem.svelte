@@ -1,35 +1,27 @@
 <script lang="ts">
+  import { derived, get } from "svelte/store";
+  import { page } from "$app/stores";
+  import { clsx } from "clsx";
+
   export let icon;
   export let label: string;
-  export let href: string | null = null;
-  export let isSidebarExpanded: boolean;
-  export let onClick: (() => void) | null = null;
-  let active: boolean = false;
+  export let href: string;
+
+  $: active = $page.url.pathname === href;
 </script>
 
-<li class="relative group text-sm">
-  {#if href}
-    <a
-      {href}
-      class="flex items-center p-2 transition hover:bg-white/10 cursor-pointer"
-      class:bg-white={active}
-      class:opacity-10={active}
-    >
-      <svelte:component this={icon} class="w-5 h-5" />
-      {#if isSidebarExpanded}
-        <span class="ml-3">{label}</span>
-      {/if}
-    </a>
-  {:else}
-    <button
-      on:click={onClick}
-      aria-label={label}
-      class="flex items-center w-full p-2 transition hover:bg-white/10 cursor-pointer"
-    >
-      <svelte:component this={icon} class="w-5 h-5" />
-      {#if isSidebarExpanded}
-        <span class="ml-3">{label}</span>
-      {/if}
-    </button>
-  {/if}
+<li class="relative group">
+  <a
+    {href}
+    class={clsx(
+      "flex items-center p-2 transition text-white hover:bg-white/10 rounded-md cursor-pointer",
+      {
+        "bg-[#044974]": active, // Slightly darker active background
+        "opacity-100 font-semibold": active, // Make active item bolder
+      }
+    )}
+  >
+    <svelte:component this={icon} class="w-4 h-4" />
+    <span class="ml-3">{label}</span>
+  </a>
 </li>

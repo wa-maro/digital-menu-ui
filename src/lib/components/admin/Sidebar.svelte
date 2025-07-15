@@ -11,6 +11,7 @@
     Settings,
     Image,
     Home,
+    LayoutDashboard,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -18,7 +19,8 @@
   let isSidebarExpanded = true;
 
   let openMenus: Record<string, boolean> = {
-    dishes: true,
+    dashboard: true,
+    dishes: false,
     sales: false,
     settings: false,
   };
@@ -54,133 +56,80 @@
   <nav class="mt-4">
     <ul class="space-y-2">
       <!-- Dashboard -->
-      <li class="relative group">
-        <a
-          href="/admin/dashboard"
-          class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
-        >
-          <Home class="w-5 h-5" />
-          {#if isSidebarExpanded}
-            <span class="ml-3">Dashboard</span>
-          {/if}
-        </a>
-
-        {#if !isSidebarExpanded}
-          <div
-            class="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2 py-1 text-xs text-white bg-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap"
-          >
-            Dashboard
-          </div>
+      <SidebarSection
+        title="Dashboard"
+        icon={LayoutDashboard}
+        onClick={() => isSidebarExpanded && toggleMenu("dashboard")}
+      >
+        {#if openMenus.dashboard}
+          <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
+            <SidebarItem icon={Home} label="Home" href="/admin/dashboard" />
+          </ul>
         {/if}
-      </li>
+      </SidebarSection>
 
       <!-- Dishes Management -->
-      <SidebarSection title="Dishes" {isSidebarExpanded}>
-        <li class="flex flex-col relative">
-          <div>
+      <SidebarSection
+        title="Dishes"
+        icon={Utensils}
+        onClick={() => isSidebarExpanded && toggleMenu("dishes")}
+      >
+        {#if openMenus.dishes}
+          <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
             <SidebarItem
-              icon={Utensils}
-              label="Menu Management"
-              onClick={() => isSidebarExpanded && toggleMenu("dishes")}
-              {isSidebarExpanded}
+              icon={MenuSquare}
+              label="Categories"
+              href="/admin/menu/categories"
             />
-          </div>
-          {#if openMenus.dishes}
-            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
-              <SidebarItem
-                icon={MenuSquare}
-                label="Categories"
-                href="/admin/menu/categories"
-                {isSidebarExpanded}
-              />
-              <SidebarItem
-                icon={UtensilsCrossed}
-                label="Menu Items"
-                href="/admin/menu/items"
-                {isSidebarExpanded}
-              />
-              <SidebarItem
-                icon={Image}
-                label="Media Library"
-                href="/admin/media"
-                {isSidebarExpanded}
-              />
-            </ul>
-          {/if}
-        </li>
+            <SidebarItem
+              icon={UtensilsCrossed}
+              label="Menu Items"
+              href="/admin/menu/items"
+            />
+            <SidebarItem
+              icon={Image}
+              label="Media Library"
+              href="/admin/media"
+            />
+          </ul>
+        {/if}
       </SidebarSection>
 
       <!-- Sales Management -->
-      <SidebarSection title="Sales" {isSidebarExpanded}>
-        <li class="flex flex-col relative">
-          <div>
+      <SidebarSection
+        title="Sales"
+        icon={ShoppingBasket}
+        onClick={() => isSidebarExpanded && toggleMenu("sales")}
+      >
+        {#if openMenus.sales}
+          <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
             <SidebarItem
-              icon={ShoppingBasket}
-              label="Sales Management"
-              onClick={() => isSidebarExpanded && toggleMenu("sales")}
-              {isSidebarExpanded}
+              icon={ShoppingCart}
+              label="Carts"
+              href="/admin/carts"
             />
-          </div>
-          {#if openMenus.sales}
-            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
-              <SidebarItem
-                icon={ShoppingCart}
-                label="Carts"
-                href="/admin/carts"
-                {isSidebarExpanded}
-              />
-              <SidebarItem
-                icon={ClipboardList}
-                label="Orders"
-                href="/admin/orders"
-                {isSidebarExpanded}
-              />
-              <SidebarItem
-                icon={Banknote}
-                label="Payments"
-                href="/admin/payments"
-                {isSidebarExpanded}
-              />
-            </ul>
-          {/if}
-        </li>
+            <SidebarItem
+              icon={ClipboardList}
+              label="Orders"
+              href="/admin/orders"
+            />
+            <SidebarItem
+              icon={Banknote}
+              label="Payments"
+              href="/admin/payments"
+            />
+          </ul>
+        {/if}
       </SidebarSection>
 
-      <!-- Transactions -->
-      <!-- <SidebarSection title="Transactions" {isSidebarExpanded}>
-        <li class="flex flex-col">
-          <div>
-            <SidebarItem
-              icon={CreditCardIcon}
-              label="Billing Management"
-              onClick={() => toggleMenu("transactions")}
-              {isSidebarExpanded}
-            />
-          </div>
-          {#if openMenus.transactions}
-            <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
-              <SidebarItem
-                icon={RotateCcw}
-                label="Refunds"
-                href="/admin/refunds"
-                {isSidebarExpanded}
-              />
-            </ul>
-          {/if}
-        </li>
-      </SidebarSection> -->
-
-      <SidebarSection title="Settings" {isSidebarExpanded}>
-        <li class="flex flex-col">
-          <div>
-            <SidebarItem
-              icon={Settings}
-              label="Restaurant Management"
-              onClick={() => toggleMenu("settings")}
-              {isSidebarExpanded}
-            />
-          </div>
-        </li>
+      <SidebarSection
+        title="Settings"
+        icon={Settings}
+        onClick={() => isSidebarExpanded && toggleMenu("settings")}
+      >
+        {#if openMenus.settings}
+          <ul in:slide out:slide class="ml-4 space-y-1 text-sm"></ul>
+        {/if}
       </SidebarSection>
     </ul>
   </nav>
