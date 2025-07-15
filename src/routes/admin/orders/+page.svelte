@@ -8,7 +8,7 @@
 
   function applyFilters() {
     filteredItems = orders.filter((item) => {
-      return item.user.email.toLowerCase().includes(search.toLowerCase());
+      return item.user.fullName.toLowerCase().includes(search.toLowerCase());
     });
   }
 
@@ -57,7 +57,7 @@
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr
           ><th class="px-4 py-3">Order ID</th>
-          <th class="px-4 py-3">User</th>
+          <th class="px-4 py-3">Customer</th>
           <th class="px-4 py-3">Type</th>
           <th class="px-4 py-3">Items</th>
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
@@ -75,7 +75,7 @@
             <td class="px-4 py-2 max-w-[10rem] truncate" title={item._id}>
               {item._id}
             </td>
-            <td class="px-4 py-2">{item.user.email}</td>
+            <td class="px-4 py-2">{item.user.fullName || item.user.email}</td>
             <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>
             <td class="px-4 py-2">{item.items.length}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"

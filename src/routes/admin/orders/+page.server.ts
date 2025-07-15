@@ -14,7 +14,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
       return { success: false, error: error };
     }
 
-    const ordersData: any[] = await ordersRes.json();
+    const ordersData: Order[] = await ordersRes.json();
 
     return {
       orders: ordersData,
