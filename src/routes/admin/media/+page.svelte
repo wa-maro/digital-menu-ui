@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Pencil, Trash, Upload } from "lucide-svelte";
+  import { onMount } from "svelte";
 
   export let data;
   const mediaItems: MediaItem[] = data.media?.items || [];
@@ -7,18 +8,49 @@
 
   let search = "";
   let selectedCategory = "";
-
+  let sort: "asc" | "desc" = "desc";
+  let sortField: "displayName" = "displayName";
   let filteredItems: MediaItem[] = mediaItems;
 
   function applyFilters() {
-    filteredItems = mediaItems.filter((item) => {
-      const matchesSearch = item.displayName
-        .toLowerCase()
-        .includes(search.toLowerCase());
-      const matchesCategory =
-        !selectedCategory || item.category._id === selectedCategory;
-      return matchesSearch && matchesCategory;
-    });
+    filteredItems = mediaItems
+      .filter((item) => {
+        const matchesSearch = item.displayName
+          .toLowerCase()
+          .includes(search.toLowerCase());
+        const matchesCategory =
+          !selectedCategory || item.category._id === selectedCategory;
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        if (!sortField) return 0;
+
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sort === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return sort === "asc" ? aValue - bValue : bValue - aValue;
+        }
+
+        return 0;
+      });
+  }
+
+  function toggleSort(field: "displayName" = "displayName") {
+    if (sortField === field) sort = sort === "asc" ? "desc" : "asc";
+    else {
+      sortField = field;
+      sort = "asc";
+    }
+    applyFilters();
+
+    onMount(() => toggleSort());
   }
 
   let currentPage = 1;
@@ -95,7 +127,13 @@
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
           <th class="p-4">Image</th>
-          <th class="p-4 cursor-pointer">Name</th>
+          <th
+            class="p-4 cursor-pointer"
+            on:click={() => toggleSort("displayName")}
+            >Name {#if sortField === "displayName"}
+              <span>{sort === "asc" ? "↑" : "↓"}</span>
+            {/if}</th
+          >
           <th class="p-4">Category </th>
           <th class="p-4 cursor-pointer">Linked Items </th>
           <th class="p-4 text-center">Actions</th>

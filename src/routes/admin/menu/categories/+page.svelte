@@ -1,17 +1,52 @@
 <script lang="ts">
   import { Pencil, Trash } from "lucide-svelte";
+  import { onMount } from "svelte";
 
   export let data: LoadResult<Category>;
   let categories: Category[] = data.data;
 
   let search = "";
   let filteredCategories: Category[] = categories;
+  let sort: "asc" | "desc" = "desc";
+  let sortField: "name" = "name";
 
   function applyFilters() {
-    filteredCategories = categories.filter((category) =>
-      category.name.toLowerCase().includes(search.toLowerCase())
-    );
+    filteredCategories = categories
+      .filter(
+        (category) =>
+          category.name.toLowerCase().includes(search.toLowerCase()) ||
+          category.description.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (!sortField) return 0;
+
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sort === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        }
+
+        if (typeof aValue === "number" && typeof bValue === "number") {
+          return sort === "asc" ? aValue - bValue : bValue - aValue;
+        }
+
+        return 0;
+      });
   }
+
+  function toggleSort(field: "name" = "name") {
+    if (sortField === field) sort = sort === "asc" ? "desc" : "asc";
+    else {
+      sortField = field;
+      sort = "asc";
+    }
+    applyFilters();
+  }
+
+  onMount(() => toggleSort());
 </script>
 
 <div class="p-4">
@@ -46,7 +81,11 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
-          <th class="p-4">Name</th>
+          <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
+            >Name {#if sortField === "name"}
+              <span>{sort === "asc" ? "↑" : "↓"}</span>
+            {/if}</th
+          >
           <th class="p-4">Description</th>
           <th class="p-4 text-center">Actions</th>
         </tr>
