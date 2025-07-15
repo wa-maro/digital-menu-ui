@@ -42,42 +42,45 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {#each filteredCategories as category}
-      <div
-        class="bg-white shadow-sm hover:shadow-md duration-200 rounded-xl px-4 py-3 flex items-center justify-between group transform hover:scale-[1.01] transition-[box-shadow,transform]"
-      >
-        <div>
-          <h2
-            class="text-base font-medium text-gray-800 group-hover:text-blue-700 transition-colors"
-          >
-            {category.name}
-          </h2>
-          <p class="text-sm text-gray-500">{category.description}</p>
-        </div>
+  <div class="min-h-[300px]">
+    <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
+      <thead class="bg-gray-50 text-left text-sm text-gray-700">
+        <tr>
+          <th class="p-4">Name</th>
+          <th class="p-4">Description</th>
+          <th class="p-4 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
+        {#each filteredCategories as category}
+          <tr class="hover:bg-gray-50 transition">
+            <td class="py-1 ps-4 text-gray-800">{category.name}</td>
+            <td class="py-1 ps-4 text-gray-500">{category.description}</td>
+            <td class="py-1 ps-4 text-center">
+              <div class="flex justify-center gap-2">
+                <a
+                  href={`/admin/menu/categories/${category._id}/update`}
+                  class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
+                  aria-label="Edit"
+                >
+                  <Pencil size={12} />
+                </a>
 
-        <div class="flex gap-2 items-center">
-          <a
-            href={`/admin/menu/categories/${category._id}/update`}
-            type="button"
-            class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
-            aria-label="Edit"
-          >
-            <Pencil size={12} /></a
-          >
-
-          <form action="?/delete" method="post">
-            <input type="hidden" name="_id" bind:value={category._id} />
-            <button
-              type="submit"
-              class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
-              aria-label="Delete"
-            >
-              <Trash size={12} />
-            </button>
-          </form>
-        </div>
-      </div>
-    {/each}
+                <form action="?/delete" method="post">
+                  <input type="hidden" name="_id" bind:value={category._id} />
+                  <button
+                    type="submit"
+                    class="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
+                    aria-label="Delete"
+                  >
+                    <Trash size={12} />
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 </div>
