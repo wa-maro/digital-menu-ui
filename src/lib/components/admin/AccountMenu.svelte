@@ -1,6 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { User } from "lucide-svelte";
+  import { LogOut, Settings, User, UserCog } from "lucide-svelte";
   import { onDestroy, onMount } from "svelte";
 
   let open = false;
@@ -42,23 +42,29 @@
   </button>
 
   {#if open}
-    <div class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg z-50">
+    <div class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50">
       <a
-        href="/admin/dashboard"
-        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >Profile</a
+        href="/admin/profile"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
       >
+        <UserCog class="w-4 h-4" color="#065B8C" />
+        Profile</a
+      >
+
       <a
-        href="/admin/dashboard"
-        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-        >Settings</a
+        href="/admin/profile"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
+      >
+        <Settings class="w-4 h-4" color="#065B8C" />
+        Settings</a
       >
 
       <form method="POST" action="/auth/logout">
         <button
           type="submit"
-          class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-1.5"
         >
+          <LogOut class="w-4 h-4" color="#DC2626" />
           Logout
         </button>
       </form>
