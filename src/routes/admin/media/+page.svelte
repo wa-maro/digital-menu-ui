@@ -49,9 +49,9 @@
       sort = "asc";
     }
     applyFilters();
-
-    onMount(() => toggleSort());
   }
+
+  onMount(() => toggleSort());
 
   let currentPage = 1;
   const itemsPerPage = 10;
