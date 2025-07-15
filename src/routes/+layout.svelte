@@ -8,7 +8,3 @@
 {@render children()}
 
 <Toast />
-
-<!-- <footer class="text-center text-sm text-gray-500 py-2 shadow-sm">
-  &copy; {new Date().getFullYear()} DigiDine. All rights reserved.
-</footer> -->
