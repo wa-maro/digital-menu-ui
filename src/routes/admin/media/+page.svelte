@@ -37,9 +37,7 @@
 </script>
 
 <div class="p-4">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-[#044974]">Media</h1>
-
+  <div class="flex justify-end items-center mb-6">
     <a
       href="/admin/media/upload"
       class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"

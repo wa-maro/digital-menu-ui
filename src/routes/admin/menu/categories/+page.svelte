@@ -15,8 +15,7 @@
 </script>
 
 <div class="p-4">
-  <div class="flex justify-between items-center mb-4">
-    <h1 class="text-2xl font-bold text-[#044974]">Categories</h1>
+  <div class="flex justify-end items-center mb-4">
     <a
       href="/admin/menu/categories/new"
       class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer"
