@@ -12,9 +12,10 @@
   let sortField: "name" | "price" = "name";
   let filteredItems: MenuItem[] = items;
   let currentPage = 1;
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   $: totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  $: if (currentPage > totalPages) currentPage = totalPages || 1;
   $: paginatedItems = filteredItems.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -72,15 +73,13 @@
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-2xl font-bold text-[#044974]">Menu Items</h1>
 
-    <button>
-      <a
-        href="/admin/menu/items/new"
-        class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
-      >
-        <Plus size={16} />
-        Add Item
-      </a>
-    </button>
+    <a
+      href="/admin/menu/items/new"
+      class="bg-[#044974] text-white px-4 py-2 rounded flex items-center gap-2 cursor-pointer"
+    >
+      <Plus size={16} />
+      Add Item
+    </a>
   </div>
 
   <!-- Filters -->
@@ -153,12 +152,12 @@
                   <img
                     src={item.imageURL}
                     alt={item.name}
-                    class="w-16 h-16 object-cover rounded"
+                    class="w-12 object-cover rounded"
                   />
                 </a>
               {:else}
                 <div
-                  class="w-16 h-16 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
+                  class="w-12 h-12 flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded"
                 >
                   No Image
                 </div>
@@ -180,15 +179,14 @@
 
             <td class="py-1 ps-4 text-center">
               <div class="flex justify-center gap-2">
-                <button
+                <a
+                  href={`/admin/menu/items/${item._id}/update`}
                   type="button"
                   aria-label="Edit"
                   class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
                 >
-                  <a href={`/admin/menu/items/${item._id}/update`}>
-                    <Pencil size={12} /></a
-                  >
-                </button>
+                  <Pencil size={12} /></a
+                >
 
                 <form action="?/delete" method="post">
                   <input type="hidden" name="_id" bind:value={item._id} />

@@ -17,13 +17,11 @@
 <div class="p-4">
   <div class="flex justify-between items-center mb-4">
     <h1 class="text-2xl font-bold text-[#044974]">Categories</h1>
-    <button>
-      <a
-        href="/admin/menu/categories/new"
-        class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer"
-        >Add Category</a
-      >
-    </button>
+    <a
+      href="/admin/menu/categories/new"
+      class="bg-[#044974] text-white px-4 py-2 rounded cursor-pointer"
+      >Add Category</a
+    >
   </div>
 
   <!-- Filters -->
@@ -60,15 +58,14 @@
         </div>
 
         <div class="flex gap-2 items-center">
-          <button
+          <a
+            href={`/admin/menu/categories/${category._id}/update`}
             type="button"
             class="p-2 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer"
             aria-label="Edit"
           >
-            <a href={`/admin/menu/categories/${category._id}/update`}>
-              <Pencil size={12} /></a
-            >
-          </button>
+            <Pencil size={12} /></a
+          >
 
           <form action="?/delete" method="post">
             <input type="hidden" name="_id" bind:value={category._id} />
