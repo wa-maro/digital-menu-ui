@@ -1,12 +1,5 @@
 <script lang="ts">
-  export let data: {
-    carts: UserCart[];
-    page: number;
-    limit: number;
-    search: string;
-    sortBy: string;
-    order: string;
-  };
+  export let data: { carts: UserCart[] };
 
   const { carts } = data;
 
@@ -78,8 +71,8 @@
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
             Created at
           </th>
-        </tr></thead
-      >
+        </tr>
+      </thead>
 
       <tbody class="bg-white divide-y divide-gray-100">
         {#each paginatedItems as item}
