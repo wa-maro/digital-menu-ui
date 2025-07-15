@@ -1,19 +1,16 @@
 <script lang="ts">
   import {
     Menu,
-    LayoutDashboard,
     ShoppingCart,
     ShoppingBasket,
     Utensils,
     MenuSquare,
     UtensilsCrossed,
     ClipboardList,
-    CreditCardIcon,
-    RotateCcw,
-    Wallet,
     Banknote,
     Settings,
     Image,
+    Home,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -21,9 +18,8 @@
   let isSidebarExpanded = true;
 
   let openMenus: Record<string, boolean> = {
-    dishes: false,
+    dishes: true,
     sales: false,
-    transactions: false,
     settings: false,
   };
 
@@ -63,7 +59,7 @@
           href="/admin/dashboard"
           class="flex items-center px-4 py-2 hover:bg-white/10 cursor-pointer"
         >
-          <LayoutDashboard class="w-5 h-5" />
+          <Home class="w-5 h-5" />
           {#if isSidebarExpanded}
             <span class="ml-3">Dashboard</span>
           {/if}
@@ -139,13 +135,19 @@
                 href="/admin/orders"
                 {isSidebarExpanded}
               />
+              <SidebarItem
+                icon={Banknote}
+                label="Payments"
+                href="/admin/payments"
+                {isSidebarExpanded}
+              />
             </ul>
           {/if}
         </li>
       </SidebarSection>
 
       <!-- Transactions -->
-      <SidebarSection title="Transactions" {isSidebarExpanded}>
+      <!-- <SidebarSection title="Transactions" {isSidebarExpanded}>
         <li class="flex flex-col">
           <div>
             <SidebarItem
@@ -158,27 +160,15 @@
           {#if openMenus.transactions}
             <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
               <SidebarItem
-                icon={Banknote}
-                label="Payments"
-                href="/admin/payments"
-                {isSidebarExpanded}
-              />
-              <SidebarItem
                 icon={RotateCcw}
                 label="Refunds"
                 href="/admin/refunds"
                 {isSidebarExpanded}
               />
-              <SidebarItem
-                icon={Wallet}
-                label="Payment Methods"
-                href="/admin/payment-methods"
-                {isSidebarExpanded}
-              />
             </ul>
           {/if}
         </li>
-      </SidebarSection>
+      </SidebarSection> -->
 
       <SidebarSection title="Settings" {isSidebarExpanded}>
         <li class="flex flex-col">

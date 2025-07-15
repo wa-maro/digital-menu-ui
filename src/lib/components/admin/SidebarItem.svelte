@@ -7,7 +7,7 @@
   let active: boolean = false;
 </script>
 
-<li class="relative group">
+<li class="relative group text-sm">
   {#if href}
     <a
       {href}
