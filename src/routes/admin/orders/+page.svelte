@@ -72,8 +72,13 @@
       <tbody>
         {#each paginatedItems as item}
           <tr class="hover:bg-gray-50">
-            <td class="px-4 py-2 max-w-[10rem] truncate" title={item._id}>
-              {item._id}
+            <td class="" title={item._id}>
+              <a
+                href={`/admin/orders/${item._id}`}
+                class="px-4 py-2 hover:underline transition"
+              >
+                {item._id}
+              </a>
             </td>
             <td class="px-4 py-2">{item.user.fullName || item.user.email}</td>
             <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>

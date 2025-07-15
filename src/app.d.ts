@@ -83,7 +83,7 @@ declare global {
   }
 
   export interface Order {
-    _id?: string;
+    _id: string;
     user: User;
     items: CartItemPopulated[];
     type: OrderType;

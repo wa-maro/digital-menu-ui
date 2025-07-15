@@ -18,3 +18,10 @@ export const formatDate = (dateStr?: string) => {
     minute: "2-digit",
   });
 };
+
+export const maskPhone = (phone: string): string => {
+  if (!phone || phone.length < 5) return phone;
+  const start = phone.slice(0, 2);
+  const end = phone.slice(-3);
+  return `${start}*****${end}`;
+};
