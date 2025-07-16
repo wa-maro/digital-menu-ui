@@ -1,32 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import { formatRelativeDate } from "$lib/utils/formatter";
+  import { statusBadgeClass } from "$lib/utils/order-status";
   export let recentOrders: RecentOrder[];
-
-  type StatusStyles = Record<OrderStatus, string>;
-
-  const statusStyles: StatusStyles = {
-    pending: "bg-yellow-100 text-yellow-800",
-    confirmed: "bg-cyan-100 text-cyan-800",
-    preparing: "bg-blue-100 text-blue-800",
-    ready: "bg-orange-100 text-orange-800",
-    out_for_delivery: "bg-indigo-100 text-indigo-800",
-    delivered: "bg-green-100 text-green-800",
-    picked: "bg-purple-100 text-purple-800",
-    completed: "bg-gray-100 text-gray-800",
-    cancel_request: "bg-yellow-50 text-yellow-600 border border-yellow-300",
-    cancelled: "bg-red-100 text-red-800",
-    rejected_cancel_request: "bg-pink-100 text-pink-800",
-    failed: "bg-red-200 text-red-900",
-  };
 
   const viewOrder = (id: string) => {
     goto(`/admin/orders/${id}`);
-  };
-
-  const formatStatus = (status: OrderStatus) => {
-    return status
-      .replace(/_/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
   };
 </script>
 
@@ -51,12 +30,14 @@
           <td class="px-4 py-2.5">{Number(order.total).toFixed(2)}</td>
           <td class="px-4 py-2.5">
             <span
-              class={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${statusStyles[order.status]}`}
+              class={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${statusBadgeClass(order.status)}`}
             >
-              {formatStatus(order.status)}
+              {order.status.replace(/_/g, " ")}
             </span>
           </td>
-          <td class="px-4 py-2.5">{order.createdAt}</td>
+          <td class="px-4 py-2.5"
+            >{formatRelativeDate(order.createdAt || "")}</td
+          >
         </tr>
       {/each}
     </tbody>
