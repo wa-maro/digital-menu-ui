@@ -6,7 +6,7 @@
   import BackButton from "$lib/components/BackButton.svelte";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
-  export let data: { order: Order; user: User };
+  export let data: { order: any; user: User };
   const { order } = data;
 
   function reorderNow(order: Order) {
@@ -197,6 +197,33 @@
           </svg>
           Load to Cart
         </button>
+
+        {#if (order.status === "pending" || order.status === "confirmed") && order.paymentStatus === "pending"}
+          <form action="?/requestCancellation" method="post">
+            <button
+              type="submit"
+              class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-red-300 transition cursor-pointer"
+              aria-label={`Request cancellation for order ${order._id}`}
+            >
+              <!-- Cancel Icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Request Cancellation
+            </button>
+          </form>
+        {/if}
       </div>
     </article>
   </div>
