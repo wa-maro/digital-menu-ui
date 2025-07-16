@@ -77,7 +77,7 @@
       <tbody class="bg-white divide-y divide-gray-100">
         {#each paginatedItems as item}
           <tr class="hover:bg-gray-50">
-            <td class="px-4 py-2 max-w-fit truncate" title={item._id}
+            <td class="px-4 py-2 max-w-3 truncate" title={item._id}
               >{item._id}</td
             >
             <td class="px-4 py-2">{item.user.fullName}</td>

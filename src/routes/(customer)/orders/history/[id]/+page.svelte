@@ -40,7 +40,7 @@
   <div class="space-y-5">
     <article
       class="bg-white rounded-2xl shadow p-5 border border-gray-200 hover:shadow-lg transition-shadow"
-      aria-label={`Order ${order._id}`}
+      aria-label={`Order ${order.orderId}`}
     >
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
@@ -48,7 +48,7 @@
         <div class="space-y-1">
           <p class="text-xs text-gray-500">Order ID</p>
           <p class="font-mono font-semibold text-gray-900 break-all text-sm">
-            {order._id}
+            {order.orderId}
           </p>
         </div>
 
@@ -65,8 +65,8 @@
         </div>
 
         <div class="space-y-1">
-          <p class="text-xs text-gray-500">Total</p>
-          <p class="font-medium text-sm">TZS {order.total.toFixed(2)}</p>
+          <p class="text-xs text-gray-500">Total (TZS)</p>
+          <p class="font-medium text-sm">{order.total.toFixed(2)}</p>
         </div>
 
         <div class="space-y-1">
@@ -154,7 +154,7 @@
           type="button"
           class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition cursor-pointer"
           on:click={() => reorderNow(order)}
-          aria-label={`Reorder order ${order._id} now`}
+          aria-label={`Reorder order ${order.orderId} now`}
         >
           <!-- Reorder Now Icon -->
           <svg
@@ -178,7 +178,7 @@
           type="button"
           class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition cursor-pointer"
           on:click={() => order._id && loadToCart(order._id)}
-          aria-label={`Load order ${order._id} to cart`}
+          aria-label={`Load order ${order.orderId} to cart`}
         >
           <!-- Load to Cart Icon -->
           <svg
@@ -203,7 +203,7 @@
             <button
               type="submit"
               class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-red-300 transition cursor-pointer"
-              aria-label={`Request cancellation for order ${order._id}`}
+              aria-label={`Request cancellation for order ${order.orderId}`}
             >
               <!-- Cancel Icon -->
               <svg

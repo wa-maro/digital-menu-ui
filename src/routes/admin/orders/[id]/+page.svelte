@@ -42,7 +42,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
       <div class="space-y-1">
         <p class="text-xs text-gray-500">Order ID</p>
-        <p class="font-mono text-sm font-medium break-all">{order._id}</p>
+        <p class="font-mono text-sm font-medium break-all">{order.orderId}</p>
       </div>
 
       <div class="space-y-1">
@@ -121,8 +121,8 @@
             <tr>
               <th class="px-4 py-2 text-left">Item</th>
               <th class="px-4 py-2 text-center">Qty</th>
-              <th class="px-4 py-2 text-right">Price</th>
-              <th class="px-4 py-2 text-right">Subtotal</th>
+              <th class="px-4 py-2 text-right">Price (TZS)</th>
+              <th class="px-4 py-2 text-right">Subtotal (TZS)</th>
             </tr>
           </thead>
           <tbody>
@@ -130,10 +130,9 @@
               <tr class={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                 <td class="px-4 py-2">{item.item?.name ?? "Unknown Item"}</td>
                 <td class="px-4 py-2 text-center">{item.quantity}</td>
-                <td class="px-4 py-2 text-right">TZS {item.price.toFixed(2)}</td
-                >
+                <td class="px-4 py-2 text-right">{item.price.toFixed(2)}</td>
                 <td class="px-4 py-2 text-right"
-                  >TZS {(item.quantity * item.price).toFixed(2)}</td
+                  >{(item.quantity * item.price).toFixed(2)}</td
                 >
               </tr>
             {/each}

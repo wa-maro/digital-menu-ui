@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { formatRelativeDate } from "$lib/utils/formatter";
+  import { statusBadgeClass } from "$lib/utils/order-status";
+
   export let data: { orders: Order[] };
 
   const { orders } = data;
@@ -55,11 +58,10 @@
   <div class="min-h-[300px]">
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
-        <tr
-          ><th class="px-4 py-3">Order ID</th>
+        <tr class="text-sm">
+          <th class="px-4 py-3">Order ID</th>
           <th class="px-4 py-3">Customer</th>
           <th class="px-4 py-3">Type</th>
-          <th class="px-4 py-3">Items</th>
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
             Total (TZS)
           </th>
@@ -71,40 +73,30 @@
       </thead>
       <tbody>
         {#each paginatedItems as item}
-          <tr class="hover:bg-gray-50">
-            <td class="" title={item._id}>
+          <tr class="hover:bg-gray-50 text-sm">
+            <td class="" title={item.orderId}>
               <a
                 href={`/admin/orders/${item._id}`}
                 class="px-4 py-2 hover:underline transition"
               >
-                {item._id}
+                {item.orderId}
               </a>
             </td>
             <td class="px-4 py-2">{item.user.fullName || item.user.email}</td>
             <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>
-            <td class="px-4 py-2">{item.items.length}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
               >{item.total.toFixed(2)}</td
             >
             <td class="px-4 py-2">
               <span
-                class={`px-2 py-1 rounded text-xs font-medium
-              ${
-                item.status === "pending"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : item.status === "completed"
-                    ? "bg-green-100 text-green-700"
-                    : item.status === "cancelled"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-gray-100 text-gray-800"
-              }`}
+                class={`px-2 py-1 rounded text-xs font-medium ${statusBadgeClass(item.status)}`}
               >
                 {item.status.replace(/_/g, " ")}
               </span>
             </td>
             <td class="px-4 py-2 text-gray-500"
-              >{new Date(item.createdAt || "").toLocaleDateString()}</td
-            >
+              >{formatRelativeDate(item.createdAt || "")}
+            </td>
           </tr>
         {/each}
       </tbody>
