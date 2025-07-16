@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { derived, get } from "svelte/store";
   import { page } from "$app/stores";
   import { clsx } from "clsx";
 

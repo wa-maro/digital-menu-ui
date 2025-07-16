@@ -16,10 +16,12 @@
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
   import SidebarItem from "./SidebarItem.svelte";
+  import { onMount } from "svelte";
+  import { page } from "$app/stores";
   let isSidebarExpanded = true;
 
   let openMenus: Record<string, boolean> = {
-    dashboard: true,
+    dashboard: false,
     dishes: false,
     sales: false,
     settings: false,
@@ -38,6 +40,27 @@
 
     isSidebarExpanded = !isSidebarExpanded;
   };
+
+  onMount(() => {
+    const path = $page.url.pathname;
+
+    if (path.startsWith("/admin/dashboard")) {
+      openMenus.dashboard = true;
+    } else if (
+      path.startsWith("/admin/menu") ||
+      path.startsWith("/admin/media")
+    ) {
+      openMenus.dishes = true;
+    } else if (
+      path.startsWith("/admin/carts") ||
+      path.startsWith("/admin/orders") ||
+      path.startsWith("/admin/payments")
+    ) {
+      openMenus.sales = true;
+    } else if (path.startsWith("/admin/settings")) {
+      openMenus.settings = true;
+    }
+  });
 </script>
 
 <aside
