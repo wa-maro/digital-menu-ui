@@ -1,7 +1,10 @@
 <script lang="ts">
   import CancelRequestActions from "$lib/components/admin/orders/CancelRequestActions.svelte";
   import StatusUpdateActionButton from "$lib/components/admin/orders/StatusUpdateActionButton.svelte";
-  import { OrderStatusEnum } from "$lib/constants/order-status";
+  import {
+    OrderStatusEnum,
+    PaymentStatusEnum,
+  } from "$lib/constants/order-status";
   import { formatDate } from "$lib/utils/formatter.js";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
@@ -160,13 +163,43 @@
 
     <!-- Actions -->
     <div class="mt-6 border-t pt-4 space-y-4">
-      <h3 class="text-sm font-semibold text-gray-700 mb-2">Quick Actions</h3>
+      <h3 class="text-sm font-semibold text-gray-700 mb-2.5">Quick Actions</h3>
 
       <div class="flex flex-wrap gap-3">
-        <StatusUpdateActionButton {order} />
+        {#if order.paymentStatus === PaymentStatusEnum.PAID}
+          <StatusUpdateActionButton {order} />
+        {/if}
 
         {#if order.status === OrderStatusEnum.CANCEL_REQUEST}
           <CancelRequestActions />
+        {/if}
+
+        {#if order.status === OrderStatusEnum.PENDING && order.paymentMethod === "cash" && order.paymentStatus === PaymentStatusEnum.PENDING_CONFIRMATION}
+          <form
+            action="?/manualPaymentConfirm"
+            method="post"
+            class="flex items-center border border-gray-100 rounded-md shadow-md overflow-hidden"
+          >
+            <label for="phoneNumber" class="hidden">Phone Number</label>
+            <input
+              type="tel"
+              name="phoneNumber"
+              id="phoneNumber"
+              placeholder="Enter a phone number"
+              required
+              bind:value={order.phoneNumber}
+              class="px-3 py-2 w-72 outline-none border-0 text-sm"
+            />
+            <button
+              type="submit"
+              class="px-3 py-2 border-none text-sm bg-blue-700 text-white"
+              >Confirm Payment</button
+            >
+          </form>
+        {/if}
+
+        {#if order.paymentMethod === "cash" && order.paymentStatus === PaymentStatusEnum.MANUAL_REVIEW}
+          <button type="button" class="btn-secondary">Review</button>
         {/if}
       </div>
     </div>

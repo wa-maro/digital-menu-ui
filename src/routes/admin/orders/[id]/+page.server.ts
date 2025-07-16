@@ -75,4 +75,33 @@ export const actions: Actions = {
 
     throw redirect(303, `/admin/orders/${id}`);
   },
+
+  manualPaymentConfirm: async ({ cookies, fetch, params, request }) => {
+    const id = params.id;
+    const formData = await request.formData();
+    const phoneNumber = formData.get("phoneNumber")?.toString() || "";
+
+    if (!phoneNumber) throw new Error("Phone Number can not be empty");
+
+    const orderRes = await fetch(
+      `${VITE_API_URL_ADMIN}/orders/${id}/confirm-manual-payment`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
+        body: JSON.stringify({ phoneNumber }),
+      }
+    );
+
+    if (!orderRes.ok) {
+      const error = await orderRes.text();
+      console.log(error);
+
+      return { success: false, error: error };
+    }
+
+    throw redirect(303, `/admin/orders/${id}`);
+  },
 };

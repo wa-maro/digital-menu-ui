@@ -89,6 +89,7 @@ declare global {
     items: CartItemPopulated[];
     type: OrderType;
     paymentMethod: PaymentMethod;
+    paymentStatus: any;
     total: number;
     status: OrderStatus;
     paymentDetails?: PaymentDetails;

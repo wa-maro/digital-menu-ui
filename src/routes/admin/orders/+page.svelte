@@ -2,16 +2,21 @@
   import { formatRelativeDate } from "$lib/utils/formatter";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
-  export let data: { orders: Order[]; title: string };
+  export let data: { orders: any[]; title: string };
 
   const { orders } = data;
 
   let search = "";
-  let filteredItems: Order[] = orders;
+  let filteredItems: any[] = orders;
 
   function applyFilters() {
+    const searchTerm = search.trim().toLowerCase();
+
     filteredItems = orders.filter((item) => {
-      return item.user.fullName.toLowerCase().includes(search.toLowerCase());
+      const fullName = item.user.fullName.toLowerCase();
+      const orderId = item.orderId.toLowerCase();
+
+      return fullName.includes(searchTerm) || orderId.includes(searchTerm);
     });
   }
 
