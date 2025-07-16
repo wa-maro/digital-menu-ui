@@ -48,4 +48,31 @@ export const actions: Actions = {
 
     throw redirect(303, `/admin/orders/${id}`);
   },
+
+  processCancellation: async ({ cookies, fetch, request, params }) => {
+    const id = params.id;
+    const formData = await request.formData();
+    const status = formData.get("status")?.toString() || "";
+
+    if (!status) throw new Error("Status can not be empty");
+
+    const orderRes = await fetch(
+      `${VITE_API_URL_ADMIN}/orders/${id}/process-cancellation`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    if (!orderRes.ok) {
+      const error = await orderRes.text();
+      return { success: false, error: error };
+    }
+
+    throw redirect(303, `/admin/orders/${id}`);
+  },
 };

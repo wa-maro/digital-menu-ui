@@ -1,27 +1,13 @@
 <script lang="ts">
+  import CancelRequestActions from "$lib/components/admin/orders/CancelRequestActions.svelte";
   import StatusUpdateActionButton from "$lib/components/admin/orders/StatusUpdateActionButton.svelte";
-  import {
-    OrderStatusEnum,
-    PaymentStatusEnum,
-  } from "$lib/constants/order-status";
+  import { OrderStatusEnum } from "$lib/constants/order-status";
   import { formatDate } from "$lib/utils/formatter.js";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
   export let data: { order: any };
 
   const { order } = data;
-
-  function saveStatuses(_id: any, status: any, paymentStatus: any): any {
-    console.log("Saving statuses", { _id, status, paymentStatus });
-  }
-
-  function updateOrderStatus(_id: any, status: string): any {
-    console.log("Updating order status", { _id, status });
-  }
-
-  function updatePaymentStatus(_id: any, status: string): any {
-    console.log("Updating payment status", { _id, status });
-  }
 </script>
 
 <section class="p-6 max-w-5xl mx-auto space-y-6">
@@ -180,58 +166,9 @@
       <div class="flex flex-wrap gap-3">
         <StatusUpdateActionButton {order} />
 
-        <button
-          class="btn-secondary"
-          on:click={() => updateOrderStatus(order._id, "cancelled")}
-          >Cancel Order</button
-        >
-
-        <button
-          class="btn-secondary"
-          on:click={() => updatePaymentStatus(order._id, "cancelled")}
-          >Refund</button
-        >
-      </div>
-
-      <!-- Manual Status Update -->
-      <div class="mt-4 flex flex-col md:flex-row gap-4">
-        <div>
-          <label for="status" class="block text-xs text-gray-500 mb-1"
-            >Order Status</label
-          >
-          <select
-            name="status"
-            class="border rounded px-3 py-2 text-sm w-48"
-            bind:value={order.status}
-          >
-            {#each Object.values(OrderStatusEnum) as status}
-              <option value={status}>{status.replace(/_/g, " ")}</option>
-            {/each}
-          </select>
-        </div>
-
-        <div>
-          <label for="paymentStatus" class="block text-xs text-gray-500 mb-1"
-            >Payment Status</label
-          >
-          <select
-            name="paymentStatus"
-            class="border rounded px-3 py-2 text-sm w-48"
-            bind:value={order.paymentStatus}
-          >
-            {#each Object.values(PaymentStatusEnum) as pStatus}
-              <option value={pStatus}>{pStatus.replace(/_/g, " ")}</option>
-            {/each}
-          </select>
-        </div>
-
-        <button
-          class="btn-primary mt-3 md:mt-5"
-          on:click={() =>
-            saveStatuses(order._id, order.status, order.paymentStatus)}
-        >
-          Save Statuses
-        </button>
+        {#if order.status === OrderStatusEnum.CANCEL_REQUEST}
+          <CancelRequestActions />
+        {/if}
       </div>
     </div>
   </article>
