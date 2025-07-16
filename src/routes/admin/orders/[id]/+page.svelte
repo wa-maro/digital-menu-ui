@@ -1,9 +1,11 @@
 <script lang="ts">
+  import StatusUpdateActionButton from "$lib/components/admin/orders/StatusUpdateActionButton.svelte";
   import {
     OrderStatusEnum,
     PaymentStatusEnum,
   } from "$lib/constants/order-status";
-  import { formatDate, maskPhone } from "$lib/utils/formatter.js";
+  import { formatDate } from "$lib/utils/formatter.js";
+  import { statusBadgeClass } from "$lib/utils/order-status";
 
   export let data: { order: any };
 
@@ -19,24 +21,6 @@
 
   function updatePaymentStatus(_id: any, status: string): any {
     console.log("Updating payment status", { _id, status });
-  }
-
-  function statusBadgeClass(status: OrderStatus) {
-    const map: Record<OrderStatus, string> = {
-      pending: "bg-yellow-100 text-yellow-800",
-      confirmed: "bg-blue-100 text-blue-800",
-      preparing: "bg-purple-100 text-purple-800",
-      ready: "bg-indigo-100 text-indigo-800",
-      out_for_delivery: "bg-orange-100 text-orange-800",
-      delivered: "bg-green-100 text-green-800",
-      picked: "bg-green-100 text-green-800",
-      completed: "bg-teal-100 text-teal-800",
-      cancel_request: "bg-red-100 text-red-800",
-      cancelled: "bg-red-100 text-red-800",
-      rejected_cancel_request: "bg-gray-100 text-gray-700",
-      failed: "bg-gray-100 text-gray-700",
-    };
-    return map[status] || "bg-gray-100 text-gray-700";
   }
 </script>
 
@@ -194,63 +178,7 @@
       <h3 class="text-sm font-semibold text-gray-700 mb-2">Quick Actions</h3>
 
       <div class="flex flex-wrap gap-3">
-        {#if order.status === "pending"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "confirmed")}
-            >Accept Order</button
-          >
-        {/if}
-
-        {#if order.status === "confirmed"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "preparing")}
-            >Start Preparing</button
-          >
-        {/if}
-
-        {#if order.status === "preparing"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "ready")}
-            >Mark as Ready</button
-          >
-        {/if}
-
-        {#if order.type === "takeaway" && order.status === "ready"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "picked")}
-            >Mark as Picked</button
-          >
-        {/if}
-
-        {#if order.type === "delivery" && order.status === "ready"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "out_for_delivery")}
-            >Out for Delivery</button
-          >
-        {/if}
-
-        {#if order.status === "out_for_delivery"}
-          <button
-            class="btn-primary"
-            on:click={() => updateOrderStatus(order._id, "delivered")}
-            >Mark as Delivered</button
-          >
-        {/if}
-
-        {#if ["delivered", "picked"].includes(order.status)}
-          <button
-            class="btn-primary"
-            on:click={() => {
-              updateOrderStatus(order._id, "completed");
-              updatePaymentStatus(order._id, "paid");
-            }}>Mark as Completed</button
-          >
-        {/if}
+        <StatusUpdateActionButton {order} />
 
         <button
           class="btn-secondary"

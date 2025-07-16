@@ -1,4 +1,5 @@
 import { VITE_API_URL_ADMIN } from "$env/static/private";
+import { redirect, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
@@ -11,11 +12,40 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
   });
 
   if (!orderRes.ok) {
-    const error = orderRes.text();
+    const error = await orderRes.text();
     return { success: false, error: error };
   }
 
   const orderData: any = await orderRes.json();
 
   return { order: orderData };
+};
+
+export const actions: Actions = {
+  updateStatus: async ({ fetch, params, cookies, request }) => {
+    const id = params.id;
+    const formData = await request.formData();
+    const status = formData.get("status")?.toString() || "";
+
+    if (!status) throw new Error("Status can not be empty");
+
+    const orderRes = await fetch(
+      `${VITE_API_URL_ADMIN}/orders/${id}/update-status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
+        body: JSON.stringify({ status }),
+      }
+    );
+
+    if (!orderRes.ok) {
+      const error = await orderRes.text();
+      return { success: false, error: error };
+    }
+
+    throw redirect(303, `/admin/orders/${id}`);
+  },
 };
