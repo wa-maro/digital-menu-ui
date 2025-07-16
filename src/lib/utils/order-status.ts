@@ -1,3 +1,49 @@
+import { OrderStatusEnum } from "$lib/constants/order-status";
+
+export function getNextOrderAction(order: Order) {
+  switch (order.status) {
+    case OrderStatusEnum.PENDING:
+      return { nextStatus: OrderStatusEnum.CONFIRMED, label: "Accept Order" };
+
+    case OrderStatusEnum.CONFIRMED:
+      return {
+        nextStatus: OrderStatusEnum.PREPARING,
+        label: "Start Preparing",
+      };
+
+    case OrderStatusEnum.PREPARING:
+      return { nextStatus: OrderStatusEnum.READY, label: "Mark as Ready" };
+
+    case OrderStatusEnum.READY:
+      if (order.type === "takeaway") {
+        return { nextStatus: OrderStatusEnum.PICKED, label: "Mark as Picked" };
+      }
+      if (order.type === "delivery") {
+        return {
+          nextStatus: OrderStatusEnum.OUT_FOR_DELIVERY,
+          label: "Out for Delivery",
+        };
+      }
+      return null;
+
+    case OrderStatusEnum.OUT_FOR_DELIVERY:
+      return {
+        nextStatus: OrderStatusEnum.DELIVERED,
+        label: "Mark as Delivered",
+      };
+
+    case OrderStatusEnum.DELIVERED:
+    case OrderStatusEnum.PICKED:
+      return {
+        nextStatus: OrderStatusEnum.COMPLETED,
+        label: "Mark as Completed",
+      };
+
+    default:
+      return null; // No next action
+  }
+}
+
 export function statusBadgeClass(status: OrderStatus) {
   const map: Record<OrderStatus, string> = {
     pending: "bg-yellow-100 text-yellow-800",
