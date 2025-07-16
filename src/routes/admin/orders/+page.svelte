@@ -2,7 +2,7 @@
   import { formatRelativeDate } from "$lib/utils/formatter";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
-  export let data: { orders: Order[] };
+  export let data: { orders: Order[]; title: string };
 
   const { orders } = data;
 
@@ -29,6 +29,10 @@
     if (page >= 1 && page <= totalPages) currentPage = page;
   }
 </script>
+
+<svelte:head>
+  <title>{data.title}</title>
+</svelte:head>
 
 <div class="p-4">
   <div class="flex justify-between items-center mb-4"></div>

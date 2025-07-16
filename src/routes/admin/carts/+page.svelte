@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let data: { carts: UserCart[] };
+  export let data: { carts: UserCart[]; title: string };
 
   const { carts } = data;
 
@@ -32,6 +32,10 @@
   const cartItemCount = (cart: UserCart) =>
     cart.items.reduce((count, i) => count + i.quantity, 0);
 </script>
+
+<svelte:head>
+  <title>{data.title}</title>
+</svelte:head>
 
 <div class="p-4">
   <div class="flex justify-end items-center mb-6"></div>

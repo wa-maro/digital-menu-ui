@@ -25,5 +25,6 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   return {
     summaryMetrics,
     recentOrders,
+    title: "Home | Digital Menu",
   };
 };

@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 
     const cartData: UserCart[] = await cartRes.json();
 
-    return { carts: cartData };
+    return { carts: cartData, title: "Carts" };
   } catch (error) {
     console.log(error);
 

@@ -1,7 +1,13 @@
-<script>
+<script lang="ts">
   import Sidebar from "$lib/components/admin/Sidebar.svelte";
   import TopBar from "$lib/components/admin/TopBar.svelte";
+
+  export let data;
 </script>
+
+<svelte:head>
+  <title>{data.title ?? "Digital Menu"}</title>
+</svelte:head>
 
 <div class="flex h-screen overflow-hidden">
   <Sidebar />

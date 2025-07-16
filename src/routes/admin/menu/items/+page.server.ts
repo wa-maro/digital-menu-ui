@@ -29,6 +29,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   return {
     items: itemsData,
     categories: categoriesData,
+    title: "Menu Items | Digital Menu",
   };
 };
 

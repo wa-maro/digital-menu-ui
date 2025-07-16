@@ -69,6 +69,10 @@
   onMount(() => toggleSort());
 </script>
 
+<svelte:head>
+  <title>{data.title}</title>
+</svelte:head>
+
 <div class="p-4">
   <div class="flex justify-end items-center mb-6">
     <a

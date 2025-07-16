@@ -10,5 +10,6 @@ export async function load({ locals, url }) {
 
   return {
     user,
+    title: null,
   };
 }

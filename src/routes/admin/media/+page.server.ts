@@ -28,6 +28,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
   return {
     media: mediaData,
     categories: catData,
+    title: "Media | Digital Menu",
   };
 };
 

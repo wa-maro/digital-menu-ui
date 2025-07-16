@@ -2,7 +2,7 @@
   import { Pencil, Trash } from "lucide-svelte";
   import { onMount } from "svelte";
 
-  export let data: LoadResult<Category>;
+  export let data: any;
   let categories: Category[] = data.data;
 
   let search = "";
@@ -48,6 +48,10 @@
 
   onMount(() => toggleSort());
 </script>
+
+<svelte:head>
+  <title>{data.title}</title>
+</svelte:head>
 
 <div class="p-4">
   <div class="flex justify-end items-center mb-4">

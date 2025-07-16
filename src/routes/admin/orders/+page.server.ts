@@ -18,6 +18,7 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 
     return {
       orders: ordersData,
+      title: "Orders | Digital Menu",
     };
   } catch (error) {
     return { success: false, error: error };

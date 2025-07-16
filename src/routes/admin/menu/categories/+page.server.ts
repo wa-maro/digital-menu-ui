@@ -17,7 +17,10 @@ export const load: PageServerLoad = async ({ fetch, cookies }) => {
 
     const data: LoadResult<Category> = await res.json();
 
-    return { data: data ?? {} };
+    return {
+      data: data ?? {},
+      title: "Categories | Digital Menu",
+    };
   } catch (error) {
     return fail(400, { error: error || "Request Failed" });
   }

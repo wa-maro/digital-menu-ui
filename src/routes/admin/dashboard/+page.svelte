@@ -7,6 +7,10 @@
   const { summaryMetrics, recentOrders } = data;
 </script>
 
+<svelte:head>
+  <title>{data.title}</title>
+</svelte:head>
+
 <div class="p-4 space-y-6">
   <SummaryCards {summaryMetrics} />
   <QuickActionsPanel />
