@@ -84,6 +84,7 @@ declare global {
 
   export interface Order {
     _id: string;
+    orderId: string;
     user: User;
     items: CartItemPopulated[];
     type: OrderType;
@@ -120,6 +121,7 @@ declare global {
   export interface RecentOrder {
     _id: string;
     user: User;
+    orderId: string;
     items: OrderItem[];
     type: OrderType;
     status: OrderStatus;
