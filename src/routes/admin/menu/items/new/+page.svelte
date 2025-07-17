@@ -17,7 +17,7 @@
   role="dialog"
   aria-modal="true"
 >
-  <h2 class="text-xl text-amber-700 font-semibold mb-3 ms-auto w-fit">
+  <h2 class="text-xl text-amber-700 font-semibold mb-1 ms-auto w-fit">
     Add New Item
   </h2>
 
