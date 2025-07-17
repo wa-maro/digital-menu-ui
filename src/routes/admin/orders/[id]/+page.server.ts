@@ -84,7 +84,7 @@ export const actions: Actions = {
     if (!phoneNumber) throw new Error("Phone Number can not be empty");
 
     const orderRes = await fetch(
-      `${VITE_API_URL_ADMIN}/orders/${id}/confirm-manual-payment`,
+      `${VITE_API_URL_ADMIN}/payments/${id}/confirm-manual-payment`,
       {
         method: "POST",
         headers: {
