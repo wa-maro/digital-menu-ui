@@ -26,15 +26,22 @@ export const actions: Actions = {
     const formData = await request.formData();
     const itemId = formData.get("itemId");
 
-    const res = await fetch(`${VITE_API_URL_CUSTOMER}/cart/${itemId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${cookies.get("token")}`,
-      },
-    });
+    if (!itemId || typeof itemId !== "string") {
+      return { success: false, error: "Invalid item ID" };
+    }
 
-    if (!res.ok) {
-      const error = await res.text();
+    const cartRes = await fetch(
+      `${VITE_API_URL_CUSTOMER}/cart/remove-item/${itemId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${cookies.get("token")}`,
+        },
+      }
+    );
+
+    if (!cartRes.ok) {
+      const error = await cartRes.text();
       return { success: false, error };
     }
 
@@ -42,15 +49,15 @@ export const actions: Actions = {
   },
 
   clearCart: async ({ cookies }) => {
-    const res = await fetch(`${VITE_API_URL_CUSTOMER}/cart`, {
+    const cartRes = await fetch(`${VITE_API_URL_CUSTOMER}/cart/clear`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${cookies.get("token")}`,
       },
     });
 
-    if (!res.ok) {
-      const error = await res.text();
+    if (!cartRes.ok) {
+      const error = await cartRes.text();
       return { success: false, error };
     }
 
