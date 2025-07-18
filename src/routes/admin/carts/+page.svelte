@@ -81,9 +81,11 @@
       <tbody class="bg-white divide-y divide-gray-100">
         {#each paginatedItems as item}
           <tr class="hover:bg-gray-50">
-            <td class="px-4 py-2 max-w-3 truncate" title={item._id}
-              >{item._id}</td
-            >
+            <td class="max-w-3 truncate" title={item._id}>
+              <a href={`/admin/carts/${item._id}`} class="px-4 py-2"
+                >{item._id}</a
+              >
+            </td>
             <td class="px-4 py-2">{item.user.fullName}</td>
             <td class="px-4 py-2">{cartItemCount(item)}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
