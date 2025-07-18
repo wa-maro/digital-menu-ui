@@ -75,27 +75,4 @@ export const actions: Actions = {
 
     throw redirect(303, `/admin/orders/${id}`);
   },
-
-  manualPaymentConfirm: async ({ cookies, fetch, params }) => {
-    const id = params.id;
-
-    const orderRes = await fetch(
-      `${VITE_API_URL_ADMIN}/payments/confirm-manual-payment`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.get("token")}`,
-        },
-        body: JSON.stringify({ orderId: id }),
-      }
-    );
-
-    if (!orderRes.ok) {
-      const error = await orderRes.text();
-      return { success: false, error: error };
-    }
-
-    throw redirect(303, `/admin/orders/${id}`);
-  },
 };

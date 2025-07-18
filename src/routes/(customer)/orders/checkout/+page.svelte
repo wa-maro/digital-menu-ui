@@ -6,6 +6,7 @@
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { activeReorder } from "$lib/stores/orders.store";
   import { formatCurrency } from "$lib/utils/formatter";
+  import { onMount } from "svelte";
   let selectedLocation: DeliveryLocation | null = null;
   let useMap = true;
 
@@ -13,7 +14,7 @@
     items: $activeReorder?.items ?? $cartStore.items,
     total: $activeReorder?.total ?? $cartTotal,
     type: $activeReorder?.type ?? "dine-in",
-    paymentMethod: $activeReorder?.paymentMethod ?? "cash",
+    paymentMethod: $activeReorder?.payments[0].paymentMethod ?? "cash",
     status: $activeReorder?.status ?? "pending",
     selectedNetwork: $activeReorder?.selectedNetwork ?? null,
     phoneNumber: $activeReorder?.phoneNumber ?? "",
@@ -53,6 +54,22 @@
     selectedLocation = null;
     orderForm.deliveryLocation = null;
   }
+
+  let minTime = "";
+
+  function updateMinTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    minTime = `${hours}:${minutes}`;
+  }
+
+  onMount(() => {
+    updateMinTime();
+
+    const interval = setInterval(updateMinTime, 60 * 1000);
+    return () => clearInterval(interval);
+  });
 
   function handleSelect(location: DeliveryLocation) {
     selectedLocation = location;
@@ -161,6 +178,7 @@
               type="time"
               bind:value={orderForm.pickupTime}
               required
+              min={minTime}
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

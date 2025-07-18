@@ -176,20 +176,11 @@
 
         {#if order.status === OrderStatusEnum.PENDING && order.payments[0].paymentMethod === "cash" && order.payments[0].status === PaymentStatusEnum.PENDING_CONFIRMATION}
           <form
-            action="?/manualPaymentConfirm"
+            action={`/admin/payments/${order._id}?/manualPaymentConfirm`}
             method="post"
-            class="flex items-center border border-gray-100 rounded-md shadow-md overflow-hidden"
           >
-            <button
-              type="submit"
-              class="px-3 py-2 border-none text-sm bg-blue-700 text-white"
-              >Confirm Payment</button
-            >
+            <button type="submit" class="btn-primary">Confirm Payment</button>
           </form>
-        {/if}
-
-        {#if order.payments[0].paymentMethod === "cash" && order.payments[0].status === PaymentStatusEnum.MANUAL_REVIEW}
-          <button type="button" class="btn-secondary">Review</button>
         {/if}
       </div>
     </div>
