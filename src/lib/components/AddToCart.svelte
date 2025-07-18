@@ -9,25 +9,34 @@
   async function addToCart() {
     try {
       if ($userStore.isAuthenticated) {
-        await fetch("/../cart", {
+        const cartRes = await fetch("/../cart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ item, quantity }),
         });
-      }
 
-      cartStore.addItem({
-        _id: crypto.randomUUID(),
-        item,
-        quantity,
-        price: item.price,
-      });
+        const data = await cartRes.json();
+
+        if (!cartRes.ok || !data.success) {
+          notify(data.error || "Failed to add item to cart", "error");
+          return;
+        }
+
+        cartStore.set(data.cart);
+      } else {
+        cartStore.addItem({
+          _id: crypto.randomUUID(),
+          item,
+          quantity,
+          price: item.price,
+        });
+      }
 
       notify("item was addes to a cart", "success");
     } catch (err) {
-      console.error("Error adding to cart:", err);
+      notify("Something went wrong", "error");
     }
   }
 </script>

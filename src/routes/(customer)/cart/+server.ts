@@ -30,17 +30,20 @@ export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
       });
     }
 
-    const data = await res.json();
+    const cartData = await res.json();
 
-    cartStore.set(data);
+    return new Response(JSON.stringify({ success: true, cart: cartData }), {
+      status: 201,
+    });
   } catch (error) {
-    cartStore.removeItem(item._id); // rollback & alert the user
-    alert("Failed to add item to cart.");
+    console.error("Error while adding item to cart:", error);
+    return new Response(
+      JSON.stringify({ success: false, error: "Server error" }),
+      {
+        status: 500,
+      }
+    );
   }
-
-  return new Response(JSON.stringify({ success: true }), {
-    status: 201,
-  });
 };
 
 export const PATCH: RequestHandler = async ({ request, cookies }) => {

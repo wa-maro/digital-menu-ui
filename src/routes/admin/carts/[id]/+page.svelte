@@ -9,8 +9,8 @@
 <div class="max-w-4xl mx-auto space-y-6">
   <!-- Back Button -->
   <div class="pt-3">
-    <a href="/admin/menu/items" class="text-sm text-gray-600 hover:underline"
-      >← Back to menu</a
+    <a href="/admin/carts" class="text-sm text-gray-600 hover:underline"
+      >← Back to carts</a
     >
   </div>
 
