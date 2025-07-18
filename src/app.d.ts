@@ -161,6 +161,20 @@ declare global {
     url: string;
     filename: string;
   }
+
+  export interface Payment {
+    _id: string;
+    transactionId: string;
+    order: Order;
+    paymentMethod: string;
+    status: PaymentStatus;
+    amount: number;
+    logs: any[]; // Replace with proper Log interface if known
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+    paidAt?: string;
+  }
 }
 
 export {};
