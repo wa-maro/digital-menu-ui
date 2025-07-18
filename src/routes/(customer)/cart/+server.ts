@@ -1,5 +1,4 @@
 import { VITE_API_URL_CUSTOMER } from "$env/static/private";
-import { cartStore } from "$lib/stores/cart.store";
 import type { RequestHandler } from "@sveltejs/kit";
 
 export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
@@ -50,13 +49,13 @@ export const PATCH: RequestHandler = async ({ request, cookies }) => {
   const { quantity, id } = await request.json();
 
   try {
-    const res = await fetch(`${VITE_API_URL_CUSTOMER}/cart/${id}`, {
+    const res = await fetch(`${VITE_API_URL_CUSTOMER}/cart/update-quantity`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.get("token")}`,
       },
-      body: JSON.stringify({ quantity: Number(quantity) }),
+      body: JSON.stringify({ itemId: id, quantity: Number(quantity) }),
     });
 
     if (!res.ok) {
