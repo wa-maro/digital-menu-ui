@@ -15,16 +15,13 @@
     type: $activeReorder?.type ?? "dine-in",
     paymentMethod: $activeReorder?.paymentMethod ?? "cash",
     status: $activeReorder?.status ?? "pending",
-    paymentDetails: {
-      selectedNetwork: $activeReorder?.paymentDetails?.selectedNetwork ?? null,
-      phoneNumber: $activeReorder?.paymentDetails?.phoneNumber ?? "",
-      tableNumber: $activeReorder?.paymentDetails?.tableNumber ?? "",
-      contactPhone: $activeReorder?.paymentDetails?.contactPhone ?? "",
-      pickupTime: $activeReorder?.paymentDetails?.pickupTime ?? "",
-      deliveryLocation:
-        $activeReorder?.paymentDetails?.deliveryLocation ?? null,
-      deliveryAddress: $activeReorder?.paymentDetails?.deliveryAddress ?? "",
-    },
+    selectedNetwork: $activeReorder?.selectedNetwork ?? null,
+    phoneNumber: $activeReorder?.phoneNumber ?? "",
+    tableNumber: $activeReorder?.tableNumber ?? "",
+    contactPhone: $activeReorder?.contactPhone ?? "",
+    pickupTime: $activeReorder?.pickupTime ?? "",
+    deliveryLocation: $activeReorder?.deliveryLocation ?? null,
+    deliveryAddress: $activeReorder?.deliveryAddress ?? "",
   };
 
   $: isOrderTypeValid = ["dine-in", "takeaway", "delivery"].includes(
@@ -34,38 +31,36 @@
   $: isPaymentValid =
     orderForm.paymentMethod === "cash" ||
     (orderForm.paymentMethod === "lipa_namba" &&
-      orderForm.paymentDetails.selectedNetwork &&
-      orderForm.paymentDetails.phoneNumber);
+      orderForm.selectedNetwork &&
+      orderForm.phoneNumber);
 
   $: isOrderDetailsValid =
     orderForm.type === "dine-in"
-      ? !!orderForm.paymentDetails.tableNumber
+      ? !!orderForm.tableNumber
       : orderForm.type === "takeaway"
-        ? !!orderForm.paymentDetails.pickupTime
+        ? !!orderForm.pickupTime
         : orderForm.type === "delivery"
-          ? !!orderForm.paymentDetails.deliveryAddress ||
-            !!orderForm.paymentDetails.deliveryLocation
+          ? !!orderForm.deliveryAddress || !!orderForm.deliveryLocation
           : false;
 
   $: canConfirm = isOrderTypeValid && isPaymentValid && isOrderDetailsValid;
 
-  $: address = orderForm.paymentDetails.deliveryLocation
-    ? orderForm.paymentDetails.deliveryLocation.address
+  $: address = orderForm.deliveryLocation
+    ? orderForm.deliveryLocation.address
     : "";
 
   if (!useMap) {
     selectedLocation = null;
-    orderForm.paymentDetails.deliveryLocation = null;
+    orderForm.deliveryLocation = null;
   }
 
   function handleSelect(location: DeliveryLocation) {
     selectedLocation = location;
-    orderForm.paymentDetails.deliveryLocation = { ...selectedLocation };
+    orderForm.deliveryLocation = { ...selectedLocation };
   }
 
   async function handleSubmit() {
     cartStore.clear();
-
     await goto("/orders/order-success");
   }
 </script>
@@ -111,13 +106,6 @@
         name="items"
         value={JSON.stringify(orderForm.items)}
       />
-      <input type="hidden" name="total" value={orderForm.total} />
-      <input
-        type="hidden"
-        name="paymentDetails"
-        value={JSON.stringify(orderForm.paymentDetails)}
-      />
-      <input type="hidden" name="status" value={orderForm.status} />
 
       <div class="grid grid-cols-3 gap-4">
         {#each ["dine-in", "takeaway", "delivery"] as type}
@@ -157,7 +145,7 @@
             >
             <input
               name="tableNumber"
-              bind:value={orderForm.paymentDetails.tableNumber}
+              bind:value={orderForm.tableNumber}
               required
               placeholder="Enter table number"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -171,7 +159,7 @@
             <input
               name="pickupTime"
               type="time"
-              bind:value={orderForm.paymentDetails.pickupTime}
+              bind:value={orderForm.pickupTime}
               required
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -183,7 +171,7 @@
             >
             <input
               name="contactPhone"
-              bind:value={orderForm.paymentDetails.contactPhone}
+              bind:value={orderForm.contactPhone}
               required
               placeholder="Enter phone number"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -214,9 +202,7 @@
               <input
                 type="hidden"
                 name="deliveryLocation"
-                value={JSON.stringify(
-                  orderForm.paymentDetails.deliveryLocation
-                )}
+                value={JSON.stringify(orderForm.deliveryLocation)}
               />
 
               <MapSelector
@@ -226,7 +212,7 @@
             {:else}
               <input
                 name="deliveryAddress"
-                bind:value={orderForm.paymentDetails.deliveryAddress}
+                bind:value={orderForm.deliveryAddress}
                 required
                 class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter delivery address manually"
@@ -282,7 +268,7 @@
             >
             <select
               name="selectedNetwork"
-              bind:value={orderForm.paymentDetails.selectedNetwork}
+              bind:value={orderForm.selectedNetwork}
               required
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
@@ -300,7 +286,7 @@
             <input
               name="phoneNumber"
               type="tel"
-              bind:value={orderForm.paymentDetails.phoneNumber}
+              bind:value={orderForm.phoneNumber}
               required
               placeholder="Enter phone number (e.g. 07XXXXXXXX)"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"

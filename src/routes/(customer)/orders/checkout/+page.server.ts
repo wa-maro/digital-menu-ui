@@ -1,6 +1,4 @@
 import { VITE_API_URL_CUSTOMER } from "$env/static/private";
-import { cartStore } from "$lib/stores/cart.store";
-import { orderStore } from "$lib/stores/orders.store";
 import { redirect, type Actions } from "@sveltejs/kit";
 
 export const actions: Actions = {
@@ -12,8 +10,6 @@ export const actions: Actions = {
     const type = formData.get("type") as OrderType;
     const paymentMethod = formData.get("paymentMethod") as PaymentMethod;
 
-    const status = formData.get("status") as OrderStatus;
-    const total = Number(formData.get("total"));
     const tableNumber = formData.get("tableNumber")?.toString();
     const pickupTime = formData.get("pickupTime")?.toString();
     const selectedNetwork = formData
@@ -38,40 +34,29 @@ export const actions: Actions = {
       items: orderItems,
       type: type,
       paymentMethod,
-      paymentDetails: {
-        selectedNetwork,
-        deliveryAddress,
-        deliveryLocation,
-        contactPhone,
-        phoneNumber,
-        pickupTime,
-        tableNumber,
-      },
+      selectedNetwork,
+      deliveryAddress,
+      deliveryLocation,
+      contactPhone,
+      phoneNumber,
+      pickupTime,
+      tableNumber,
     };
 
-    try {
-      const res = await fetch(`${VITE_API_URL_CUSTOMER}/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.get("token")}`,
-        },
-        body: JSON.stringify(order),
-      });
+    const res = await fetch(`${VITE_API_URL_CUSTOMER}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.get("token")}`,
+      },
+      body: JSON.stringify(order),
+    });
 
-      if (!res.ok) {
-        const error = await res.text();
-        return { success: false, error };
-      }
-
-      throw redirect(303, "/orders/order-success");
-    } catch (error) {
-      console.log(error);
-
-      return {
-        success: false,
-        error: "Failed to place order. Please try again.",
-      };
+    if (!res.ok) {
+      const error = await res.text();
+      return { success: false, error };
     }
+
+    throw redirect(303, "/orders/order-success");
   },
 };

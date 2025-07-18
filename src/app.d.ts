@@ -72,16 +72,6 @@ declare global {
     address: string;
   }
 
-  interface PaymentDetails {
-    selectedNetwork?: SelectedNetwork;
-    phoneNumber?: string;
-    contactPhone?: string;
-    tableNumber?: string;
-    pickupTime?: string;
-    deliveryAddress?: string;
-    deliveryLocation?: DeliveryLocation;
-  }
-
   export interface Order {
     _id: string;
     orderId: string;
@@ -92,7 +82,13 @@ declare global {
     paymentStatus: any;
     total: number;
     status: OrderStatus;
-    paymentDetails?: PaymentDetails;
+    selectedNetwork?: SelectedNetwork;
+    phoneNumber?: string;
+    contactPhone?: string;
+    tableNumber?: string;
+    pickupTime?: string;
+    deliveryAddress?: string;
+    deliveryLocation?: DeliveryLocation;
     createdAt?: string;
     updatedAt?: string;
   }
