@@ -40,7 +40,7 @@
   <div class="space-y-5">
     <article
       class="bg-white rounded-2xl shadow p-5 border border-gray-200 hover:shadow-lg transition-shadow"
-      aria-label={`Order ${order.orderId}`}
+      aria-label={`Order ${order.orderNumber}`}
     >
       <div
         class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
@@ -48,7 +48,7 @@
         <div class="space-y-1">
           <p class="text-xs text-gray-500">Order ID</p>
           <p class="font-mono font-semibold text-gray-900 break-all text-sm">
-            {order.orderId}
+            {order.orderNumber}
           </p>
         </div>
 
@@ -60,7 +60,7 @@
         <div class="space-y-1">
           <p class="text-xs text-gray-500">Payment Method</p>
           <p class="font-medium text-sm capitalize">
-            {order.paymentMethod}
+            {order.payments[0].paymentMethod}
           </p>
         </div>
 
@@ -85,65 +85,65 @@
           <p class="font-medium text-sm">{formatDate(order.createdAt)}</p>
         </div>
 
-        {#if order.paymentDetails?.tableNumber}
+        {#if order.tableNumber}
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Table Number</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.tableNumber}
+              {order.tableNumber}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.pickupTime}
+        {#if order.pickupTime}
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Pickup Time</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.pickupTime}
+              {order.pickupTime}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.deliveryLocation?.address}
+        {#if order.deliveryLocation?.address}
           <div class="space-y-1 md:col-span-2">
             <p class="text-xs text-gray-500">Delivery Address</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.deliveryLocation.address}
+              {order.deliveryLocation.address}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.deliveryAddress}
+        {#if order.deliveryAddress}
           <div class="space-y-1 md:col-span-2">
             <p class="text-xs text-gray-500">Delivery Address</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.deliveryAddress}
+              {order.deliveryAddress}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.selectedNetwork}
+        {#if order.selectedNetwork}
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Network</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.selectedNetwork}
+              {order.selectedNetwork}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.contactPhone}
+        {#if order.contactPhone}
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Contact Phone</p>
             <p class="font-medium text-sm">
-              {order.paymentDetails.contactPhone}
+              {order.contactPhone}
             </p>
           </div>
         {/if}
 
-        {#if order.paymentDetails?.phoneNumber && order.paymentMethod === "lipa_namba"}
+        {#if order.phoneNumber && order.payments[0].paymentMethod === "lipa_namba"}
           <div class="space-y-1">
             <p class="text-xs text-gray-500">Payment Number</p>
             <p class="font-medium text-sm">
-              {maskPhone(order.paymentDetails.phoneNumber)}
+              {maskPhone(order.phoneNumber)}
             </p>
           </div>
         {/if}
@@ -154,7 +154,7 @@
           type="button"
           class="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition cursor-pointer"
           on:click={() => reorderNow(order)}
-          aria-label={`Reorder order ${order.orderId} now`}
+          aria-label={`Reorder order ${order.orderNumber} now`}
         >
           <!-- Reorder Now Icon -->
           <svg
@@ -178,7 +178,7 @@
           type="button"
           class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-300 transition cursor-pointer"
           on:click={() => order._id && loadToCart(order._id)}
-          aria-label={`Load order ${order.orderId} to cart`}
+          aria-label={`Load order ${order.orderNumber} to cart`}
         >
           <!-- Load to Cart Icon -->
           <svg
@@ -198,12 +198,12 @@
           Load to Cart
         </button>
 
-        {#if (order.status === "pending" || order.status === "confirmed") && order.paymentStatus === "pending"}
+        {#if (order.status === "pending" || (order.status === "confirmed" && order.status !== "cancel_request")) && (order.payments[0].status === "pending" || order.payments[0].status === "pending_confirmation")}
           <form action="?/requestCancellation" method="post">
             <button
               type="submit"
               class="flex items-center gap-1.5 px-4 py-2 text-xs font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-red-300 transition cursor-pointer"
-              aria-label={`Request cancellation for order ${order.orderId}`}
+              aria-label={`Request cancellation for order ${order.orderNumber}`}
             >
               <!-- Cancel Icon -->
               <svg

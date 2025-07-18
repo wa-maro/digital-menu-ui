@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { orderStore } from "$lib/stores/orders.store";
-  import { formatDate } from "$lib/utils/formatter";
+  import { formatRelativeDate } from "$lib/utils/formatter";
   import { notify } from "$lib/stores/notifications";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
@@ -35,7 +35,7 @@
   </h1>
 
   {#if $orderStore.length > 0}
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-2 gap-4">
       {#each $orderStore as order (order._id)}
         <article
           class="bg-white rounded-2xl shadow p-5 space-y-5 border border-gray-200 hover:shadow-lg transition-shadow"
@@ -44,6 +44,14 @@
           <div
             class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700"
           >
+            <div class="space-y-1">
+              <p class="text-xs text-gray-500">Order ID</p>
+              <p
+                class="font-mono font-semibold text-gray-900 break-all text-sm"
+              >
+                {order.orderNumber}
+              </p>
+            </div>
             <div class="space-y-1">
               <p class="text-xs text-gray-500">Order Type</p>
               <p class="font-medium text-sm capitalize">{order.type}</p>
@@ -66,8 +74,21 @@
             </div>
 
             <div class="space-y-1">
+              <p class="text-xs text-gray-500">Payment Status</p>
+              <p>
+                <span
+                  class={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold tracking-wide ${statusBadgeClass(order.status)}`}
+                >
+                  {order.payments[0].status}
+                </span>
+              </p>
+            </div>
+
+            <div class="space-y-1">
               <p class="text-xs text-gray-500">Date</p>
-              <p class="font-medium text-sm">{formatDate(order.createdAt)}</p>
+              <p class="font-medium text-sm">
+                {formatRelativeDate(order.createdAt ?? "")}
+              </p>
             </div>
           </div>
 
