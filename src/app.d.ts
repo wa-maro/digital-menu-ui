@@ -65,6 +65,14 @@ declare global {
     | "failed";
   export type OrderType = "takeaway" | "delivery" | "dine-in";
   export type PaymentMethod = "cash" | "lipa_namba";
+  export type PaymentStatus =
+    | "pending"
+    | "pending_confirmation"
+    | "paid"
+    | "failed"
+    | "cancelled"
+    | "manual_review"
+    | "timeout";
   export type SelectedNetwork = "mpesa" | "tigopesa" | "airtel-money";
   export interface DeliveryLocation {
     lng: number;
@@ -74,12 +82,11 @@ declare global {
 
   export interface Order {
     _id: string;
-    orderId: string;
+    orderNumber: string;
     user: User;
     items: CartItemPopulated[];
     type: OrderType;
-    paymentMethod: PaymentMethod;
-    paymentStatus: any;
+    payments: any[];
     total: number;
     status: OrderStatus;
     selectedNetwork?: SelectedNetwork;
@@ -122,10 +129,6 @@ declare global {
     items: OrderItem[];
     type: OrderType;
     status: OrderStatus;
-    paymentMethod: PaymentMethod;
-    paymentStatus: PaymentStatus;
-    paymentLog: PaymentLogEntry[];
-    paymentDetails: PaymentDetails;
     total: number;
     createdAt: string;
     updatedAt: string;

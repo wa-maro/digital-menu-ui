@@ -14,9 +14,9 @@
 
     filteredItems = orders.filter((item) => {
       const fullName = item.user.fullName.toLowerCase();
-      const orderId = item.orderId.toLowerCase();
+      const orderNumber = item.orderNumber.toLowerCase();
 
-      return fullName.includes(searchTerm) || orderId.includes(searchTerm);
+      return fullName.includes(searchTerm) || orderNumber.includes(searchTerm);
     });
   }
 
@@ -83,12 +83,12 @@
       <tbody>
         {#each paginatedItems as item}
           <tr class="hover:bg-gray-50 text-sm">
-            <td class="" title={item.orderId}>
+            <td class="" title={item.orderNumber}>
               <a
                 href={`/admin/orders/${item._id}`}
                 class="px-4 py-2 hover:underline transition"
               >
-                {item.orderId}
+                {item.orderNumber}
               </a>
             </td>
             <td class="px-4 py-2">{item.user.fullName || item.user.email}</td>

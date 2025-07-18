@@ -45,7 +45,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
       <div class="space-y-1">
         <p class="text-xs text-gray-500">Order ID</p>
-        <p class="font-mono text-sm font-medium break-all">{order.orderId}</p>
+        <p class="font-mono text-sm font-medium break-all">
+          {order.orderNumber}
+        </p>
       </div>
 
       <div class="space-y-1">
@@ -65,7 +67,9 @@
 
       <div class="space-y-1">
         <p class="text-xs text-gray-500">Payment Method</p>
-        <p class="text-sm font-medium capitalize">{order.paymentMethod}</p>
+        <p class="text-sm font-medium capitalize">
+          {order.payments[0].paymentMethod}
+        </p>
       </div>
 
       <div class="space-y-1">
@@ -87,27 +91,18 @@
         </span>
       </div>
 
-      <div class="space-y-1">
-        <p class="text-xs text-gray-500">Payment Status</p>
-        <span
-          class={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${order.paymentStatus === "paid" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}
-        >
-          {order.paymentStatus.replace(/_/g, " ")}
-        </span>
-      </div>
-
-      {#if order.paymentDetails?.pickupTime}
+      {#if order.pickupTime}
         <div class="space-y-1">
           <p class="text-xs text-gray-500">Pickup Time</p>
-          <p class="text-sm font-medium">{order.paymentDetails.pickupTime}</p>
+          <p class="text-sm font-medium">{order.pickupTime}</p>
         </div>
       {/if}
 
-      {#if order.paymentDetails?.deliveryLocation?.address}
+      {#if order.deliveryLocation?.address}
         <div class="space-y-1 md:col-span-2">
           <p class="text-xs text-gray-500">Delivery Address</p>
           <p class="text-sm font-medium">
-            {order.paymentDetails.deliveryLocation.address}
+            {order.deliveryLocation.address}
           </p>
         </div>
       {/if}
@@ -145,16 +140,21 @@
     </div>
 
     <!-- Payment Log -->
-    {#if order.paymentLog?.length}
+    {#if order.payments[0].logs.length}
       <div class="mt-6">
-        <h3 class="text-sm font-semibold text-gray-700 mb-2">Payment Log</h3>
+        <h3 class="text-sm font-semibold text-gray-700 mb-2">Payment Logs</h3>
         <ul class="text-xs text-gray-600 space-y-1">
-          {#each order.paymentLog as log}
+          {#each order.payments[0].logs as log}
             <li>
               <span class="font-medium text-gray-800"
                 >{formatDate(log.timestamp)}:</span
               >
-              {log.message} ({log.status})
+              {log.message}
+              <span
+                class={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold ${order.payments[0].status === "paid" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}`}
+              >
+                {log.status.replace(/_/g, " ")}
+              </span>
             </li>
           {/each}
         </ul>
@@ -166,7 +166,7 @@
       <h3 class="text-sm font-semibold text-gray-700 mb-2.5">Quick Actions</h3>
 
       <div class="flex flex-wrap gap-3">
-        {#if order.paymentStatus === PaymentStatusEnum.PAID}
+        {#if order.payments[0].status === PaymentStatusEnum.PAID}
           <StatusUpdateActionButton {order} />
         {/if}
 
@@ -174,22 +174,12 @@
           <CancelRequestActions />
         {/if}
 
-        {#if order.status === OrderStatusEnum.PENDING && order.paymentMethod === "cash" && order.paymentStatus === PaymentStatusEnum.PENDING_CONFIRMATION}
+        {#if order.status === OrderStatusEnum.PENDING && order.payments[0].paymentMethod === "cash" && order.payments[0].status === PaymentStatusEnum.PENDING_CONFIRMATION}
           <form
             action="?/manualPaymentConfirm"
             method="post"
             class="flex items-center border border-gray-100 rounded-md shadow-md overflow-hidden"
           >
-            <label for="phoneNumber" class="hidden">Phone Number</label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              id="phoneNumber"
-              placeholder="Enter a phone number"
-              required
-              bind:value={order.phoneNumber}
-              class="px-3 py-2 w-72 outline-none border-0 text-sm"
-            />
             <button
               type="submit"
               class="px-3 py-2 border-none text-sm bg-blue-700 text-white"
@@ -198,7 +188,7 @@
           </form>
         {/if}
 
-        {#if order.paymentMethod === "cash" && order.paymentStatus === PaymentStatusEnum.MANUAL_REVIEW}
+        {#if order.payments[0].paymentMethod === "cash" && order.payments[0].status === PaymentStatusEnum.MANUAL_REVIEW}
           <button type="button" class="btn-secondary">Review</button>
         {/if}
       </div>
