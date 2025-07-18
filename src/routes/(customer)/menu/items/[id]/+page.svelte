@@ -8,7 +8,7 @@
   let quantity: number = 1;
 </script>
 
-<div class="p-6 space-y-4 max-w-5xl mx-auto">
+<div class="p-6 pt-8 space-y-4 max-w-5xl mx-auto">
   <BackButton />
 
   {#if item}

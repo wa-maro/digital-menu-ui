@@ -34,7 +34,7 @@
   }
 </script>
 
-<section class="p-6 max-w-4xl mx-auto">
+<section class="p-6 pt-8 max-w-4xl mx-auto">
   <BackButton />
 
   <div class="space-y-5">

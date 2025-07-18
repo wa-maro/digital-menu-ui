@@ -23,7 +23,7 @@
   notify(`${items.length} Menu Items loaded`, "info");
 </script>
 
-<div class="p-6 max-w-5xl mx-auto space-y-6">
+<div class="p-6 pt-8 max-w-5xl mx-auto space-y-6">
   <!-- Search & Filters Wrapper -->
   <div class="flex flex-col sm:items-center sm:justify-between gap-6 mb-12">
     <!-- Search Input -->

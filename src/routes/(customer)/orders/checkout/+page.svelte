@@ -70,7 +70,9 @@
   }
 </script>
 
-<section class="p-4 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-7 gap-6">
+<section
+  class="p-6 pt-8 max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-7 gap-6"
+>
   <!-- Cart Summary -->
   <div class="lg:col-span-4 bg-white rounded-2xl shadow p-6 space-y-6">
     <h2 class="text-2xl font-bold border-b pb-3 drop-shadow-sm">

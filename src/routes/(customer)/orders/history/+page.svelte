@@ -29,7 +29,7 @@
   }
 </script>
 
-<section class="p-6 max-w-6xl mx-auto">
+<section class="p-6 pt-8 max-w-6xl mx-auto">
   <h1 class="text-3xl font-extrabold mb-8 text-gray-900 drop-shadow-sm">
     My Orders
   </h1>

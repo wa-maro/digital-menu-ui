@@ -29,7 +29,7 @@
 </script>
 
 <section
-  class="flex flex-col items-center justify-center min-h-screen text-center p-4"
+  class="flex flex-col items-center justify-center min-h-screen text-center p-6 pt-8"
 >
   <div class="text-green-600 text-6xl mb-4">✔️</div>
   <h1 class="text-2xl font-bold mb-2">Order Placed Successfully!</h1>

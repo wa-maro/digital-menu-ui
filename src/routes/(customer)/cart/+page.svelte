@@ -43,7 +43,7 @@
   };
 </script>
 
-<div class="p-4 max-w-5xl mx-auto space-y-6">
+<div class="p-4 pt-8 max-w-5xl mx-auto space-y-6">
   {#if $cartStore.items.length > 0}
     <div class="grid md:grid-cols-3 gap-6">
       <!-- Cart Items -->
