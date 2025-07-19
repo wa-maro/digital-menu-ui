@@ -3,6 +3,11 @@
   import { goto } from "$app/navigation";
   import { PUBLIC_MAPBOX_ACCESS_TOKEN } from "$env/static/public";
   import MapSelector from "$lib/components/maps/MapSelector.svelte";
+  import { OrderTypeEnum } from "$lib/constants/order-enum";
+  import {
+    PaymentMethodEnum,
+    PaymentProviderEnum,
+  } from "$lib/constants/payment-enums";
   import { cartStore, cartTotal } from "$lib/stores/cart.store";
   import { activeReorder } from "$lib/stores/orders.store";
   import { formatCurrency } from "$lib/utils/formatter";
@@ -14,10 +19,11 @@
     items: $activeReorder?.items ?? $cartStore.items,
     total: $activeReorder?.total ?? $cartTotal,
     type: $activeReorder?.type ?? "dine-in",
-    paymentMethod: $activeReorder?.payments[0].paymentMethod ?? "cash",
+    paymentMethod:
+      $activeReorder?.payments[0].paymentMethod ?? PaymentMethodEnum.CASH,
     status: $activeReorder?.status ?? "pending",
-    selectedNetwork: $activeReorder?.selectedNetwork ?? null,
-    phoneNumber: $activeReorder?.phoneNumber ?? "",
+    provider: $activeReorder?.provider ?? "",
+    accountNumber: $activeReorder?.AccountNumber ?? "",
     tableNumber: $activeReorder?.tableNumber ?? "",
     contactPhone: $activeReorder?.contactPhone ?? "",
     pickupTime: $activeReorder?.pickupTime ?? "",
@@ -30,17 +36,17 @@
   );
 
   $: isPaymentValid =
-    orderForm.paymentMethod === "cash" ||
-    (orderForm.paymentMethod === "lipa_namba" &&
-      orderForm.selectedNetwork &&
-      orderForm.phoneNumber);
+    orderForm.paymentMethod === PaymentMethodEnum.CASH ||
+    (orderForm.paymentMethod === PaymentMethodEnum.MOBILE_MONEY &&
+      orderForm.provider &&
+      orderForm.accountNumber);
 
   $: isOrderDetailsValid =
-    orderForm.type === "dine-in"
+    orderForm.type === OrderTypeEnum.DineIn
       ? !!orderForm.tableNumber
-      : orderForm.type === "takeaway"
+      : orderForm.type === OrderTypeEnum.Takeaway
         ? !!orderForm.pickupTime
-        : orderForm.type === "delivery"
+        : orderForm.type === OrderTypeEnum.Delivery
           ? !!orderForm.deliveryAddress || !!orderForm.deliveryLocation
           : false;
 
@@ -125,7 +131,7 @@
       />
 
       <div class="grid grid-cols-3 gap-4">
-        {#each ["dine-in", "takeaway", "delivery"] as type}
+        {#each Object.values(OrderTypeEnum) as type}
           <label class="cursor-pointer group">
             <input
               type="radio"
@@ -141,7 +147,7 @@
             peer-checked:border-blue-600
             group-hover:bg-blue-50 group-hover:border-blue-300"
             >
-              {type}
+              {type.replace("-", " ")}
             </div>
           </label>
         {/each}
@@ -168,7 +174,20 @@
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-        {:else if orderForm.type === "takeaway"}
+        {:else if orderForm.type === OrderTypeEnum.Takeaway}
+          <div class="space-y-2">
+            <label for="contactPhone" class="block text-gray-700 font-medium"
+              >Contact Phone</label
+            >
+            <input
+              name="contactPhone"
+              bind:value={orderForm.contactPhone}
+              required
+              placeholder="Enter phone number"
+              class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
           <div class="space-y-2">
             <label for="pickupTime" class="block text-gray-700 font-medium"
               >Pickup Time</label
@@ -182,7 +201,7 @@
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-        {:else if orderForm.type === "delivery"}
+        {:else if orderForm.type === OrderTypeEnum.Delivery}
           <div class="space-y-2">
             <label for="contactPhone" class="block text-gray-700 font-medium"
               >Contact Phone</label
@@ -257,14 +276,14 @@
         Payment Method
       </h2>
       <div class="grid grid-cols-2 gap-4">
-        {#each ["cash", "lipa_namba"] as method}
+        {#each Object.entries(PaymentMethodEnum) as [key, value]}
           <label class="cursor-pointer group">
             <input
               type="radio"
               name="paymentMethod"
               class="peer hidden"
               bind:group={orderForm.paymentMethod}
-              value={method}
+              {value}
             />
             <div
               class="py-4 rounded-xl border text-center font-medium transition-all duration-300
@@ -272,39 +291,39 @@
             peer-checked:border-green-600
             group-hover:bg-green-50 group-hover:border-green-300"
             >
-              {method === "lipa_namba" ? "Lipa Namba" : method.toUpperCase()}
+              {key.replace("_", " ")}
             </div>
           </label>
         {/each}
       </div>
 
-      {#if orderForm.paymentMethod === "lipa_namba"}
+      {#if orderForm.paymentMethod === PaymentMethodEnum.MOBILE_MONEY}
         <div class="mt-6 space-y-4">
           <div class="space-y-2">
-            <label for="selectedNetwork" class="block text-gray-700 font-medium"
+            <label for="provider" class="block text-gray-700 font-medium"
               >Select Network</label
             >
             <select
-              name="selectedNetwork"
-              bind:value={orderForm.selectedNetwork}
+              name="provider"
+              bind:value={orderForm.provider}
               required
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
-              <option value="" disabled selected>Select Network</option>
-              <option value="mpesa">MPESA</option>
-              <option value="tigopesa">Tigopesa</option>
-              <option value="airtel-money">Airtel Money</option>
+              <option value="" selected>Select Network</option>
+              {#each Object.entries(PaymentProviderEnum) as [key, value]}
+                <option {value}>{key.replace("_", " ")}</option>
+              {/each}
             </select>
           </div>
 
           <div class="space-y-2">
-            <label for="phoneNumber" class="block text-gray-700 font-medium"
-              >Phone Number</label
+            <label for="accountNumber" class="block text-gray-700 font-medium"
+              >Account Number</label
             >
             <input
-              name="phoneNumber"
+              name="accountNumber"
               type="tel"
-              bind:value={orderForm.phoneNumber}
+              bind:value={orderForm.accountNumber}
               required
               placeholder="Enter phone number (e.g. 07XXXXXXXX)"
               class="input w-full border rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"

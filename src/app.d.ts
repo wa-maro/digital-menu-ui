@@ -85,7 +85,7 @@ declare global {
     | "cancelled"
     | "manual_review"
     | "timeout";
-  export type SelectedNetwork = "mpesa" | "tigopesa" | "airtel-money";
+  export type PaymentProvider = "mpesa" | "tigopesa" | "airtel-money";
   export interface DeliveryLocation {
     lng: number;
     lat: number;
@@ -101,8 +101,8 @@ declare global {
     payments: any[];
     total: number;
     status: OrderStatus;
-    selectedNetwork?: SelectedNetwork;
-    phoneNumber?: string;
+    provider?: PaymentProvider;
+    AccountNumber?: string;
     contactPhone?: string;
     tableNumber?: string;
     pickupTime?: string;

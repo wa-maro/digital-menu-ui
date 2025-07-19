@@ -12,10 +12,8 @@ export const actions: Actions = {
 
     const tableNumber = formData.get("tableNumber")?.toString();
     const pickupTime = formData.get("pickupTime")?.toString();
-    const selectedNetwork = formData
-      .get("selectedNetwork")
-      ?.toString() as SelectedNetwork;
-    const phoneNumber = formData.get("phoneNumber")?.toString();
+    const provider = formData.get("provider")?.toString() as PaymentProvider;
+    const accountNumber = formData.get("accountNumber")?.toString();
     const deliveryAddress = formData.get("deliveryAddress")?.toString();
     const contactPhone = formData.get("contactPhone")?.toString();
     const rawLocation = formData.get("deliveryLocation");
@@ -34,11 +32,11 @@ export const actions: Actions = {
       items: orderItems,
       type: type,
       paymentMethod,
-      selectedNetwork,
+      provider,
       deliveryAddress,
       deliveryLocation,
       contactPhone,
-      phoneNumber,
+      accountNumber,
       pickupTime,
       tableNumber,
     };
