@@ -179,6 +179,12 @@
             action={`/admin/payments/${order._id}?/manualPaymentConfirm`}
             method="post"
           >
+            <input
+              type="text"
+              name="orderId"
+              class="hidden"
+              bind:value={order._id}
+            />
             <button type="submit" class="btn-primary">Confirm Payment</button>
           </form>
         {/if}

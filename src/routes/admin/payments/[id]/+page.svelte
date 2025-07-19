@@ -104,6 +104,12 @@
 
       {#if payment.order.status === OrderStatusEnum.PENDING && payment.paymentMethod === "cash" && payment.status === PaymentStatusEnum.PENDING_CONFIRMATION}
         <form action={`?/manualPaymentConfirm`} method="post" class="">
+          <input
+            type="text"
+            name="orderId"
+            class="hidden"
+            bind:value={payment.order._id}
+          />
           <button type="submit" class="btn-primary">Confirm Payment</button>
         </form>
       {/if}

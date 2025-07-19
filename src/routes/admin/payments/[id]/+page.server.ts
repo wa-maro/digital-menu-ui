@@ -25,8 +25,9 @@ export const load: PageServerLoad = async ({ fetch, cookies, params }) => {
 };
 
 export const actions: Actions = {
-  manualPaymentConfirm: async ({ cookies, fetch, params }) => {
-    const id = params.id;
+  manualPaymentConfirm: async ({ cookies, fetch, request }) => {
+    const formData = await request.formData();
+    const orderId = formData.get("orderId")?.toString() ?? "";
 
     const orderRes = await fetch(
       `${VITE_API_URL_ADMIN}/payments/confirm-manual-payment`,
@@ -36,7 +37,7 @@ export const actions: Actions = {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.get("token")}`,
         },
-        body: JSON.stringify({ orderId: id }),
+        body: JSON.stringify({ orderId: orderId }),
       }
     );
 
@@ -45,6 +46,6 @@ export const actions: Actions = {
       return { success: false, error: error };
     }
 
-    throw redirect(303, `/admin/orders/${id}`);
+    throw redirect(303, `/admin/orders/${orderId}`);
   },
 };
