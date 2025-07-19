@@ -12,6 +12,7 @@
     Image,
     Home,
     LayoutDashboard,
+    HandPlatter,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -151,7 +152,13 @@
         onClick={() => isSidebarExpanded && toggleMenu("settings")}
       >
         {#if openMenus.settings}
-          <ul in:slide out:slide class="ml-4 space-y-1 text-sm"></ul>
+          <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
+            <SidebarItem
+              icon={HandPlatter}
+              label="Restaurant"
+              href="/admin/restaurant"
+            />
+          </ul>
         {/if}
       </SidebarSection>
     </ul>

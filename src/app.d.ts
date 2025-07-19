@@ -14,6 +14,17 @@ declare global {
     // interface Platform {}
   }
 
+  export interface Restaurant {
+    _id?: string;
+    name: string;
+    brandLogo?: string;
+    description?: string;
+    workingDays?: DayOfWeek[];
+    workingHours?: Partial<Record<DayOfWeek, DailyHours>>;
+    createdAt?: string;
+    updatedAt?: string;
+  }
+
   interface LoadResult<T> {
     user: {
       token: string;
