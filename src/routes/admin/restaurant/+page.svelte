@@ -1,11 +1,14 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let data: { restaurant: Restaurant; title: string };
 
   let restaurant = data.restaurant;
-  let editing = restaurant ? true : false;
+  let editing = false;
 
   let form: Restaurant = {
     name: restaurant.name ?? "",
+    tagline: restaurant.tagline ?? "",
     brandLogo: restaurant.brandLogo ?? "",
     description: restaurant.description ?? "",
   };
@@ -15,18 +18,24 @@
     if (!editing) {
       form = {
         name: restaurant.name ?? "",
+        tagline: restaurant.tagline ?? "",
         brandLogo: restaurant.brandLogo ?? "",
         description: restaurant.description ?? "",
       };
     }
   }
+
+  onMount(() => {
+    if (!restaurant._id) editing = true;
+    else editing = false;
+  });
 </script>
 
 <svelte:head>
   <title>{data.title}</title>
 </svelte:head>
 
-<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
   <header class="flex items-center space-x-6 mb-8">
     <div
       class="relative w-24 h-24 rounded-full overflow-hidden shadow-md bg-gray-100"
@@ -73,12 +82,12 @@
     <div>
       <h1 class="text-2xl font-semibold text-gray-800">{restaurant.name}</h1>
       {#if restaurant.description}
-        <p class="text-sm text-gray-500">{restaurant.description}</p>
+        <p class="text-sm text-gray-500">{restaurant.tagline}</p>
       {/if}
     </div>
   </header>
 
-  <form class="space-y-6">
+  <form method="post" class="space-y-6">
     <div>
       <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
         >Restaurant Name</label
@@ -95,6 +104,21 @@
     </div>
 
     <div>
+      <label for="tagline" class="block text-sm font-medium text-gray-700 mb-1"
+        >Tagline</label
+      >
+      <input
+        id="tagline"
+        name="tagline"
+        type="text"
+        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        bind:value={form.tagline}
+        disabled={!editing}
+        required
+      />
+    </div>
+
+    <div class="hidden">
       <label
         for="brandLogo"
         class="block text-sm font-medium text-gray-700 mb-1">Logo URL</label
@@ -103,7 +127,7 @@
         id="brandLogo"
         name="brandLogo"
         type="url"
-        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full border hidden border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         bind:value={form.brandLogo}
         disabled={!editing}
       />
@@ -117,7 +141,7 @@
       <textarea
         id="description"
         name="description"
-        rows="3"
+        rows="4"
         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         bind:value={form.description}
         disabled={!editing}

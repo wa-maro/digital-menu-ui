@@ -17,6 +17,7 @@ declare global {
   export interface Restaurant {
     _id?: string;
     name: string;
+    tagline: string;
     brandLogo?: string;
     description?: string;
     workingDays?: DayOfWeek[];

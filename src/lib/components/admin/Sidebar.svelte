@@ -58,7 +58,10 @@
       path.startsWith("/admin/payments")
     ) {
       openMenus.sales = true;
-    } else if (path.startsWith("/admin/settings")) {
+    } else if (
+      path.startsWith("/admin/settings") ||
+      path.startsWith("/admin/restaurant")
+    ) {
       openMenus.settings = true;
     }
   });
