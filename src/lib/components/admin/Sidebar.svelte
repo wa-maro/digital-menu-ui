@@ -13,6 +13,7 @@
     Home,
     LayoutDashboard,
     HandPlatter,
+    Users,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -145,10 +146,16 @@
               label="Payments"
               href="/admin/payments"
             />
+            <SidebarItem
+              icon={Users}
+              label="Customers"
+              href="/admin/customers"
+            />
           </ul>
         {/if}
       </SidebarSection>
 
+      <!-- Restaurant Management -->
       <SidebarSection
         title="Settings"
         icon={Settings}

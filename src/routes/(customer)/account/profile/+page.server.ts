@@ -2,7 +2,7 @@ import { VITE_API_URL_PUBLIC } from "$env/static/private";
 import { type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ cookies }) => {
+export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const userRes = await fetch(`${VITE_API_URL_PUBLIC}/users/me/profile`, {
     headers: {
       Authorization: `Bearer ${cookies.get("token")}`,
