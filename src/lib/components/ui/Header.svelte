@@ -1,15 +1,11 @@
 <script lang="ts">
-  import { enhance } from "$app/forms";
   import { cartStore } from "$lib/stores/cart.store";
-  import { notify } from "$lib/stores/notifications";
   import { userStore } from "$lib/stores/user.store";
-  import AccountMenu from "../admin/AccountMenu.svelte";
+  import AccountMenu from "./AccountMenu.svelte";
 
   let mobileNavOpen = false;
-  let avatarMenuOpen = false;
 
   const toggleMobileNav = () => (mobileNavOpen = !mobileNavOpen);
-  const toggleAvatarMenu = () => (avatarMenuOpen = !avatarMenuOpen);
 </script>
 
 <header class="bg-white shadow-sm">

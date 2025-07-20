@@ -44,7 +44,7 @@
   {#if open}
     <div class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50">
       <a
-        href="/admin/profile"
+        href="/account/profile"
         class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
       >
         <UserCog class="w-4 h-4" color="#065B8C" />
@@ -52,7 +52,7 @@
       >
 
       <a
-        href="/admin/profile"
+        href="/account/profile"
         class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
       >
         <Settings class="w-4 h-4" color="#065B8C" />
