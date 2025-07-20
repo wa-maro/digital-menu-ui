@@ -3,6 +3,7 @@
     OrderStatusEnum,
     PaymentStatusEnum,
   } from "$lib/constants/order-status";
+  import { PaymentMethodEnum } from "$lib/constants/payment-enums";
   import { formatDate, formatRelativeDate } from "$lib/utils/formatter";
   import { statusBadgeClassForPayment } from "$lib/utils/payment-status";
 
@@ -47,11 +48,34 @@
         </div>
 
         <div>
+          <div class="font-medium text-gray-400 mb-1">Amount</div>
+          <div class="text-green-600 font-semibold">
+            TZS {payment.amount.toFixed(2)}
+          </div>
+        </div>
+
+        <div>
           <div class="font-medium text-gray-400 mb-1">Payment Method</div>
           <div class="capitalize">
             {payment.paymentMethod}
           </div>
         </div>
+
+        {#if payment.paymentMethod === PaymentMethodEnum.MOBILE_MONEY}
+          <div>
+            <div class="font-medium text-gray-400 mb-1">Payment Provider</div>
+            <div class="capitalize">
+              {payment.provider}
+            </div>
+          </div>
+
+          <div>
+            <div class="font-medium text-gray-400 mb-1">account Number</div>
+            <div class="capitalize">
+              {payment.accountNumber}
+            </div>
+          </div>
+        {/if}
 
         <div>
           <div class="font-medium text-gray-400 mb-1">Status</div>
@@ -60,13 +84,6 @@
           >
             {payment.status.replace(/_/g, " ")}
           </span>
-        </div>
-
-        <div>
-          <div class="font-medium text-gray-400 mb-1">Amount</div>
-          <div class="text-green-600 font-semibold">
-            TZS {payment.amount.toFixed(2)}
-          </div>
         </div>
 
         <div>

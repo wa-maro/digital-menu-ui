@@ -179,6 +179,8 @@ declare global {
     transactionId: string;
     order: Order;
     paymentMethod: string;
+    accountNumber?: string;
+    provider?: string;
     status: PaymentStatus;
     amount: number;
     logs: any[]; // Replace with proper Log interface if known
