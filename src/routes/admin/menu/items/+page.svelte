@@ -130,6 +130,7 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
+          <th class="ps-4 py-3">#</th>
           <th class="p-4">Image</th>
           <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
             >Name {#if sortField === "name"}
@@ -146,8 +147,9 @@
         </tr>
       </thead>
       <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
-        {#each paginatedItems as item}
+        {#each paginatedItems as item, i}
           <tr class="hover:bg-gray-50 transition">
+            <td class="ps-4 py-3">{i + 1}</td>
             <td class="py-1 ps-4">
               {#if item.imageURL}
                 <a href={`/admin/menu/items/${item._id}`}>

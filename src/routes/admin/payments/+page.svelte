@@ -70,9 +70,10 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr class="text-sm">
-          <th class="px-4 py-3">Transaction ID</th>
-          <th class="px-4 py-3">Order</th>
-          <th class="px-4 py-3">Method</th>
+          <th class="px-4 py-3 text-start">#</th>
+          <th class="px-4 py-3 text-start">Transaction ID</th>
+          <th class="px-4 py-3 text-start">Order</th>
+          <th class="px-4 py-3 text-start">Method</th>
           <th
             class="px-4 py-3 text-green-700 cursor-pointer hover:text-blue-600"
           >
@@ -82,12 +83,12 @@
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
             Paid At
           </th>
-          <th class="px-4 py-3 text-gray-600">Created At</th>
         </tr>
       </thead>
       <tbody>
-        {#each paginatedItems as payment}
+        {#each paginatedItems as payment, i}
           <tr class="hover:bg-gray-50 text-sm">
+            <td class="px-4 py-2">{i + 1}</td>
             <td class="px-4 py-2" title={payment.transactionId}>
               <a
                 href={`/admin/payments/${payment._id}`}
@@ -107,7 +108,7 @@
             <td class="px-4 py-2 capitalize text-gray-700">
               {payment.paymentMethod}
             </td>
-            <td class="px-4 py-2 text-green-600 font-semibold">
+            <td class="px-4 py-2">
               {payment.amount.toFixed(2)}
             </td>
             <td class="px-4 py-2">
@@ -119,9 +120,6 @@
             </td>
             <td class="px-4 py-2 text-gray-500">
               {payment.paidAt ? formatRelativeDate(payment.paidAt) : "—"}
-            </td>
-            <td class="px-4 py-2 text-gray-500">
-              {formatRelativeDate(payment.createdAt)}
             </td>
           </tr>
         {/each}

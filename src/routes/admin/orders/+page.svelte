@@ -68,9 +68,9 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr class="text-sm">
+          <th class="px-4 py-3">#</th>
           <th class="px-4 py-3">Order ID</th>
           <th class="px-4 py-3">Customer</th>
-          <th class="px-4 py-3">Type</th>
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
             Total (TZS)
           </th>
@@ -81,8 +81,9 @@
         </tr>
       </thead>
       <tbody>
-        {#each paginatedItems as item}
+        {#each paginatedItems as item, i}
           <tr class="hover:bg-gray-50 text-sm">
+            <td class="px-4 py-3">{i + 1}</td>
             <td class="" title={item.orderNumber}>
               <a
                 href={`/admin/orders/${item._id}`}
@@ -92,7 +93,6 @@
               </a>
             </td>
             <td class="px-4 py-2">{item.user.profile.fullName}</td>
-            <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
               >{item.total.toFixed(2)}</td
             >

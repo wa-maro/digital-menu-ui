@@ -85,6 +85,7 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
+          <th class="px-4 py-3">#</th>
           <th class="p-4 cursor-pointer" on:click={() => toggleSort("name")}
             >Name {#if sortField === "name"}
               <span>{sort === "asc" ? "↑" : "↓"}</span>
@@ -95,8 +96,9 @@
         </tr>
       </thead>
       <tbody class="text-sm text-gray-800 divide-y divide-stone-100">
-        {#each filteredCategories as category}
+        {#each filteredCategories as category, i}
           <tr class="hover:bg-gray-50 transition">
+            <td class="px-4 py-3">{i + 1}</td>
             <td class="py-1 ps-4 text-gray-800">{category.name}</td>
             <td class="py-1 ps-4 text-gray-500">{category.description}</td>
             <td class="py-1 ps-4 text-center">

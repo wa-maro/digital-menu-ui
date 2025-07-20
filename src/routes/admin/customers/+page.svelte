@@ -63,11 +63,11 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
-          <th class="px-4 py-3">#</th>
-          <th class="px-4 py-3">Name</th>
-          <th class="px-4 py-3">Email</th>
-          <th class="px-4 py-3">Phone</th>
-          <th class="px-4 py-3">Gender</th>
+          <th class="px-4 py-3 text-start">#</th>
+          <th class="px-4 py-3 text-start">Name</th>
+          <th class="px-4 py-3 text-start">Email</th>
+          <th class="px-4 py-3 text-start">Phone</th>
+          <th class="px-4 py-3 text-start">Gender</th>
         </tr>
       </thead>
       <tbody class="bg-white divide-y divide-gray-100">

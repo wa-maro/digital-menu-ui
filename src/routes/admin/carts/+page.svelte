@@ -68,6 +68,7 @@
     <table class="min-w-full bg-white rounded-xl shadow-md overflow-hidden">
       <thead class="bg-gray-50 text-left text-sm text-gray-700">
         <tr>
+          <th class="px-4 py-3">#</th>
           <th class="px-4 py-3">Cart ID</th>
           <th class="px-4 py-3">Customer</th>
           <th class="px-4 py-3">Items</th>
@@ -81,8 +82,9 @@
       </thead>
 
       <tbody class="bg-white divide-y divide-gray-100">
-        {#each paginatedItems as item}
+        {#each paginatedItems as item, i}
           <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">{i + 1}</td>
             <td class="max-w-3 truncate" title={item._id}>
               <a href={`/admin/carts/${item._id}`} class="px-4 py-2"
                 >{item._id}</a
