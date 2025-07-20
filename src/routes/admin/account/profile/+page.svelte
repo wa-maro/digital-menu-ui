@@ -1,21 +1,14 @@
 <script lang="ts">
-  let user = {
-    name: "Mathew Maro",
-    email: "mathewmaro@example.com",
-    phone: "+255 712 345 678",
-    role: "Manager",
-    status: "Active",
-    avatarUrl: "https://i.pravatar.cc/150?img=12",
-  };
+  export let data: { user: User };
 
-  let editing = false;
+  let { user } = data;
+
+  $: editing = user._id ? false : true;
   let form = { ...user };
 
   function toggleEdit() {
     editing = !editing;
   }
-
-  function saveChanges() {}
 </script>
 
 <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
@@ -55,49 +48,73 @@
     </div>
 
     <div>
-      <h1 class="text-2xl font-semibold text-gray-800">{user.name}</h1>
-      <p class="text-sm text-gray-500">{user.role} • {user.status}</p>
+      <h1 class="text-2xl font-semibold text-gray-800">
+        {user.profile.fullName}
+      </h1>
+      <p class="text-sm text-gray-500 flex items-center gap-x-2">
+        {user.role}
+        <span class="px-1 rounded-full text-xs bg-amber-400">active</span>
+      </p>
     </div>
   </header>
 
-  <form class="space-y-6" on:submit|preventDefault={() => saveChanges()}>
+  <form method="post" class="space-y-6">
     <div>
-      <label for="name" class="block text-sm font-medium text-gray-700 mb-1"
+      <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1"
         >Full Name</label
       >
       <input
-        id="name"
         type="text"
+        name="fullName"
+        id="fullName"
         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        bind:value={form.name}
+        bind:value={form.profile.fullName}
         disabled={!editing}
         required
       />
     </div>
 
     <div>
-      <label for="email" class="block text-sm font-medium text-gray-700 mb-1"
-        >Email Address</label
+      <label
+        for="phoneNumber"
+        class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label
       >
       <input
-        id="email"
-        type="email"
-        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        bind:value={form.email}
-        disabled={!editing}
-        required
-      />
-    </div>
-
-    <div>
-      <label for="phone" class="block text-sm font-medium text-gray-700 mb-1"
-        >Phone Number</label
-      >
-      <input
-        id="phone"
+        id="phoneNumber"
+        name="phoneNumber"
         type="tel"
         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        bind:value={form.phone}
+        bind:value={form.profile.phoneNumber}
+        disabled={!editing}
+      />
+    </div>
+
+    <div>
+      <label
+        for="dateOfBirth"
+        class="block text-sm font-medium text-gray-700 mb-1"
+        >Date of birth</label
+      >
+      <input
+        id="dateOfBirth"
+        name="dateOfBirth"
+        type="date"
+        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        bind:value={form.profile.dateOfBirth}
+        disabled={!editing}
+      />
+    </div>
+
+    <div>
+      <label for="address" class="block text-sm font-medium text-gray-700 mb-1"
+        >Physical Address</label
+      >
+      <input
+        id="address"
+        name="address"
+        type="text"
+        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        bind:value={form.profile.address}
         disabled={!editing}
       />
     </div>
