@@ -54,12 +54,23 @@ declare global {
     updatedAt?: string;
   }
 
+  export interface Profile {
+    _id: string;
+    fullName: string;
+    phoneNumber?: string;
+    address?: string;
+    avatarUrl?: string;
+    gender?: "male" | "female";
+    dateOfBirth?: Date;
+  }
+
   export interface User {
     _id: string;
     fullName: string;
     email: string;
     avatarUrl?: string;
     role: "customer" | "admin" | "manager";
+    profile: Profile;
   }
 
   export type OrderStatus =
@@ -121,7 +132,7 @@ declare global {
 
   export interface UserCart {
     _id: string;
-    user: any;
+    user: User;
     items: CartItemPopulated[];
     createdAt?: string;
     updatedAt?: string;

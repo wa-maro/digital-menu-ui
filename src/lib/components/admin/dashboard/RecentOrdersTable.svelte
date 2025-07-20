@@ -26,7 +26,7 @@
           on:click={() => viewOrder(order._id)}
           class="cursor-pointer hover:bg-gray-100 transition"
         >
-          <td class="px-4 py-2.5">{order.user.fullName || order.user.email}</td>
+          <td class="px-4 py-2.5">{order.user.email}</td>
           <td class="px-4 py-2.5">{Number(order.total).toFixed(2)}</td>
           <td class="px-4 py-2.5">
             <span

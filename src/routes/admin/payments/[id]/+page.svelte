@@ -43,7 +43,7 @@
         <div>
           <div class="font-medium text-gray-400 mb-1">Payer Name</div>
           <div class="capitalize">
-            {payment.order.user.fullName}
+            {payment.order.user.email}
           </div>
         </div>
 

@@ -2,21 +2,21 @@
   import { formatRelativeDate } from "$lib/utils/formatter";
   import { statusBadgeClass } from "$lib/utils/order-status";
 
-  export let data: { orders: any[]; title: string };
+  export let data: { orders: Order[]; title: string };
 
   const { orders } = data;
 
   let search = "";
-  let filteredItems: any[] = orders;
+  let filteredItems: Order[] = orders;
 
   function applyFilters() {
     const searchTerm = search.trim().toLowerCase();
 
     filteredItems = orders.filter((item) => {
-      const fullName = item.user.fullName.toLowerCase();
+      const email = item.user.email.toLowerCase();
       const orderNumber = item.orderNumber.toLowerCase();
 
-      return fullName.includes(searchTerm) || orderNumber.includes(searchTerm);
+      return email.includes(searchTerm) || orderNumber.includes(searchTerm);
     });
   }
 
@@ -91,7 +91,7 @@
                 {item.orderNumber}
               </a>
             </td>
-            <td class="px-4 py-2">{item.user.fullName || item.user.email}</td>
+            <td class="px-4 py-2">{item.user.email}</td>
             <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
               >{item.total.toFixed(2)}</td

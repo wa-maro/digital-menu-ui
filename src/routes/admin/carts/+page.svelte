@@ -8,7 +8,7 @@
 
   function applyFilters() {
     filteredItems = carts.filter((item) => {
-      return item.user.fullName.toLowerCase().includes(search.toLowerCase());
+      return item.user.email.toLowerCase().includes(search.toLowerCase());
     });
   }
 
@@ -86,7 +86,7 @@
                 >{item._id}</a
               >
             </td>
-            <td class="px-4 py-2">{item.user.fullName}</td>
+            <td class="px-4 py-2">{item.user.email}</td>
             <td class="px-4 py-2">{cartItemCount(item)}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
               >{cartTotal(item).toFixed(2)}</td
