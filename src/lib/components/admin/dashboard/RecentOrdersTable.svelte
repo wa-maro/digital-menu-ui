@@ -14,6 +14,7 @@
   <table class="min-w-full bg-white rounded-xl shadow overflow-hidden">
     <thead class="bg-gray-100 text-gray-600 text-sm uppercase">
       <tr>
+        <th class="px-4 py-2.5 text-left">Order #</th>
         <th class="px-4 py-2.5 text-left">Customer</th>
         <th class="px-4 py-2.5 text-left">Total (TZS)</th>
         <th class="px-4 py-2.5 text-left">Status</th>
@@ -26,7 +27,8 @@
           on:click={() => viewOrder(order._id)}
           class="cursor-pointer hover:bg-gray-100 transition"
         >
-          <td class="px-4 py-2.5">{order.user.email}</td>
+          <td class="px-4 py-2.5">{order.orderNumber}</td>
+          <td class="px-4 py-2.5">{order.user.profile.fullName}</td>
           <td class="px-4 py-2.5">{Number(order.total).toFixed(2)}</td>
           <td class="px-4 py-2.5">
             <span

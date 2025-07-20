@@ -38,7 +38,7 @@
     <div class="grid md:grid-cols-3 gap-4 text-gray-700">
       <div>
         <p class="text-sm text-gray-500">Full Name</p>
-        <p class="font-medium">{cart.user.email}</p>
+        <p class="font-medium">{cart.user.profile.fullName}</p>
       </div>
 
       <div>

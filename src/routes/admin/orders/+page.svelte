@@ -13,10 +13,10 @@
     const searchTerm = search.trim().toLowerCase();
 
     filteredItems = orders.filter((item) => {
-      const email = item.user.email.toLowerCase();
+      const fullName = item.user.profile.fullName.toLowerCase();
       const orderNumber = item.orderNumber.toLowerCase();
 
-      return email.includes(searchTerm) || orderNumber.includes(searchTerm);
+      return fullName.includes(searchTerm) || orderNumber.includes(searchTerm);
     });
   }
 
@@ -91,7 +91,7 @@
                 {item.orderNumber}
               </a>
             </td>
-            <td class="px-4 py-2">{item.user.email}</td>
+            <td class="px-4 py-2">{item.user.profile.fullName}</td>
             <td class="px-4 py-2 capitalize text-gray-700">{item.type}</td>
             <td class="px-4 py-2 text-green-600 font-semibold"
               >{item.total.toFixed(2)}</td

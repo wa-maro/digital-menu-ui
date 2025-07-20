@@ -58,7 +58,7 @@
       <div class="space-y-1">
         <p class="text-xs text-gray-500">Customer</p>
         <p class="text-sm font-medium">
-          {order.user.email}
+          {order.user.profile.fullName}
           (<a href={`mailto:${order.user.email}`} class="underline text-sky-600"
             >{order.user.email}</a
           >)

@@ -61,12 +61,11 @@ declare global {
     address?: string;
     avatarUrl?: string;
     gender?: "male" | "female";
-    dateOfBirth?: Date;
+    dateOfBirth?: string;
   }
 
   export interface User {
     _id: string;
-    fullName: string;
     email: string;
     avatarUrl?: string;
     role: "customer" | "admin" | "manager";
@@ -149,6 +148,7 @@ declare global {
     _id: string;
     user: User;
     orderId: string;
+    orderNumber: string;
     items: OrderItem[];
     type: OrderType;
     status: OrderStatus;
