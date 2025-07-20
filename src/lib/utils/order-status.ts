@@ -15,6 +15,12 @@ export function getNextOrderAction(order: Order) {
       return { nextStatus: OrderStatusEnum.READY, label: "Mark as Ready" };
 
     case OrderStatusEnum.READY:
+      if (order.type === "dine-in") {
+        return {
+          nextStatus: OrderStatusEnum.COMPLETED,
+          label: "Mark as Completed",
+        };
+      }
       if (order.type === "takeaway") {
         return { nextStatus: OrderStatusEnum.PICKED, label: "Mark as Picked" };
       }
