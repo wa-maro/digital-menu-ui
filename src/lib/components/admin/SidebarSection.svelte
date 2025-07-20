@@ -14,7 +14,7 @@
   >
     <svelte:component this={icon} class="w-5 h-5" />
     <span class="ml-3 flex-1 text-start">{title}</span>
-    <Plus size={14} />
+    <Plus size={12} />
   </button>
 
   <ul class="space-y-1">

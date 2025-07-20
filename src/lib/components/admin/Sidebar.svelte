@@ -14,6 +14,7 @@
     LayoutDashboard,
     HandPlatter,
     Users,
+    ReceiptText,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -126,7 +127,7 @@
       <!-- Sales Management -->
       <SidebarSection
         title="Sales"
-        icon={ShoppingBasket}
+        icon={ReceiptText}
         onClick={() => isSidebarExpanded && toggleMenu("sales")}
       >
         {#if openMenus.sales}

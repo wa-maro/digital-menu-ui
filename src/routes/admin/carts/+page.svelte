@@ -70,7 +70,7 @@
         <tr>
           <th class="px-4 py-3">#</th>
           <th class="px-4 py-3">Cart ID</th>
-          <th class="px-4 py-3">Customer</th>
+          <th class="px-4 py-3">Owner</th>
           <th class="px-4 py-3">Items</th>
           <th class="px-4 py-3 cursor-pointer hover:text-blue-600">
             Total (TZS)

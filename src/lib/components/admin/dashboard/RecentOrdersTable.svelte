@@ -22,7 +22,7 @@
         <th class="px-4 py-2.5 text-left">Date</th>
       </tr>
     </thead>
-    <tbody class="text-gray-700 divide-y divide-gray-200">
+    <tbody class="text-gray-700 text-sm divide-y divide-gray-200">
       {#each recentOrders as order, i}
         <tr
           on:click={() => viewOrder(order._id)}
