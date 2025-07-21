@@ -25,6 +25,9 @@ export const actions: Actions = {
     const tagline = formData.get("tagline")?.toString();
     const description = formData.get("description")?.toString() ?? "";
     const brandLogo = formData.get("brandLogo")?.toString() ?? "";
+    const workingDays = formData.get("workingDays")?.toString() ?? "";
+
+    const days = workingDays.split(",");
 
     const restaurantRes = await fetch(`${VITE_API_URL_ADMIN}/restaurant`, {
       method: "POST",
@@ -32,7 +35,13 @@ export const actions: Actions = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.get("token")}`,
       },
-      body: JSON.stringify({ name, tagline, description, brandLogo }),
+      body: JSON.stringify({
+        name,
+        tagline,
+        description,
+        brandLogo,
+        workingDays: days,
+      }),
     });
 
     if (!restaurantRes.ok) {
