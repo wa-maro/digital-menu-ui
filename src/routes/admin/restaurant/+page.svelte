@@ -1,6 +1,5 @@
 <script lang="ts">
   import OpeningScheduler from "$lib/components/admin/OpeningScheduler.svelte";
-  import type { DayOfWeek } from "$lib/constants/week-days";
   import { onMount } from "svelte";
 
   export let data: { restaurant: Restaurant; title: string };
@@ -14,9 +13,8 @@
     brandLogo: restaurant.brandLogo ?? "",
     description: restaurant.description ?? "",
     workingDays: restaurant.workingDays ?? [],
+    workingHours: restaurant.workingHours ?? {},
   };
-
-  let workingDays: DayOfWeek[] = [];
 
   function toggleEdit() {
     editing = !editing;
@@ -27,6 +25,7 @@
         brandLogo: restaurant.brandLogo ?? "",
         description: restaurant.description ?? "",
         workingDays: restaurant.workingDays ?? [],
+        workingHours: restaurant.workingHours ?? {},
       };
     }
   }
@@ -154,7 +153,11 @@
       ></textarea>
     </div>
 
-    <OpeningScheduler bind:workingDays={form.workingDays} bind:editing />
+    <OpeningScheduler
+      bind:workingDays={form.workingDays}
+      bind:workingHours={form.workingHours}
+      bind:editing
+    />
 
     <div class="flex items-center space-x-4">
       {#if editing}

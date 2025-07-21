@@ -7,3 +7,8 @@ export enum DayOfWeek {
   Saturday = "Saturday",
   Sunday = "Sunday",
 }
+
+export interface DailyHours {
+  open: string;
+  close: string;
+}

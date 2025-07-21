@@ -1,6 +1,7 @@
 import { VITE_API_URL_ADMIN } from "$env/static/private";
 import { fail, type Actions } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
+import type { DailyHours, DayOfWeek } from "$lib/constants/week-days";
 
 export const load: PageServerLoad = async ({ fetch, cookies }) => {
   const restaurantRes = await fetch(`${VITE_API_URL_ADMIN}/restaurant`, {
@@ -25,9 +26,13 @@ export const actions: Actions = {
     const tagline = formData.get("tagline")?.toString();
     const description = formData.get("description")?.toString() ?? "";
     const brandLogo = formData.get("brandLogo")?.toString() ?? "";
-    const workingDays = formData.get("workingDays")?.toString() ?? "";
 
-    const days = workingDays.split(",");
+    const workingDaysRaw = formData.get("workingDays")?.toString() ?? "";
+    const workingDays = workingDaysRaw.split(",");
+
+    const workingHoursRaw = formData.get("workingHours")?.toString() ?? "";
+    let workingHours: Partial<Record<DayOfWeek, DailyHours>> = {};
+    if (workingDaysRaw) workingHours = JSON.parse(workingHoursRaw);
 
     const restaurantRes = await fetch(`${VITE_API_URL_ADMIN}/restaurant`, {
       method: "POST",
@@ -40,7 +45,8 @@ export const actions: Actions = {
         tagline,
         description,
         brandLogo,
-        workingDays: days,
+        workingDays,
+        workingHours,
       }),
     });
 
