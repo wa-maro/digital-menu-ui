@@ -81,12 +81,12 @@
 
 <!-- Filter Panel -->
 <div class="flex flex-wrap gap-4 mb-4">
-  <select bind:value={type} class="w-44 px-2 py-1 border rounded">
+  <select bind:value={type} class="w-44 px-2 py-1 border rounded text-sm">
     <option value="month">Compare Month</option>
     <option value="week">Compare Week</option>
   </select>
 
-  <select bind:value={method} class="w-40 px-2 py-1 border rounded">
+  <select bind:value={method} class="w-40 px-2 py-1 border rounded text-sm">
     <option value="cash">Cash</option>
     <option value="mobile_money">Mobile Money</option>
   </select>
