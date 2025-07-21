@@ -13,7 +13,7 @@
   <Sidebar />
 
   <main class="flex-1 flex flex-col">
-    <TopBar />
+    <TopBar adminData={data.adminData} />
 
     <div class="flex-1 px-4 overflow-y-auto">
       <slot />

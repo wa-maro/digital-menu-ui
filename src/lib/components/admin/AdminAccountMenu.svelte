@@ -1,7 +1,9 @@
 <script lang="ts">
   import { browser } from "$app/environment";
-  import { LogOut, Settings, User, UserCog } from "lucide-svelte";
+  import { LogOut, Settings, User as UserIcon, UserCog } from "lucide-svelte";
   import { onDestroy, onMount } from "svelte";
+
+  export let adminData: User;
 
   let open = false;
   let dropdownEl: HTMLElement;
@@ -30,7 +32,7 @@
     on:click|stopPropagation={toggle}
     class="flex items-center text-sm text-gray-700 hover:text-blue-600 focus:outline-none"
   >
-    <User class="w-5 h-5" color="#065B8C" />
+    <UserIcon class="w-5 h-5" color="#065B8C" />
     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         stroke-linecap="round"
@@ -43,9 +45,15 @@
 
   {#if open}
     <div class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50">
+      <div
+        class="px-4 py-2 text-sm text-gray-700 bg-gray-150 border-b border-gray-300"
+      >
+        {adminData.profile.fullName}
+      </div>
+
       <a
         href="/admin/account/profile"
-        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer"
       >
         <UserCog class="w-4 h-4" color="#065B8C" />
         Profile</a
@@ -53,7 +61,7 @@
 
       <a
         href="/admin/account/profile"
-        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer border-b border-gray-300"
       >
         <Settings class="w-4 h-4" color="#065B8C" />
         Settings</a
