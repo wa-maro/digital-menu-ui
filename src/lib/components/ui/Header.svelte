@@ -3,6 +3,8 @@
   import { userStore } from "$lib/stores/user.store";
   import AccountMenu from "./AccountMenu.svelte";
 
+  export let userData: User;
+
   let mobileNavOpen = false;
 
   const toggleMobileNav = () => (mobileNavOpen = !mobileNavOpen);
@@ -44,7 +46,7 @@
 
       <!-- User -->
       {#if $userStore.user && $userStore.isAuthenticated}
-        <AccountMenu />
+        <AccountMenu {userData} />
       {:else}
         <a
           href="/auth/login"
@@ -97,7 +99,7 @@
         </a>
 
         {#if $userStore.user && $userStore.isAuthenticated}
-          <AccountMenu />
+          <AccountMenu {userData} />
         {:else}
           <a href="/auth/login" class="py-1 hover:text-[#065B8C]"> Login </a>
         {/if}

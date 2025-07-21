@@ -1,11 +1,13 @@
 <script lang="ts">
   import Header from "$lib/components/ui/Header.svelte";
+
+  export let data: any;
 </script>
 
 <div class="min-h-screen flex flex-col text-gray-800">
   <!-- Fixed Header -->
   <header class="fixed top-0 left-0 right-0 z-50 bg-white shadow">
-    <Header />
+    <Header userData={data.userData} />
   </header>
 
   <!-- Main Content -->

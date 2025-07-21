@@ -3,6 +3,9 @@
   import { LogOut, Settings, User, UserCog } from "lucide-svelte";
   import { onDestroy, onMount } from "svelte";
 
+  export let userData: any;
+  // console.log();
+
   let open = false;
   let dropdownEl: HTMLElement;
 
@@ -43,9 +46,15 @@
 
   {#if open}
     <div class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-xl z-50">
+      <div
+        class="px-4 py-2 text-sm text-gray-700 bg-gray-150 border-b border-gray-300"
+      >
+        {userData.profile.fullName}
+      </div>
+
       <a
         href="/account/profile"
-        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer"
       >
         <UserCog class="w-4 h-4" color="#065B8C" />
         Profile</a
@@ -53,7 +62,7 @@
 
       <a
         href="/account/profile"
-        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5"
+        class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer border-b border-gray-300"
       >
         <Settings class="w-4 h-4" color="#065B8C" />
         Settings</a
@@ -62,7 +71,7 @@
       <form method="POST" action="/auth/logout">
         <button
           type="submit"
-          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-1.5"
+          class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center gap-1.5 cursor-pointer"
         >
           <LogOut class="w-4 h-4" color="#DC2626" />
           Logout
