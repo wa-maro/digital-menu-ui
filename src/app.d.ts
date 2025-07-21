@@ -200,6 +200,13 @@ declare global {
     __v: number;
     paidAt?: string;
   }
+
+  export type ChartData = {
+    group: string;
+    date?: string; // for line/time series
+    label?: string; // for bar
+    value: number;
+  };
 }
 
 export {};
