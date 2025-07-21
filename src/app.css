@@ -2,6 +2,8 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+@import "@carbon/charts-svelte/styles.css";
+
 .btn-primary {
   @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs font-medium;
 }
