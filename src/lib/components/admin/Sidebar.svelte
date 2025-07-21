@@ -2,7 +2,6 @@
   import {
     Menu,
     ShoppingCart,
-    ShoppingBasket,
     Utensils,
     MenuSquare,
     UtensilsCrossed,
@@ -15,6 +14,7 @@
     HandPlatter,
     Users,
     ReceiptText,
+    Activity,
   } from "lucide-svelte";
   import { slide } from "svelte/transition";
   import SidebarSection from "./SidebarSection.svelte";
@@ -93,6 +93,11 @@
         {#if openMenus.dashboard}
           <ul in:slide out:slide class="ml-4 space-y-1 text-sm">
             <SidebarItem icon={Home} label="Home" href="/admin/dashboard" />
+            <SidebarItem
+              icon={Activity}
+              label="Analytics"
+              href="/admin/dashboard/analytics"
+            />
           </ul>
         {/if}
       </SidebarSection>
