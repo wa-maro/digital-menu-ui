@@ -14,9 +14,12 @@
     uploadedBy: {
       _id: "",
       email: "",
-      fullName: "",
       avatarUrl: "",
       role: "manager",
+      profile: {
+        _id: "",
+        fullName: "",
+      },
     },
     url: "",
   };

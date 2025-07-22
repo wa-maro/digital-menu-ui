@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PUBLIC_API_URL } from "$env/static/public";
   import { Pencil, Trash, Upload } from "lucide-svelte";
   import { onMount } from "svelte";
 
@@ -152,7 +153,7 @@
               {#if item.url}
                 <a href={`/admin/media/${item._id}`}>
                   <img
-                    src={`http://127.0.0.1:3000${item.url}`}
+                    src={`${PUBLIC_API_URL}${item.url}`}
                     alt={item.filename}
                     class="w-12 object-cover rounded"
                   />

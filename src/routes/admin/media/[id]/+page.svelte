@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { PUBLIC_API_URL } from "$env/static/public";
+
   export let data: { media: MediaItem };
   const media: MediaItem = data.media;
 </script>
@@ -17,7 +19,7 @@
   >
     <div class="overflow-hidden rounded-lg shadow-md col-span-1">
       <img
-        src={`http://127.0.0.1:3000${media.url}`}
+        src={`${PUBLIC_API_URL}${media.url}`}
         alt={media.displayName}
         class="w-full h-64 md:h-full object-cover transition-transform duration-300 hover:scale-105"
       />
@@ -34,7 +36,7 @@
 
         <div class="flex items-center space-x-2">
           <span class="font-semibold text-gray-800">Uploaded By:</span>
-          <span>{media.uploadedBy.fullName}</span>
+          <span>{media.uploadedBy.profile.fullName}</span>
         </div>
 
         <div class="flex items-center space-x-2 text-sm text-gray-500">
