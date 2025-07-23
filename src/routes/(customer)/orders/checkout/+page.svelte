@@ -1,6 +1,5 @@
 <script lang="ts">
   import { enhance } from "$app/forms";
-  import { goto } from "$app/navigation";
   import { PUBLIC_MAPBOX_ACCESS_TOKEN } from "$env/static/public";
   import MapSelector from "$lib/components/maps/MapSelector.svelte";
   import { OrderTypeEnum } from "$lib/constants/order-enum";
@@ -84,7 +83,6 @@
 
   async function handleSubmit() {
     cartStore.clear();
-    await goto("/orders/order-success");
   }
 </script>
 

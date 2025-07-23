@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { PUBLIC_API_URL } from "$env/static/public";
+
   export let data;
   const item: MenuItem = data.data;
 </script>
@@ -19,7 +21,7 @@
   <!-- Image -->
   {#if item.imageURL}
     <img
-      src={item.imageURL}
+      src={`${PUBLIC_API_URL}${item.imageURL.slice(item.imageURL.indexOf("/upload"))}`}
       alt={item.name}
       class="w-3/4 h-64 object-cover rounded-lg shadow"
     />

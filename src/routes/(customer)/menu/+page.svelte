@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PUBLIC_API_URL } from "$env/static/public";
   import AddToCart from "$lib/components/AddToCart.svelte";
   import { notify } from "$lib/stores/notifications";
 
@@ -90,7 +91,7 @@
       >
         <!-- Item Image -->
         <img
-          src={item.imageURL || "https://via.placeholder.com"}
+          src={`${PUBLIC_API_URL}${item.imageURL.slice(item.imageURL.indexOf("/upload"))}`}
           alt={item.name}
           class="w-full h-44 object-cover rounded-lg flex-shrink-0"
         />

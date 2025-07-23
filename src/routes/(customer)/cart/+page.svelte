@@ -7,6 +7,7 @@
   import { flip } from "svelte/animate";
   import { enhance } from "$app/forms";
   import { notify } from "$lib/stores/notifications";
+  import { PUBLIC_API_URL } from "$env/static/public";
 
   export let data: { data: UserCart; user: User };
 
@@ -58,7 +59,7 @@
           >
             <div class="flex items-center gap-4">
               <img
-                src={item.imageURL}
+                src={`${PUBLIC_API_URL}${item.imageURL.slice(item.imageURL.indexOf("/upload"))}`}
                 alt={item.name}
                 class="w-20 h-20 object-cover rounded-xl shrink-0"
               />
