@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { BarChartSimple } from "@carbon/charts-svelte";
   import type { BarChartOptions, ScaleTypes } from "@carbon/charts/interfaces";
+  import { PUBLIC_API_URL } from "$env/static/public";
 
   let type: "day" | "week" = "day";
   let sortBy: "revenue" | "orders" = "revenue";
@@ -27,7 +28,7 @@
     }
 
     const res = await fetch(
-      `http://127.0.0.1:3000/admin/dashboard/top-performing?${params}`
+      `${PUBLIC_API_URL}/admin/dashboard/top-performing?${params}`
     );
     const json = await res.json();
 

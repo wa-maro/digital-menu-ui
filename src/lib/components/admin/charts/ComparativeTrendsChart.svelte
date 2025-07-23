@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { BarChartGrouped } from "@carbon/charts-svelte";
   import type { BarChartOptions, ScaleTypes } from "@carbon/charts/interfaces";
+  import { PUBLIC_API_URL } from "$env/static/public";
 
   let type: "month" | "week" = "month";
   let method = "cash"; // optional
@@ -25,7 +26,7 @@
     }
 
     const res = await fetch(
-      `http://127.0.0.1:3000/admin/dashboard/comparative-trends?${params}`
+      `${PUBLIC_API_URL}/admin/dashboard/comparative-trends?${params}`
     );
     const json = await res.json();
 

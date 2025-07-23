@@ -1,10 +1,23 @@
 import { cartStore } from "$lib/stores/cart.store";
 import { get } from "svelte/store";
 
-export const initialCart = {
+export const initialCart: UserCart = {
   _id: "",
-  items: [],
-  user: "",
+  items: [{
+    _id: "",
+    price: 0, quantity: 0, item: {
+      _id: "", imageURL: "", available: false, category: {
+        _id: "", name: "", description: ""
+      }, description: "", name: "", price: 0, createdAt: "", updatedAt: ""
+    }
+  }],
+  user: {
+    _id: "",
+    email: "", role: "customer", avatarUrl: "",
+    profile: {
+      _id: "", fullName: "", address: ""
+    }
+  },
   createdAt: undefined,
   updatedAt: undefined,
 };

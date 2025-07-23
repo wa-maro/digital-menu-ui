@@ -58,11 +58,13 @@
             class="flex items-center justify-between p-4 bg-white rounded-2xl shadow hover:shadow-lg transition-shadow"
           >
             <div class="flex items-center gap-4">
-              <img
-                src={`${PUBLIC_API_URL}${item.imageURL.slice(item.imageURL.indexOf("/upload"))}`}
-                alt={item.name}
-                class="w-20 h-20 object-cover rounded-xl shrink-0"
-              />
+              {#if item.imageURL}
+                <img
+                  src={`${PUBLIC_API_URL}${item.imageURL.slice(item.imageURL.indexOf("/upload"))}`}
+                  alt={item.name}
+                  class="w-20 h-20 object-cover rounded-xl shrink-0"
+                />
+              {/if}
               <div>
                 <p class="font-semibold text-gray-800">{item.name}</p>
                 <div class="flex items-center gap-2 mt-2">

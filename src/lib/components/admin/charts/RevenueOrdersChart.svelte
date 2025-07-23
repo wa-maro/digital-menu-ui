@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { LineChart, ScaleTypes } from "@carbon/charts-svelte";
   import type { LineChartOptions } from "@carbon/charts/interfaces";
+  import { PUBLIC_API_URL } from "$env/static/public";
 
   let mode: "month" | "week" = "month";
   let selectedMonth = "2025-07";
@@ -18,7 +19,7 @@
         : `week=${selectedWeek}&method=${method}`;
 
     const res = await fetch(
-      `http://127.0.0.1:3000/admin/dashboard/revenue-insights?${query}`
+      `${PUBLIC_API_URL}/admin/dashboard/revenue-insights?${query}`
     );
     const json = await res.json();
 
